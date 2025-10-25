@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+
+
+body {
+  background: black; 
+  font-family: var(--font-suisseintl), sans-serif;
+
+}
+
+
+.heather {
+  font-family: var(--font-heathergreen), serif;
+}
+
+
+
+
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+html {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  overflow-x: hidden;
+
+}
