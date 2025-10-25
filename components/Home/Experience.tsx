@@ -3,31 +3,8 @@ import React from "react";
 import Heading from "../Reusable/UI/Heading";
 import Image from "next/image";
 import Align from "../Reusable/Align";
-import { GoArrowUpLeft } from "react-icons/go";
 import SwipeButton from "../Reusable/UI/Button";
-
-const ExperienceContents = [
-  {
-    title: "The Mystery Trip",
-    desc: "For explorers who find peace in uncertainty.",
-    img: "https://ik.imagekit.io/99y1fc9mh/BFT/Group%20-%201%20of%206.png?updatedAt=1761394402628",
-  },
-  {
-    title: "Schedule your purpose",
-    desc: "Travel that heals, balances, and reconnects.",
-    img: "https://ik.imagekit.io/99y1fc9mh/BFT/Group%20-%203%20of%206.png?updatedAt=1761394402527",
-  },
-  {
-    title: "The Crafted Journey",
-    desc: "Created intuitively, built on trust, not trends.",
-    img: "https://ik.imagekit.io/99y1fc9mh/BFT/Frame%20612.png?updatedAt=1761394402192",
-  },
-  {
-    title: "The Kindred Voyage",
-    desc: "Because sometimes, strangers become the most familiar feeling.",
-    img: "https://ik.imagekit.io/99y1fc9mh/BFT/l?updatedAt=1761395445556",
-  },
-];
+import { ExperienceContents } from "../Data/Home/ExperinceContents";
 
 const Experience = () => {
   return (
@@ -45,7 +22,6 @@ const Experience = () => {
             Every journey is a mirror — reflecting what your soul secretly
             seeks. Choose the path that speaks to your emotion, not your logic.
           </p>
-          
         </div>
 
         <div
@@ -80,11 +56,9 @@ const Experience = () => {
             </div>
           ))}
         </div>
-        
-
       </div>
       <div className="flex flex-row items-center justify-center">
-      <SwipeButton />
+        <SwipeButton />
       </div>
     </Align>
   );

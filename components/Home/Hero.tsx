@@ -2,8 +2,6 @@
 import { Mountain } from '@/assets/home';
 import React, { useEffect, useRef } from 'react'
 import Image from 'next/image';
-import GlassButton from '../Reusable/UI/Button';
-
 
 
 const Hero: React.FC = () => {

@@ -47,19 +47,22 @@ const Footer = () => {
           BEGIN YOUR UNKNOWN
         </h1>
         <p className="text-[16px] sm:text-[20px] md:text-[24px] leading-[24px] sm:leading-[28px] md:leading-[32px] max-w-3xl text-center px-4">
-          There's a wild, free version of you waiting — beyond plans, beyond
-          screens, beyond control. Step forward. We'll lead with heart.
+          There&apos;s a wild, free version of you waiting — beyond plans,
+          beyond screens, beyond control. Step forward. We&apos;ll lead with
+          heart.
         </p>
 
-        <button 
-                
-                className="flex items-center bg-[#FFA62B] text-white font-semibold rounded-full pr-3 pl-1 py-1 transition-all duration-300 cursor-pointer group hover:bg-[#FFA62B] hover:text-white z-10 mt-5"
-              >
-                <div className="bg-white w-10 h-10 flex items-center justify-center rounded-full mr-3 transition-all duration-500 group-hover:bg-white">
-                  <GoArrowUpLeft size={25} className="text-[#FFA62B] text-base transition-all duration-500 group-hover:text-[#FFA62B]" />
-                </div>
-                <span className="tracking-wide text-sm sm:text-base transition-all duration-300">TAKE THE LEAP</span>
-              </button>
+        <button className="flex items-center bg-[#FFA62B] text-white font-semibold rounded-full pr-3 pl-1 py-1 transition-all duration-300 cursor-pointer group hover:bg-[#FFA62B] hover:text-white z-10 mt-5">
+          <div className="bg-white w-10 h-10 flex items-center justify-center rounded-full mr-3 transition-all duration-500 group-hover:bg-white">
+            <GoArrowUpLeft
+              size={25}
+              className="text-[#FFA62B] text-base transition-all duration-500 group-hover:text-[#FFA62B]"
+            />
+          </div>
+          <span className="tracking-wide text-sm sm:text-base transition-all duration-300">
+            TAKE THE LEAP
+          </span>
+        </button>
         <div className="flex flex-row -space-x-10 mt-[6vh] z-100">
           {BeginYourUnknownImage.map((item, index) => {
             const parallaxOffset = scrollY * (0.05 + index * 0.02);

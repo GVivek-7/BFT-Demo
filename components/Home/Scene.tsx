@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useMemo } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Canvas, } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -8,6 +8,7 @@ import { useMediaQuery } from "react-responsive";
 import { Model } from "../Reusable/Earth";
 import { FullLogo } from "@/assets/home";
 import Image from "next/image";
+import { Group } from "three";
 
 // Register GSAP plugins
 if (typeof window !== "undefined") {
@@ -28,7 +29,7 @@ const Scene: React.FC = () => {
   const logoRef = useRef<HTMLDivElement>(null);
 
   const canvasRef = useRef<HTMLDivElement>(null);
-  const modelGroupRef = useRef<any>(null);
+  const modelGroupRef = useRef<Group | null>(null);
 
   // Responsive
   const [mounted, setMounted] = React.useState(false);
@@ -79,13 +80,13 @@ const Scene: React.FC = () => {
   // ANIMATED MODEL COMPONENT
   // ===========================
   const AnimatedModel = () => {
-    const groupRef = useRef<any>(null);
+    const groupRef = useRef<Group>(null);
 
     useEffect(() => {
       if (groupRef.current) {
         modelGroupRef.current = groupRef.current;
       }
-    }, [groupRef.current]);
+    }, []);
 
     return (
       <group
@@ -255,7 +256,7 @@ const Scene: React.FC = () => {
           )
           // Move 3D model upward
           .to(
-            modelGroupRef.current.position,
+            modelGroupRef.current?.position || { y: 0 },
             {
               y: 5,
               visibility: "visible",

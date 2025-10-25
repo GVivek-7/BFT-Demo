@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { companyLogo } from '@/assets/home'
 import { navContents } from '../Constants'
+import Image from 'next/image';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -19,7 +20,7 @@ const Navbar = () => {
         
         {/* Logo */}
         <Link href='/' className='flex-shrink-0 transition-transform duration-300 hover:scale-105'>
-          <img src={companyLogo} alt='Blind Fold Trips' className='w-11 h-11' />
+          <Image src={companyLogo} alt='Blind Fold Trips' width={500} height={500} className='w-11 h-11' />
         </Link>
 
         {/* Desktop Navigation Links */}

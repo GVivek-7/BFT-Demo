@@ -87,9 +87,9 @@ const Surprise: React.FC = () => {
             WHERE PSYCHOLOGY MEETS ADVENTURE.
           </h1>
           <p className="text-black md:text-[20px] text-[14px] md:leading-[24px] leading-[16px] text-start max-w-3xl font-light">
-            Behind every blindfold lies more than mystery — it's emotional
+            Behind every blindfold lies more than mystery — it&apos;s emotional
             design. We map your feelings, your pace, your energy — and build
-            journeys that speak your language. It's not about where you go. It's
+            journeys that speak your language. It&apos;s not about where you go. It&apos;s
             about where your heart lands.
           </p>
         </Align>

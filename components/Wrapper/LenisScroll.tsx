@@ -28,7 +28,7 @@ const LenisProvider = ({ children }: LenisProviderProps) => {
     lenisRef.current = lenis;
 
     // Setup GSAP ScrollTrigger to update on lenis scroll
-    lenis.on("scroll", (e) => {
+    lenis.on("scroll", () => {
       ScrollTrigger.update();
     });
 
