@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect, useRef, useMemo } from "react";
-import { Canvas, } from "@react-three/fiber";
+import React, { useState, useEffect, useRef, useMemo, use } from "react";
+import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -9,6 +9,7 @@ import { Model } from "../Reusable/Earth";
 import { FullLogo } from "@/assets/home";
 import Image from "next/image";
 import { Group } from "three";
+import Hero from "./Hero";
 
 // Register GSAP plugins
 if (typeof window !== "undefined") {
@@ -16,6 +17,10 @@ if (typeof window !== "undefined") {
 }
 
 const Scene: React.FC = () => {
+  // States
+  const [heroComplete, setHeroComplete] = useState(false);
+  
+
   // Refs
   const containerRef = useRef<HTMLDivElement>(null);
   const ceciRef = useRef<HTMLHeadingElement>(null);
@@ -27,9 +32,9 @@ const Scene: React.FC = () => {
   const pioneerRef = useRef<HTMLParagraphElement>(null);
   const worldRef = useRef<HTMLParagraphElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
-
   const canvasRef = useRef<HTMLDivElement>(null);
   const modelGroupRef = useRef<Group | null>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
 
   // Responsive
   const [mounted, setMounted] = React.useState(false);
@@ -79,7 +84,7 @@ const Scene: React.FC = () => {
   // ===========================
   // ANIMATED MODEL COMPONENT
   // ===========================
-  const AnimatedModel = () => {
+   const AnimatedModel = () => {
     const groupRef = useRef<Group>(null);
 
     useEffect(() => {
@@ -87,6 +92,20 @@ const Scene: React.FC = () => {
         modelGroupRef.current = groupRef.current;
       }
     }, []);
+
+   useEffect(() => {
+  if (heroComplete && groupRef.current) {
+    // Start with opacity 
+    gsap.set(groupRef.current, { opacity: 0 });
+    
+    // Animate to opacity 1 after hero completes
+    gsap.to(groupRef.current, {
+      opacity: 1,
+      duration: 1.5,
+      ease: "power2.inOut",
+    });
+  }
+}, [heroComplete]);
 
     return (
       <group
@@ -98,13 +117,13 @@ const Scene: React.FC = () => {
       </group>
     );
   };
-
   // ===========================
   // GSAP SCROLL TIMELINE
   // ===========================
 
   useEffect(() => {
     if (
+       !heroComplete ||
       !mounted ||
       !containerRef.current ||
       !ceciRef.current ||
@@ -161,11 +180,7 @@ const Scene: React.FC = () => {
             point3Ref.current,
             point4Ref.current,
           ],
-          {
-            opacity: 0,
-            visibility: "hidden",
-            y: 20,
-          }
+          { opacity: 0, visibility: "hidden", y: 20 }
         );
 
         // Initial state - pioneer and world hidden
@@ -182,17 +197,21 @@ const Scene: React.FC = () => {
           scale: 0.8,
         });
 
-        // Animation sequence - move from center to sides
-        tl.to(
-          ceciRef.current,
-          {
-            x: isMobile ? -140 : isTablet ? -260 : -460,
-            duration: 1.5,
-            visibility: "visible",
-            ease: "power2.out",
-          },
-          0
-        )
+        tl.to(heroRef.current, {
+          opacity: 1,
+        })
+
+          // Animation sequence - move from center to sides
+          .to(
+            ceciRef.current,
+            {
+              x: isMobile ? -140 : isTablet ? -260 : -460,
+              duration: 1.5,
+              visibility: "visible",
+              ease: "power2.out",
+            },
+            0
+          )
           .to(
             tourismRef.current,
             {
@@ -221,7 +240,6 @@ const Scene: React.FC = () => {
             {
               opacity: 1,
               visibility: "visible",
-
               y: 0,
               duration: 1,
               ease: "power2.out",
@@ -234,7 +252,6 @@ const Scene: React.FC = () => {
             {
               opacity: 1,
               visibility: "visible",
-
               y: 0,
               duration: 1,
               ease: "power2.out",
@@ -247,7 +264,6 @@ const Scene: React.FC = () => {
             {
               opacity: 1,
               visibility: "visible",
-
               y: 0,
               duration: 1,
               ease: "power2.out",
@@ -260,7 +276,6 @@ const Scene: React.FC = () => {
             {
               y: 5,
               visibility: "visible",
-
               duration: 2,
               ease: "power2.inOut",
             },
@@ -288,7 +303,6 @@ const Scene: React.FC = () => {
             {
               x: isMobile ? -57 : isTablet ? -115 : -230,
               visibility: "visible",
-
               duration: 2,
               ease: "power2.inOut",
             },
@@ -310,7 +324,6 @@ const Scene: React.FC = () => {
             pioneerRef.current,
             {
               visibility: "visible",
-
               opacity: 1,
               y: 0,
               duration: 1.5,
@@ -323,7 +336,6 @@ const Scene: React.FC = () => {
             worldRef.current,
             {
               visibility: "visible",
-
               opacity: 1,
               y: 0,
               duration: 1.5,
@@ -342,7 +354,6 @@ const Scene: React.FC = () => {
             {
               y: isMobile ? -300 : isTablet ? -400 : -500,
               opacity: 0,
-
               duration: 2,
               ease: "power2.inOut",
             },
@@ -372,7 +383,7 @@ const Scene: React.FC = () => {
       clearInterval(checkModelRef);
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
-  }, [mounted, isMobile, isTablet, isDesktop]);
+  }, [heroComplete, mounted, isMobile, isTablet, isDesktop]);
 
   // Don't render until mounted to prevent hydration mismatch
   if (!mounted) {
@@ -387,6 +398,11 @@ const Scene: React.FC = () => {
     <>
       {/* Main scroll container */}
       <div ref={containerRef} className="h-[500vh]">
+        {/* Hero Ref */}
+        <div ref={heroRef}>
+          <Hero onSequenceComplete={() => setHeroComplete(true)} />
+        </div>
+
         {/* Fixed canvas container */}
         <div
           ref={canvasRef}
@@ -461,7 +477,7 @@ const Scene: React.FC = () => {
               potenti.
             </p>
 
-            {/* Point 2 - Top Left (below point 1) */}
+            {/* Point 2 - Top Left (below point 2) */}
             <p
               ref={point2Ref}
               className={`absolute m-0 text-white leading-relaxed ${
@@ -479,7 +495,7 @@ const Scene: React.FC = () => {
               e — No plans, no maps just pure moments waiting to unfold.
             </p>
 
-            {/* Point 3 - Bottom Right (above point 4) */}
+            {/* Point 3 - Bottom Right (above point 3) */}
             <p
               ref={point3Ref}
               className={`absolute m-0 text-white leading-relaxed text-right ${
