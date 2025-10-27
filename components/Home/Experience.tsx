@@ -5,6 +5,7 @@ import Image from "next/image";
 import Align from "../Reusable/Align";
 import SwipeButton from "../Reusable/UI/Button";
 import { ExperienceContents } from "../Data/Home/ExperinceContents";
+import { GoArrowUpLeft } from "react-icons/go";
 
 const Experience = () => {
   return (
@@ -58,7 +59,17 @@ const Experience = () => {
         </div>
       </div>
       <div className="flex flex-row items-center justify-center">
-        <SwipeButton />
+            <button className="flex items-center bg-[#FFA62B] text-white font-semibold rounded-full pr-3 pl-1 py-1 transition-all duration-300 cursor-pointer group hover:bg-[#FFA62B] hover:text-white z-10 mt-5">
+                  <div className="bg-white w-10 h-10 flex items-center justify-center rounded-full mr-3 transition-all duration-500 group-hover:bg-white">
+                    <GoArrowUpLeft
+                      size={25}
+                      className="text-[#FFA62B] text-base transition-all duration-500 group-hover:text-[#FFA62B]"
+                    />
+                  </div>
+                  <span className="tracking-wide text-sm sm:text-base transition-all duration-300">
+                    SWIPE TO UNLOCK SURPRISE TRIP
+                  </span>
+                </button>
       </div>
     </Align>
   );

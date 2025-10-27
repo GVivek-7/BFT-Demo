@@ -20,7 +20,6 @@ const Scene: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const imageSeqRef = useRef<HTMLDivElement>(null);
   const sceneContainerRef = useRef<HTMLDivElement>(null);
-
   // Text refs
   const HeadTextRef = useRef<HTMLHeadingElement>(null);
   const ParaTextRef = useRef<HTMLParagraphElement>(null);
@@ -46,19 +45,23 @@ const Scene: React.FC = () => {
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
+  const [isLg, setIsLg] = useState(false);
 
   useEffect(() => {
     setMounted(true);
     const checkMobile = () => window.innerWidth <= 767;
     const checkTablet = () =>
       window.innerWidth > 767 && window.innerWidth <= 1023;
-
+    const checkLg = () =>
+      window.innerWidth >= 1024 && window.innerWidth <= 1512;
     setIsMobile(checkMobile());
     setIsTablet(checkTablet());
+    setIsLg(checkLg());
 
     const handleResize = () => {
       setIsMobile(checkMobile());
       setIsTablet(checkTablet());
+      setIsLg(checkLg());
     };
 
     window.addEventListener("resize", handleResize);
@@ -94,7 +97,7 @@ const Scene: React.FC = () => {
       modelScale: 1,
       lineHeight: "110px",
     };
-  }, [mounted, isMobile, isTablet]);
+  }, [mounted, isMobile, isTablet, isLg]);
 
   // Animated Model Component
   const AnimatedModel = () => {
@@ -359,7 +362,7 @@ const Scene: React.FC = () => {
           .to(
             ceciRef.current,
             {
-              x: isMobile ? -140 : isTablet ? -260 : -460,
+              x: isMobile ? -140 : isTablet ? -260 : "-27vw",
               opacity: 1,
               visibility: "visible",
               duration: 1.5,
@@ -372,7 +375,7 @@ const Scene: React.FC = () => {
             {
               opacity: 1,
               visibility: "visible",
-              x: isMobile ? 140 : isTablet ? 260 : 430,
+              x: isMobile ? 140 : isTablet ? 260 : isLg ? "26.5vw" : "27vw",
               duration: 1.5,
               ease: "power2.out",
             },
@@ -450,10 +453,18 @@ const Scene: React.FC = () => {
             },
             6
           )
+
+          // Ceci tourism joing
           .to(
             ceciRef.current,
             {
-              x: isMobile ? -57 : isTablet ? -115 : -230,
+              x: isMobile
+                ? -57
+                : isTablet
+                ? -115
+                : isLg
+                ? "-13.5vw" // 👈 new lg value
+                : "-15vw", // desktop stays the same
               duration: 2,
               ease: "power2.inOut",
             },
@@ -462,7 +473,13 @@ const Scene: React.FC = () => {
           .to(
             tourismRef.current,
             {
-              x: isMobile ? 57 : isTablet ? 115 : 230,
+              x: isMobile
+                ? 57
+                : isTablet
+                ? 115
+                : isLg
+                ? "13.5vw" // 👈 new lg value
+                : "15vw", // desktop stays the same
               duration: 2,
               ease: "power2.inOut",
             },
@@ -552,7 +569,7 @@ const Scene: React.FC = () => {
             height={1080}
             className="w-full h-screen object-cover"
             style={{
-              backgroundImage: "url(/framesBft/frame_0001.webp)",
+              backgroundImage: "url(/framesBft_new/frame_0001.webp)",
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
@@ -583,6 +600,27 @@ const Scene: React.FC = () => {
             <OrbitControls enableZoom={false} autoRotate enablePan={false} />
           </Canvas>
         </div>
+
+        <div  className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 text-white text-sm md:text-base font-light tracking-wider ">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 md:gap-4 px-3 sm:px-4 py-2 sm:py-2.5 md:py-3">
+  {/* Animated Dots */}
+  <div className="flex items-center justify-center gap-1.5 sm:gap-2 md:gap-2.5">
+    <div className="dot-animation bg-white/60"></div>
+    <div
+      className="dot-animation bg-white/60"
+      style={{ animationDelay: "0.3s" }}
+    ></div>
+  </div>
+
+  {/* Text */}
+  <span className="text-xs md:text-[14px] font-semibold text-white/60  whitespace-nowrap">
+    KEEP SCROLLING
+  </span>
+</div>
+
+        </div>
+
+
         {/* Hero Seq Text */}
         <div className="absolute z-100 inset-0 pointer-events-none flex flex-col items-start justify-between h-[60vh] md:mt-50 my-auto md:px-[80px] text-center px-4">
           <h1
@@ -799,6 +837,8 @@ const Scene: React.FC = () => {
             />
           </div>
         </div>
+
+
       </div>
     </div>
   );

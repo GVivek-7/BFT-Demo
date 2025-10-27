@@ -152,10 +152,14 @@ const Footer = () => {
           {/* Main Title */}
           <div className="w-full flex justify-center px-4 mt-8 md:mt-12">
             <h1
-              className="text-[#E6AF2E] font-bold text-center leading-tight break-words select-none"
+              className="font-bold text-center leading-tight break-words select-none"
               style={{
-                fontSize: "clamp(3rem, 12vw, 225px)",
-                lineHeight: "clamp(3.2rem, 12.5vw, 235px)",
+                fontSize: "clamp(3rem, 12vw, 200px)", // slightly smaller max size
+                lineHeight: "clamp(3.2rem, 12.5vw, 210px)",
+                background:
+                  "linear-gradient(to bottom, #FFA62B 0%, #ff8900 70%, #000000 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
               }}
             >
               BlindFoldTrips
@@ -183,14 +187,14 @@ const Footer = () => {
             <div>
               <Link
                 href="/privacy-policy"
-                className="hover:text-[#E6AF2E] transition-all duration-300 cursor-pointer"
+                className="hover:text[#FFA62B]] transition-all duration-300 cursor-pointer"
               >
                 Privacy Policy
               </Link>{" "}
               |{" "}
               <Link
                 href="/terms"
-                className="hover:text-[#E6AF2E] transition-all duration-300 cursor-pointer"
+                className="hover:text-[#FFA62B] transition-all duration-300 cursor-pointer"
               >
                 Terms & Condition
               </Link>

@@ -169,7 +169,7 @@ const ShowReel: React.FC = () => {
             </div>
 
             <span className="text-white font-medium text-xs tracking-wide uppercase whitespace-nowrap">
-              Show Reel
+              PLAY SHOWREEL
             </span>
           </div>
         </div>
@@ -186,7 +186,7 @@ const ShowReel: React.FC = () => {
               </div>
 
               <span className="text-white font-medium text-sm tracking-wide uppercase whitespace-nowrap">
-                Show Reel
+               PLAY SHOWREEL
               </span>
             </div>
           </div>

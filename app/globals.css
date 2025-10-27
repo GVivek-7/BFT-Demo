@@ -27,3 +27,43 @@ html {
   overflow-x: hidden;
 
 }
+
+
+
+
+.dot-animation {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: pulseCircle 1.4s infinite ease-in-out;
+  flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .dot-animation {
+    width: 9px;
+    height: 9px;
+  }
+}
+
+@media (min-width: 768px) {
+  .dot-animation {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+@keyframes pulseCircle {
+  0% {
+    opacity: 0.4;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0.4;
+    transform: scale(0.8);
+  }
+}
