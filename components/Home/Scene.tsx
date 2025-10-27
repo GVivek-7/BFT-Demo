@@ -1,15 +1,12 @@
 "use client";
-import React, { useState, useEffect, useRef, useMemo, use } from "react";
+import React, { useEffect, useRef, useMemo, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useMediaQuery } from "react-responsive";
+import { Group } from "three";
 import { Model } from "../Reusable/Earth";
 import { FullLogo } from "@/assets/home";
-import Image from "next/image";
-import { Group } from "three";
-import Hero from "./Hero";
 
 // Register GSAP plugins
 if (typeof window !== "undefined") {
@@ -17,12 +14,19 @@ if (typeof window !== "undefined") {
 }
 
 const Scene: React.FC = () => {
-  // States
-  const [heroComplete, setHeroComplete] = useState(false);
-  
-
-  // Refs
+  // Canvas refs
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const contextRef = useRef<CanvasRenderingContext2D | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const imageSeqRef = useRef<HTMLDivElement>(null);
+  const sceneContainerRef = useRef<HTMLDivElement>(null);
+
+  // Text refs
+  const HeadTextRef = useRef<HTMLHeadingElement>(null);
+  const ParaTextRef = useRef<HTMLParagraphElement>(null);
+  const HeadText2Ref = useRef<HTMLHeadingElement>(null);
+  const ParaText2Ref = useRef<HTMLParagraphElement>(null);
+
   const ceciRef = useRef<HTMLHeadingElement>(null);
   const tourismRef = useRef<HTMLHeadingElement>(null);
   const point1Ref = useRef<HTMLParagraphElement>(null);
@@ -32,26 +36,40 @@ const Scene: React.FC = () => {
   const pioneerRef = useRef<HTMLParagraphElement>(null);
   const worldRef = useRef<HTMLParagraphElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLDivElement>(null);
   const modelGroupRef = useRef<Group | null>(null);
-  const heroRef = useRef<HTMLDivElement>(null);
 
-  // Responsive
-  const [mounted, setMounted] = React.useState(false);
-  const isMobile = useMediaQuery({ maxWidth: 767 });
-  const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
-  const isDesktop = useMediaQuery({ minWidth: 1024 });
+  // Image sequence setup
+  const totalFrames = 395;
+  const imagesRef = useRef<HTMLImageElement[]>([]);
+  const imgSeqRef = useRef({ frame: 0 });
+
+  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    const checkMobile = () => window.innerWidth <= 767;
+    const checkTablet = () =>
+      window.innerWidth > 767 && window.innerWidth <= 1023;
+
+    setIsMobile(checkMobile());
+    setIsTablet(checkTablet());
+
+    const handleResize = () => {
+      setIsMobile(checkMobile());
+      setIsTablet(checkTablet());
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Memoize responsive settings to prevent recalculation
+  // Responsive settings
   const responsiveSettings = useMemo(() => {
     if (!mounted) {
       return {
         cameraPosition: [0, 0, 4.9] as [number, number, number],
-        parallaxStrength: 0.3,
         modelScale: 1,
         lineHeight: "110px",
       };
@@ -60,14 +78,12 @@ const Scene: React.FC = () => {
     if (isMobile) {
       return {
         cameraPosition: [0, 0, 8] as [number, number, number],
-        parallaxStrength: 0.15,
         modelScale: 0.7,
         lineHeight: "50px",
       };
     } else if (isTablet) {
       return {
         cameraPosition: [0, 0, 8] as [number, number, number],
-        parallaxStrength: 0.25,
         modelScale: 0.85,
         lineHeight: "75px",
       };
@@ -75,16 +91,13 @@ const Scene: React.FC = () => {
 
     return {
       cameraPosition: [0, 0, 4.9] as [number, number, number],
-      parallaxStrength: 0.3,
       modelScale: 1,
       lineHeight: "110px",
     };
   }, [mounted, isMobile, isTablet]);
 
-  // ===========================
-  // ANIMATED MODEL COMPONENT
-  // ===========================
-   const AnimatedModel = () => {
+  // Animated Model Component
+  const AnimatedModel = () => {
     const groupRef = useRef<Group>(null);
 
     useEffect(() => {
@@ -92,20 +105,6 @@ const Scene: React.FC = () => {
         modelGroupRef.current = groupRef.current;
       }
     }, []);
-
-   useEffect(() => {
-  if (heroComplete && groupRef.current) {
-    // Start with opacity 
-    gsap.set(groupRef.current, { opacity: 0 });
-    
-    // Animate to opacity 1 after hero completes
-    gsap.to(groupRef.current, {
-      opacity: 1,
-      duration: 1.5,
-      ease: "power2.inOut",
-    });
-  }
-}, [heroComplete]);
 
     return (
       <group
@@ -117,62 +116,119 @@ const Scene: React.FC = () => {
       </group>
     );
   };
-  // ===========================
-  // GSAP SCROLL TIMELINE
-  // ===========================
 
+  const currentFrame = (index: number) =>
+    `/framesBft_new/frame_${(index + 1).toString().padStart(4, "0")}.webp`;
+
+  // Initialize everything
   useEffect(() => {
-    if (
-       !heroComplete ||
-      !mounted ||
-      !containerRef.current ||
-      !ceciRef.current ||
-      !tourismRef.current ||
-      !point1Ref.current ||
-      !point2Ref.current ||
-      !point3Ref.current ||
-      !point4Ref.current ||
-      !pioneerRef.current ||
-      !worldRef.current ||
-      !logoRef.current ||
-      !canvasRef.current
-    ) {
-      return;
+    if (!mounted || !containerRef.current) return;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const context = canvas.getContext("2d");
+    if (!context) return;
+    contextRef.current = context;
+
+    // Load images
+    for (let i = 0; i < totalFrames; i++) {
+      const img = new Image();
+      img.src = currentFrame(i);
+      imagesRef.current.push(img);
     }
 
-    // Wait for model ref to be available
-    const checkModelRef = setInterval(() => {
-      if (modelGroupRef.current) {
-        clearInterval(checkModelRef);
-        initAnimation();
-      }
-    }, 50);
+    const render = () => {
+      const img = imagesRef.current[imgSeqRef.current.frame];
+      if (!img || !img.complete) return;
+      const canvas = canvasRef.current;
+      const context = contextRef.current;
+      if (!canvas || !context) return;
 
-    const initAnimation = () => {
-      // Kill all existing ScrollTriggers
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      const canvasWidth = canvas.width;
+      const canvasHeight = canvas.height;
+      const imgWidth = img.naturalWidth || img.width;
+      const imgHeight = img.naturalHeight || img.height;
 
+      if (imgWidth === 0 || imgHeight === 0) return;
+
+      const scale = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight);
+      const x = canvasWidth / 2 - (imgWidth / 2) * scale;
+      const y = canvasHeight / 2 - (imgHeight / 2) * scale;
+
+      context.clearRect(0, 0, canvasWidth, canvasHeight);
+      context.drawImage(
+        img,
+        0,
+        0,
+        imgWidth,
+        imgHeight,
+        x,
+        y,
+        imgWidth * scale,
+        imgHeight * scale
+      );
+    };
+
+    // Wait for first image and model
+    imagesRef.current[0].onload = () => {
+      render();
+
+      const checkModelRef = setInterval(() => {
+        if (modelGroupRef.current) {
+          clearInterval(checkModelRef);
+          initUnifiedTimeline();
+        }
+      }, 50);
+    };
+
+    const initUnifiedTimeline = () => {
       const ctx = gsap.context(() => {
         // Create master timeline
-        const tl = gsap.timeline({
+        const masterTimeline = gsap.timeline({
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top top",
-            end: "bottom bottom",
+            end: "+=6000",
             scrub: 1,
-            pin: canvasRef.current,
-            anticipatePin: 1,
+            pin: true,
           },
         });
 
-        // Initial state - both texts at center (Earth position)
         gsap.set([ceciRef.current, tourismRef.current], {
           x: 0,
+          opacity: 0,
+          visibility: "hidden",
+        });
+        // Set initial states for all elements
+        gsap.set(imageSeqRef.current, {
+          visibility: "visible",
+          opacity: 1,
+          zIndex: 20,
+        });
+
+        gsap.set([HeadTextRef.current, ParaTextRef.current], {
           opacity: 1,
           visibility: "visible",
         });
 
-        // Initial state - points hidden
+        gsap.set([HeadText2Ref.current, ParaText2Ref.current], {
+          opacity: 0,
+          visibility: "hidden",
+        });
+
+        gsap.set(sceneContainerRef.current, {
+          opacity: 0,
+          visibility: "hidden",
+          zIndex: 10,
+        });
+
+        gsap.set([ceciRef.current, tourismRef.current], {
+          x: 0,
+          opacity: 0,
+          visibility: "hidden",
+        });
+
         gsap.set(
           [
             point1Ref.current,
@@ -183,46 +239,147 @@ const Scene: React.FC = () => {
           { opacity: 0, visibility: "hidden", y: 20 }
         );
 
-        // Initial state - pioneer and world hidden
         gsap.set([pioneerRef.current, worldRef.current], {
           opacity: 0,
           visibility: "hidden",
           y: 20,
         });
 
-        // Initial state - logo hidden
         gsap.set(logoRef.current, {
           opacity: 0,
           visibility: "hidden",
           scale: 0.8,
         });
 
-        tl.to(heroRef.current, {
-          opacity: 1,
-        })
+        // PHASE 1: Image Sequence Animation (0-2 in timeline)
+        masterTimeline
 
-          // Animation sequence - move from center to sides
+          .to(
+            HeadTextRef.current,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.6,
+              ease: "power2.out",
+            },
+            0
+          )
+          // Then paragraph
+          .to(
+            ParaTextRef.current,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.6,
+              ease: "power2.out",
+            },
+            0.15
+          )
+          .to(
+            imgSeqRef.current,
+            {
+              frame: totalFrames - 1,
+              snap: "frame",
+              ease: "none",
+              duration: 2,
+              onUpdate: render,
+            },
+            0
+          )
+          // First text fades out at mid-point of image sequence
+          .to(
+            [HeadTextRef.current, ParaTextRef.current],
+            {
+              opacity: 0,
+              y: -30,
+              duration: 0.3,
+              ease: "power2.inOut",
+            },
+            0.8
+          )
+          // Second text fades in immediately after - heading first
+          .to(
+            HeadText2Ref.current,
+            {
+              opacity: 1,
+              visibility: "visible",
+              y: 0,
+              duration: 0.4,
+              ease: "power2.out",
+            },
+            1.1
+          )
+          // Then paragraph
+          .to(
+            ParaText2Ref.current,
+            {
+              opacity: 1,
+              visibility: "visible",
+              y: 0,
+              duration: 0.4,
+              ease: "power2.out",
+            },
+            1.2
+          )
+          // Second text fades out near end of image sequence
+          .to(
+            [HeadText2Ref.current, ParaText2Ref.current],
+            {
+              opacity: 0,
+              y: -30,
+              duration: 0.3,
+              ease: "power2.inOut",
+            },
+            1.7
+          )
+
+          // Fade out image sequence and fade in 3D scene
+          .to(
+            imageSeqRef.current,
+            {
+              opacity: 0,
+              duration: 0.5,
+              ease: "power2.inOut",
+            },
+            1.8
+          )
+
+          .to(
+            sceneContainerRef.current,
+            {
+              visibility: "visible",
+              opacity: 1,
+              duration: 0.5,
+              ease: "power2.inOut",
+            },
+            2
+          )
+
+          // PHASE 2: Text Split Animation (2-4)
           .to(
             ceciRef.current,
             {
               x: isMobile ? -140 : isTablet ? -260 : -460,
-              duration: 1.5,
+              opacity: 1,
               visibility: "visible",
+              duration: 1.5,
               ease: "power2.out",
             },
-            0
+            3
           )
           .to(
             tourismRef.current,
             {
+              opacity: 1,
+              visibility: "visible",
               x: isMobile ? 140 : isTablet ? 260 : 430,
               duration: 1.5,
-              visibility: "visible",
               ease: "power2.out",
             },
-            0
+            3
           )
-          // Animate point 1 (top left)
+
+          // PHASE 3: Point texts appear (3.5-6)
           .to(
             point1Ref.current,
             {
@@ -232,9 +389,8 @@ const Scene: React.FC = () => {
               duration: 1,
               ease: "power2.out",
             },
-            1.5
+            3.5
           )
-          // Animate point 2 (top left)
           .to(
             point2Ref.current,
             {
@@ -244,9 +400,8 @@ const Scene: React.FC = () => {
               duration: 1,
               ease: "power2.out",
             },
-            2
+            4
           )
-          // Animate point 3 (bottom right)
           .to(
             point3Ref.current,
             {
@@ -256,9 +411,8 @@ const Scene: React.FC = () => {
               duration: 1,
               ease: "power2.out",
             },
-            2.5
+            4.5
           )
-          // Animate point 4 (bottom right)
           .to(
             point4Ref.current,
             {
@@ -268,20 +422,19 @@ const Scene: React.FC = () => {
               duration: 1,
               ease: "power2.out",
             },
-            3
+            5
           )
-          // Move 3D model upward
+
+          // PHASE 4: Model moves up, points fade (6-8)
           .to(
             modelGroupRef.current?.position || { y: 0 },
             {
               y: 5,
-              visibility: "visible",
               duration: 2,
               ease: "power2.inOut",
             },
-            4
+            6
           )
-          // Fade out points
           .to(
             [
               point1Ref.current,
@@ -290,60 +443,57 @@ const Scene: React.FC = () => {
               point4Ref.current,
             ],
             {
-              visibility: "hidden",
               opacity: 0,
+              visibility: "hidden",
               duration: 1,
               ease: "power2.inOut",
             },
-            4
+            6
           )
-          // Move texts closer together
           .to(
             ceciRef.current,
             {
               x: isMobile ? -57 : isTablet ? -115 : -230,
-              visibility: "visible",
               duration: 2,
               ease: "power2.inOut",
             },
-            4
+            6
           )
           .to(
             tourismRef.current,
             {
               x: isMobile ? 57 : isTablet ? 115 : 230,
               duration: 2,
-              visibility: "visible",
-
               ease: "power2.inOut",
             },
-            4
+            6
           )
-          // Animate pioneer text (top left)
+
+          // PHASE 5: Pioneer/Worldwide text (7-8.5)
           .to(
             pioneerRef.current,
             {
-              visibility: "visible",
               opacity: 1,
+              visibility: "visible",
               y: 0,
               duration: 1.5,
               ease: "power2.out",
             },
-            5
+            7
           )
-          // Animate world text (bottom right)
           .to(
             worldRef.current,
             {
-              visibility: "visible",
               opacity: 1,
+              visibility: "visible",
               y: 0,
               duration: 1.5,
               ease: "power2.out",
             },
-            5
+            7
           )
-          // Move all three texts up together and fade them out
+
+          // PHASE 6: All text moves up and fades (8.5-10.5)
           .to(
             [
               ceciRef.current,
@@ -357,243 +507,300 @@ const Scene: React.FC = () => {
               duration: 2,
               ease: "power2.inOut",
             },
-            6.5
+            8.5
           )
-          // Show logo after texts are hidden
+
+          // PHASE 7: Logo appears (10-11.5)
           .to(
             logoRef.current,
             {
-              visibility: "visible",
               opacity: 1,
+              visibility: "visible",
               scale: 1,
               duration: 1.5,
               ease: "back.out(1.7)",
             },
-            8
+            10
           );
       }, containerRef);
 
       return () => {
         ctx.revert();
-        ScrollTrigger.refresh();
       };
     };
 
-    return () => {
-      clearInterval(checkModelRef);
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-  }, [heroComplete, mounted, isMobile, isTablet, isDesktop]);
+    canvas.width = 1920;
+    canvas.height = 1080;
+  }, [mounted, isMobile, isTablet]);
 
-  // Don't render until mounted to prevent hydration mismatch
   if (!mounted) {
-    return (
-      <div className="h-[500vh] bg-black">
-        <div className="w-full h-screen bg-black" />
-      </div>
-    );
+    return <div className=" bg-black" />;
   }
 
   return (
-    <>
-      {/* Main scroll container */}
-      <div ref={containerRef} className="h-[500vh]">
-        {/* Hero Ref */}
-        <div ref={heroRef}>
-          <Hero onSequenceComplete={() => setHeroComplete(true)} />
+    <div ref={containerRef} className=" bg-black">
+      <div className="relative w-full h-screen bg-black">
+        {/* Image Sequence Layer */}
+        <div
+          ref={imageSeqRef}
+          className="absolute inset-0 w-full h-screen"
+          style={{ zIndex: 20 }}
+        >
+          <canvas
+            ref={canvasRef}
+            width={1920}
+            height={1080}
+            className="w-full h-screen object-cover"
+            style={{
+              backgroundImage: "url(/framesBft/frame_0001.webp)",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          />
         </div>
 
-        {/* Fixed canvas container */}
+        {/* 3D Scene Layer */}
         <div
-          ref={canvasRef}
+          ref={sceneContainerRef}
+          className="absolute inset-0 w-full h-screen"
           style={{
+            zIndex: 999,
             pointerEvents: "none",
             userSelect: "none",
+            visibility: "hidden",
           }}
-          className="canvas-container bg-black w-full h-screen relative overflow-hidden"
         >
-          {/* 3D Canvas */}
           <Canvas
-            key={`canvas-${isMobile}-${isTablet}-${isDesktop}`}
             camera={{ position: responsiveSettings.cameraPosition, fov: 46 }}
-            className="z-100 select-none"
             style={{
               pointerEvents: "none",
               userSelect: "none",
+              zIndex: 9999,
             }}
           >
             <ambientLight intensity={1.5} />
             <AnimatedModel />
             <OrbitControls enableZoom={false} autoRotate enablePan={false} />
           </Canvas>
+        </div>
+        {/* Hero Seq Text */}
+        <div className="absolute z-100 inset-0 pointer-events-none flex flex-col items-start justify-between h-[60vh] md:mt-50 my-auto md:px-[80px] text-center px-4">
+          <h1
+            ref={HeadTextRef}
+            className="
+    text-white heather tracking-wider uppercase
+    text-[50px] leading-[50px]
+    md:text-[70px] md:leading-[70px]
+    lg:text-[70px] lg:leading-[70px]
+    xl:text-[80px] xl:leading-[80px]
+    2xl:text-[80px] 2xl:leading-[80px] text-left
+  "
+            style={{ visibility: "hidden" }}
+          >
+            Where vision ends, <br /> emotion begins.
+          </h1>
 
-          {/* Text overlay */}
-          <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-            {/* CECI - Starts at center, moves left */}
-            <h1
-              ref={ceciRef}
-              className="absolute m-0 font-light text-white 2xl:text-[140px] xl:text-[120px] lg:text-[100px] md:text-[70px] text-[35px]"
-              style={{
-                lineHeight: responsiveSettings.lineHeight,
-                textShadow: "0 0 20px rgba(0,0,0,0.5)",
-                visibility: "hidden",
-              }}
-            >
-              CECITO
-            </h1>
+          <p
+            ref={ParaTextRef}
+            className="
+    text-white
+    text-[16px] leading-[18px]
+    md:text-[18px] md:leading-[20px]
+    lg:text-[20px] lg:leading-[22px]
+    xl:text-[20px] xl:leading-[22px]
+    2xl:text-[20px] 2xl:leading-[22px] max-w-md text-left tracking-wider
+  "
+            style={{ visibility: "hidden" }}
+          >
+            Step into journeys that awaken every sense — hear the rhythm of
+            cities, feel the breath of nature, and see with your heart.
+          </p>
+        </div>
 
-            {/* TOURISM - Starts at center, moves right */}
-            <h1
-              ref={tourismRef}
-              className="absolute m-0 font-light text-white 2xl:text-[140px] xl:text-[120px] lg:text-[100px] md:text-[70px] text-[35px]"
-              style={{
-                lineHeight: responsiveSettings.lineHeight,
-                textShadow: "0 0 20px rgba(0,0,0,0.5)",
-                visibility: "hidden",
-              }}
-            >
-              URISM
-            </h1>
+        <div className="absolute z-100 inset-0 pointer-events-none flex flex-col items-start justify-between h-[65vh] md:mt-50 my-auto md:px-[80px] text-center px-4">
+          <h1
+            ref={HeadText2Ref}
+            className="
+    text-white heather tracking-wider uppercase
+    text-[50px] leading-[50px]
+    md:text-[70px] md:leading-[70px]
+    lg:text-[70px] lg:leading-[70px]
+    xl:text-[80px] xl:leading-[80px]
+    2xl:text-[80px] 2xl:leading-[80px] text-left
+  "
+            style={{ visibility: "hidden" }}
+          >
+            Experience destinations <br />
+            through touch, sound, and soul.
+          </h1>
 
-            {/* Point 1 - Top Left */}
-            <p
-              ref={point1Ref}
-              className="absolute m-0 text-white leading-relaxed"
-              style={{
-                textShadow: "0 2px 10px rgba(0,0,0,0.7)",
-                top: isMobile ? "12%" : isTablet ? "10%" : "12%",
-                left: isMobile ? "5%" : isTablet ? "4%" : "6%",
-                fontSize: isMobile
-                  ? "0.875rem"
-                  : isTablet
-                  ? "1rem"
-                  : "1.125rem",
-                maxWidth: isMobile ? "75%" : isTablet ? "48%" : "34%",
-                visibility: "hidden",
-              }}
-            >
-              C — Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Curabitur vitae sapien a nulla gravida aliquam. Suspendisse
-              potenti.
-            </p>
+          <p
+            ref={ParaText2Ref}
+            className="
+    text-white
+    text-[16px] leading-[18px]
+    md:text-[18px] md:leading-[20px]
+    lg:text-[20px] lg:leading-[22px]
+    xl:text-[20px] xl:leading-[22px]
+    2xl:text-[20px] 2xl:leading-[22px] max-w-xl text-left tracking-wider
+  "
+            style={{ visibility: "hidden" }}
+          >
+            Every journey with Blindfold Trips is designed to awaken your
+            senses. Feel the textures of landscapes, hear the hidden rhythms of
+            cities, and immerse yourself in moments that go beyond sight.
+          </p>
+        </div>
 
-            {/* Point 2 - Top Left (below point 2) */}
-            <p
-              ref={point2Ref}
-              className={`absolute m-0 text-white leading-relaxed ${
-                isMobile
-                  ? "top-[24%] left-[5%] text-sm max-w-[60%]"
-                  : isTablet
-                  ? "top-[20%] left-[6%] text-base max-w-[40%]"
-                  : "top-[24%] left-[6%] text-lg max-w-[20%]"
-              }`}
-              style={{
-                textShadow: "0 2px 10px rgba(0,0,0,0.7)",
-                visibility: "hidden",
-              }}
-            >
-              e — No plans, no maps just pure moments waiting to unfold.
-            </p>
+        {/* Text Overlay */}
+        <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+          <h1
+            ref={ceciRef}
+            className="absolute m-0 font-light text-white 2xl:text-[140px] xl:text-[120px] lg:text-[100px] md:text-[70px] text-[35px]"
+            style={{
+              lineHeight: responsiveSettings.lineHeight,
+              textShadow: "0 0 20px rgba(0,0,0,0.5)",
+              visibility: "hidden",
+            }}
+          >
+            CECITO
+          </h1>
 
-            {/* Point 3 - Bottom Right (above point 3) */}
-            <p
-              ref={point3Ref}
-              className={`absolute m-0 text-white leading-relaxed text-right ${
-                isMobile
-                  ? "bottom-[22%] right-[5%] text-sm max-w-[62%]"
-                  : isTablet
-                  ? "bottom-[20%] right-[8%] text-base max-w-[40%]"
-                  : "bottom-[20%] right-[10%] text-lg max-w-[28%]"
-              }`}
-              style={{
-                textShadow: "0 2px 10px rgba(0,0,0,0.7)",
-                visibility: "hidden",
-              }}
-            >
-              C — Trust the journey, not the destination the magic lies in the
-              mystery.
-            </p>
+          <h1
+            ref={tourismRef}
+            className="absolute m-0 font-light text-white 2xl:text-[140px] xl:text-[120px] lg:text-[100px] md:text-[70px] text-[35px]"
+            style={{
+              lineHeight: responsiveSettings.lineHeight,
+              textShadow: "0 0 20px rgba(0,0,0,0.5)",
+              visibility: "hidden",
+            }}
+          >
+            URISM
+          </h1>
 
-            {/* Point 4 - Bottom Right */}
-            <p
-              ref={point4Ref}
-              className={`absolute m-0 text-white leading-relaxed text-right ${
-                isMobile
-                  ? "bottom-[10%] right-[5%] text-sm max-w-[62%]"
-                  : isTablet
-                  ? "bottom-[12%] right-[8%] text-base max-w-[40%]"
-                  : "bottom-[10%] right-[10%] text-lg max-w-[30%]"
-              }`}
-              style={{
-                textShadow: "0 2px 10px rgba(0,0,0,0.7)",
-                visibility: "hidden",
-              }}
-            >
-              I — Step into the unknown, let curiosity guide you, and live
-              stories worth remembering.
-            </p>
+          <p
+            ref={point1Ref}
+            className="absolute m-0 text-white leading-relaxed"
+            style={{
+              textShadow: "0 2px 10px rgba(0,0,0,0.7)",
+              top: isMobile ? "12%" : isTablet ? "10%" : "12%",
+              left: isMobile ? "5%" : isTablet ? "4%" : "6%",
+              fontSize: isMobile ? "0.875rem" : isTablet ? "1rem" : "1.125rem",
+              maxWidth: isMobile ? "75%" : isTablet ? "48%" : "24%",
+              visibility: "hidden",
+            }}
+          >
+            C — Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          </p>
 
-            {/* Pioneer text - Top Left (above CECITOURISM) */}
-            <p
-              ref={pioneerRef}
-              className={`absolute m-0 text-white font-light tracking-widest ${
-                isMobile
-                  ? "top-[45%] left-[23%] text-sm"
-                  : isTablet
-                  ? "top-[43%] left-[23%] text-xl"
-                  : "top-[38%] left-[21%] text-2xl"
-              }`}
-              style={{
-                textShadow: "0 2px 10px rgba(0,0,0,0.7)",
-                visibility: "hidden",
-              }}
-            >
-              PIONEERING GLOBAL
-            </p>
+          <p
+            ref={point2Ref}
+            className={`absolute m-0 text-white leading-relaxed ${
+              isMobile
+                ? "top-[24%] left-[5%] text-sm max-w-[60%]"
+                : isTablet
+                ? "top-[20%] left-[6%] text-base max-w-[40%]"
+                : "top-[24%] left-[6%] text-lg max-w-[20%]"
+            }`}
+            style={{
+              textShadow: "0 2px 10px rgba(0,0,0,0.7)",
+              visibility: "hidden",
+            }}
+          >
+            e — No plans, no maps just pure moments waiting to unfold.
+          </p>
 
-            {/* World text - Bottom Right (below CECITOURISM) */}
-            <p
-              ref={worldRef}
-              className={`absolute m-0 text-white font-light tracking-widest text-right ${
-                isMobile
-                  ? "bottom-[45%] right-[24%] text-sm"
-                  : isTablet
-                  ? "bottom-[43%] right-[24%] text-xl"
-                  : "bottom-[38%] right-[22.5%] text-2xl"
-              }`}
-              style={{
-                textShadow: "0 2px 10px rgba(0,0,0,0.7)",
-                visibility: "hidden",
-              }}
-            >
-              WORLDWIDE
-            </p>
+          <p
+            ref={point3Ref}
+            className={`absolute m-0 text-white leading-relaxed text-right ${
+              isMobile
+                ? "bottom-[22%] right-[5%] text-sm max-w-[62%]"
+                : isTablet
+                ? "bottom-[20%] right-[8%] text-base max-w-[40%]"
+                : "bottom-[20%] right-[10%] text-lg max-w-[28%]"
+            }`}
+            style={{
+              textShadow: "0 2px 10px rgba(0,0,0,0.7)",
+              visibility: "hidden",
+            }}
+          >
+            C — Trust the journey, not the destination.
+          </p>
 
-            {/* Logo - appears after texts move up and hide */}
-            <div
-              ref={logoRef}
-              className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${
-                isMobile ? "w-[350px]" : isTablet ? "w-[750px]" : "w-[1000px]"
-              }`}
+          <p
+            ref={point4Ref}
+            className={`absolute m-0 text-white leading-relaxed text-right ${
+              isMobile
+                ? "bottom-[10%] right-[5%] text-sm max-w-[62%]"
+                : isTablet
+                ? "bottom-[12%] right-[8%] text-base max-w-[40%]"
+                : "bottom-[10%] right-[10%] text-lg max-w-[30%]"
+            }`}
+            style={{
+              textShadow: "0 2px 10px rgba(0,0,0,0.7)",
+              visibility: "hidden",
+            }}
+          >
+            I — Step into the unknown, let curiosity guide you.
+          </p>
+
+          <p
+            ref={pioneerRef}
+            className={`absolute m-0 text-white font-light tracking-widest ${
+              isMobile
+                ? "top-[45%] left-[23%] text-sm"
+                : isTablet
+                ? "top-[43%] left-[23%] text-xl"
+                : "top-[38%] left-[21%] text-2xl"
+            }`}
+            style={{
+              textShadow: "0 2px 10px rgba(0,0,0,0.7)",
+              visibility: "hidden",
+            }}
+          >
+            PIONEERING GLOBAL
+          </p>
+
+          <p
+            ref={worldRef}
+            className={`absolute m-0 text-white font-light tracking-widest text-right ${
+              isMobile
+                ? "bottom-[45%] right-[24%] text-sm"
+                : isTablet
+                ? "bottom-[43%] right-[24%] text-xl"
+                : "bottom-[38%] right-[22.5%] text-2xl"
+            }`}
+            style={{
+              textShadow: "0 2px 10px rgba(0,0,0,0.7)",
+              visibility: "hidden",
+            }}
+          >
+            WORLDWIDE
+          </p>
+
+          <div
+            ref={logoRef}
+            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${
+              isMobile ? "w-[350px]" : isTablet ? "w-[750px]" : "w-[1000px]"
+            }`}
+            style={{
+              visibility: "hidden",
+            }}
+          >
+            <img
+              src={FullLogo}
+              alt="Logo"
+              className="w-full h-full"
+              width={1000}
+              height={1000}
               style={{
-                visibility: "hidden",
+                filter: "drop-shadow(0 4px 20px rgba(0,0,0,0.5))",
               }}
-            >
-              <Image
-                src={FullLogo}
-                alt="Logo"
-                className="w-full h-full"
-                width={1000}
-                height={1000}
-                style={{
-                  filter: "drop-shadow(0 4px 20px rgba(0,0,0,0.5))",
-                }}
-              />
-            </div>
+            />
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

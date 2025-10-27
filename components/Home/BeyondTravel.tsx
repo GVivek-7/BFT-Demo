@@ -66,7 +66,7 @@ const BeyondTravel = () => {
   };
 
   return (
-    <div className="grid md:grid-cols-2 grid-cols-1">
+    <div className="grid lg:grid-cols-2 grid-cols-1">
       {BeyondTravelContents.map((item, index) => (
         <div
           key={index}
@@ -90,7 +90,7 @@ const BeyondTravel = () => {
             </p>
 
             {/* Mobile: Static Button below paragraph */}
-            <div className="md:hidden">
+            <div className="lg:hidden">
               <div className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full backdrop-blur-md bg-white/2 border border-white/20 shadow-xl w-fit">
                 <div className="flex items-center justify-center bg-white p-2 rounded-full text-white">
                   <GoArrowUpLeft size={20} className="text-black" />
@@ -107,7 +107,7 @@ const BeyondTravel = () => {
           {hoveredIndex === index && (
             <div
               ref={cursorRef}
-              className="hidden md:block absolute pointer-events-none z-50 top-0 left-0"
+              className="hidden lg:block absolute pointer-events-none z-50 top-0 left-0"
             >
               <div className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full backdrop-blur-md bg-white/2 border border-white/20 shadow-xl -translate-x-1/2 -translate-y-1/2">
                 <div className="flex items-center justify-center bg-white p-2 rounded-full text-white">

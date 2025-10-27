@@ -13,11 +13,11 @@ const ParallaxImage = ({ src }: { src: string }) => {
   });
 
   // Move image slightly as you scroll (adjust range for effect intensity)
-  const y = useTransform(scrollYProgress, [0, 1], ["-30%", "30%"]);
+  const y = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
 
   return (
-    <div ref={ref} className="overflow-hidden rounded-lg w-full h-full">
-      <motion.div style={{ y }}>
+    <div ref={ref} className="overflow-hidden rounded-lg w-full h-[300px] sm:h-[350px] md:h-[400px] relative">
+      <motion.div style={{ y }} className="w-full h-[120%]">
         <Image
           src={src}
           alt="Places"
@@ -42,7 +42,7 @@ const Stories = () => {
           not by the places they saw, but by the peace they found.
         </p>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 pt-10 w-full">
+        <div className="grid grid-cols-2  md:grid-cols-4 md:gap-5 gap-2 pt-10 w-full">
           {StoriesImages.map((item, index) => (
             <ParallaxImage key={index} src={item.img} />
           ))}

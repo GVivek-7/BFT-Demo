@@ -42,7 +42,7 @@ const Footer = () => {
         width={1000}
         height={1000}
       />
-      <div className="h-[362px] w-full flex flex-col items-center bg-white rounded-b-[40px] overflow-hidden px-4 py-8 md:py-20 md:h-[490px]">
+      <div className="md:h-[490px] h-[362px] w-full flex flex-col items-center bg-white rounded-b-[40px] overflow-hidden px-4 py-8 md:py-20 xl:h-[490px] lg:h-[490px]">
         <h1 className="font-heading text-[#141414] text-[28px] sm:text-[32px] md:text-[40px] font-semibold tracking-tighter leading-[36px] sm:leading-[42px] md:leading-[50px] mb-4 text-center">
           BEGIN YOUR UNKNOWN
         </h1>
@@ -115,7 +115,7 @@ const Footer = () => {
       <div className="bg-black py-10 md:py-20 flex flex-col items-center">
         <Align className="w-full">
           {/* Top Navigation & Social Links */}
-          <div className="flex flex-col md:flex-row items-center justify-between flex-wrap gap-6">
+          <div className="flex flex-col lg:flex-row items-center justify-between flex-wrap gap-6">
             {/* Nav Links */}
             <div className="flex flex-row flex-wrap gap-4 md:gap-6 justify-center">
               {navContents.map((item, index) => (
@@ -163,7 +163,7 @@ const Footer = () => {
           </div>
 
           {/* Bottom Footer Info */}
-          <div className="flex flex-col md:flex-row justify-between text-white font-medium text-[14px] md:text-[18px] leading-[18px] md:leading-[20px] tracking-normal mt-6 md:mt-10 flex-wrap text-center md:text-left gap-4">
+          <div className="flex flex-col lg:flex-row justify-between text-white font-medium text-[14px] md:text-[18px] leading-[18px] md:leading-[20px] tracking-normal mt-6 md:mt-10 flex-wrap text-center lg:text-left gap-4">
             <div>© {currentYear} BlindFoldTrips. All Rights Reserved.</div>
 
             <div>

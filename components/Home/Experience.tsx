@@ -9,7 +9,7 @@ import { ExperienceContents } from "../Data/Home/ExperinceContents";
 const Experience = () => {
   return (
     <Align>
-      <div className="flex md:flex-row flex-col items-center justify-center md:gap-20  gap-8 md:py-20 md:pt-40 pt-40 w-full">
+      <div className="flex lg:flex-row flex-col lg:items-center justify-center md:gap-20  gap-8 md:py-20 md:pt-40 pt-20 w-full">
         <div className="flex flex-col gap-4">
           <div className="flex">
             <Heading title="OUR EXPERIENCES" />

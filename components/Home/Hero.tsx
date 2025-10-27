@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Scene from "./Scene";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -108,6 +109,8 @@ const Hero: React.FC<HeroProps> = ({ onSequenceComplete }) => {
   }, []);
 
   return (
+    <>
+    
     <section
       ref={sectionRef}
       className="w-full h-screen relative overflow-hidden"
@@ -121,6 +124,8 @@ const Hero: React.FC<HeroProps> = ({ onSequenceComplete }) => {
         />
       </div>
     </section>
+    </>
+    
   );
 };
 
