@@ -4,7 +4,7 @@ import { MysteryVoyageContents } from "../Data/Experience/MysteryVoyage";
 import { PurposeRetreat } from "../Data/Experience/PurposeRetreat";
 import { TailoredEscape } from "../Data/Experience/TailoredEscape";
 import Journeys from "../Reusable/Journeys";
-import Heading from "../Reusable/Ui/Heading";
+import Heading from "../Reusable/UI/Heading";
 
 const AllJourneys = [
   MysteryVoyageContents,

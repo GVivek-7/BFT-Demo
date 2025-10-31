@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef, useEffect } from "react";
-import Heading from "../Reusable/Ui/Heading";
+import Heading from "../Reusable/UI/Heading";
 import Align from "../Reusable/Align";
 
 const Surprise: React.FC = () => {

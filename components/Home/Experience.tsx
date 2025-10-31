@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Heading from "../Reusable/Ui/Heading";
+import Heading from "../Reusable/UI/Heading";
 import Image from "next/image";
 import Align from "../Reusable/Align";
 import { ExperienceContents } from "../Data/Home/ExperinceContents";
