@@ -16,19 +16,16 @@ const ParallaxImage = ({ src }: { src: string }) => {
   const y = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
 
   return (
-    <div 
-      ref={ref} 
+    <div
+      ref={ref}
       className="overflow-hidden rounded-lg w-full h-[300px] sm:h-[350px] md:h-[400px] relative"
     >
-      <motion.div 
-        style={{ y }} 
-        className="absolute inset-0 w-full h-full"
-      >
+      <motion.div style={{ y }} className="absolute inset-0 w-full h-full">
         <Image
           src={src}
           alt="Places"
           fill
-          className="object-cover transform transition-transform duration-300 ease-in-out hover:scale-105 rounded-lg"
+          className="object-cover transform transition-transform duration-300 ease-in-out  rounded-lg"
         />
       </motion.div>
     </div>
@@ -39,12 +36,13 @@ const Stories = () => {
   return (
     <Align>
       <div className="py-20 flex flex-col items-center">
-        <h1 className="font-heading text-[#141414] text-[30px] sm:text-[32px] md:text-[40px] font-semibold tracking-tighter leading-[36px] sm:leading-[42px] md:leading-[50px] mb-2 text-center">
-          STORIES FROM THE UNSEEN
+        <h1 className="font-heading text-[#141414] text-[30px] sm:text-[32px] md:text-[40px] font-semibold tracking-tighter leading-9 sm:leading-[42px] md:leading-[50px] mb-2 text-center uppercase">
+          Chronicles of the Unknown
         </h1>
-        <p className="text-[16px] sm:text-[20px] md:text-[24px] leading-[24px] sm:leading-[28px] md:leading-[32px] max-w-3xl text-center px-4">
-          They trusted the process, embraced the unknown, and came back changed —
-          not by the places they saw, but by the peace they found.
+        <p className="text-[16px] sm:text-[20px] md:text-[24px] leading-6 sm:leading-7 md:leading-8 max-w-5xl font-light text-center px-4 tracking-normal">
+          They said yes to uncertainty and found peace between surprise and
+          stillness. These are stories of travelers who returned with more than
+          memories — they came home to themselves.
         </p>
 
         <div className="grid grid-cols-2 md:grid-cols-4 md:gap-5 gap-2 pt-10 w-full">

@@ -1,0 +1,2 @@
+export const ExperienceHeroBG = 'https://ik.imagekit.io/99y1fc9mh/BFT/Experience/bft%20banner%204.png?updatedAt=1761896072995'
+export const Mountain2 = 'https://ik.imagekit.io/99y1fc9mh/BFT/Experience/BFT%20banner%202.png?updatedAt=1761896081858';

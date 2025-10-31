@@ -43,13 +43,13 @@ const Footer = () => {
         height={1000}
       />
       <div className="md:h-[490px] h-[362px] w-full flex flex-col items-center bg-white rounded-b-[40px] overflow-hidden px-4 py-8 md:py-20 xl:h-[490px] lg:h-[490px]">
-        <h1 className="font-heading text-[#141414] text-[28px] sm:text-[32px] md:text-[40px] font-semibold tracking-tighter leading-[36px] sm:leading-[42px] md:leading-[50px] mb-4 text-center">
-          BEGIN YOUR UNKNOWN
+        <h1 className="font-heading text-[#141414] text-[28px] sm:text-[32px] md:text-[40px] font-semibold tracking-tighter leading-9 sm:leading-[42px] md:leading-[50px] mb-4 text-center">
+          The Beginning of the Unknown
         </h1>
-        <p className="text-[16px] sm:text-[20px] md:text-[24px] leading-[24px] sm:leading-[28px] md:leading-[32px] max-w-3xl text-center px-4">
-          There&apos;s a wild, free version of you waiting — beyond plans,
-          beyond screens, beyond control. Step forward. We&apos;ll lead with
-          heart.
+        <p className="text-[16px] sm:text-[20px] md:text-[24px] leading-6 sm:leading-7 md:leading-8 max-w-5xl font-light text-center px-4">
+          There&apos;s a freer, wilder version of you waiting — beyond control,
+          beyond certainty. Close your eyes. Take the step. The world reveals
+          itself when you stop trying to see.
         </p>
 
         <button className="flex items-center bg-[#FFA62B] text-white font-semibold rounded-full pr-3 pl-1 py-1 transition-all duration-300 cursor-pointer group hover:bg-[#FFA62B] hover:text-white z-10 mt-5">
@@ -63,7 +63,7 @@ const Footer = () => {
             TAKE THE LEAP
           </span>
         </button>
-        <div className="flex flex-row -space-x-10 mt-[6vh] z-100">
+        <div className="flex flex-row -space-x-20 mt-[6vh] z-100">
           {BeginYourUnknownImage.map((item, index) => {
             const parallaxOffset = scrollY * (0.05 + index * 0.02);
 
@@ -102,8 +102,8 @@ const Footer = () => {
                       : index === 1
                       ? "group-hover:translate-x-[15px] group-hover:translate-y-[-15px] group-hover:scale-103"
                       : index === 2
-                      ? "group-hover:translate-x-[-12px] group-hover:translate-y-[-18px] group-hover:scale-103"
-                      : "group-hover:translate-x-[15px] group-hover:translate-y-[-10px] group-hover:scale-103"
+                      ? "group-hover:-translate-x-3 group-hover:translate-y-[-18px] group-hover:scale-103"
+                      : "group-hover:translate-x-[15px] group-hover:-translate-y-2.5 group-hover:scale-103"
                   } group-hover:shadow-2xl group-hover:z-50`}
                 />
               </div>
@@ -152,7 +152,7 @@ const Footer = () => {
           {/* Main Title */}
           <div className="w-full flex justify-center px-4 mt-8 md:mt-12">
             <h1
-              className="font-bold text-center leading-tight break-words select-none"
+              className="font-bold text-center leading-tight wrap-break-word select-none"
               style={{
                 fontSize: "clamp(3rem, 12vw, 200px)", // slightly smaller max size
                 lineHeight: "clamp(3.2rem, 12.5vw, 210px)",
@@ -167,7 +167,7 @@ const Footer = () => {
           </div>
 
           {/* Bottom Footer Info */}
-          <div className="flex flex-col lg:flex-row justify-between text-white font-medium text-[14px] md:text-[18px] leading-[18px] md:leading-[20px] tracking-normal mt-6 md:mt-10 flex-wrap text-center lg:text-left gap-4">
+          <div className="flex flex-col lg:flex-row justify-between text-white font-medium text-[14px] md:text-[18px] leading-[18px] md:leading-5 tracking-normal mt-6 md:mt-10 flex-wrap text-center lg:text-left gap-4">
             <div>© {currentYear} BlindFoldTrips. All Rights Reserved.</div>
 
             <div>
@@ -177,7 +177,7 @@ const Footer = () => {
                 target="_blank"
                 className="relative text-white cursor-pointer transition-all duration-300
                            after:content-[''] after:absolute after:left-0 after:bottom-[-3px]
-                           after:w-0 after:h-[2px] after:bg-white
+                           after:w-0 after:h-0.5 after:bg-white
                            after:transition-all after:duration-300 hover:after:w-full"
               >
                 The Internet Company

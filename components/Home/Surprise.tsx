@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef, useEffect } from "react";
-import Heading from "../Reusable/UI/Heading";
+import Heading from "../Reusable/Ui/Heading";
 import Align from "../Reusable/Align";
 
 const Surprise: React.FC = () => {
@@ -83,14 +83,15 @@ const Surprise: React.FC = () => {
             <Heading title="THE SCIENCE OF SURPRISE" />
           </div>
 
-          <h1 className="text-black md:text-[40px] text-[30px] md:leading-[40px] leading-[30px] uppercase font-heading font-semibold">
-            WHERE PSYCHOLOGY MEETS ADVENTURE.
+          <h1 className="text-black md:text-[40px] text-[30px] md:leading-10 leading-[30px] uppercase font-heading font-semibold">
+             The Psychology of Surprise
           </h1>
-          <p className="text-black md:text-[20px] text-[14px] md:leading-[24px] leading-[16px] text-start max-w-3xl font-light">
-            Behind every blindfold lies more than mystery — it&apos;s emotional
-            design. We map your feelings, your pace, your energy — and build
-            journeys that speak your language. It&apos;s not about where you go. It&apos;s
-            about where your heart lands.
+          <p className="text-black md:text-[20px] text-[14px] md:leading-6 leading-4 text-start max-w-5xl font-light">
+            Behind every blindfold lies a crafted symphony of design and emotion. We translate your rhythm, pace, and presence into a journey that feels alive. This isn&apos;t randomness — it&apos;s resonance. <br />
+
+          </p>
+          <p className="text-black md:text-[20px] text-[14px] md:leading-6 leading-4 text-start max-w-2xl font-light">
+                        Every blindfold conceals a map written in emotion. We simply follow your heartbeat to where you&apos;re meant to be.
           </p>
         </Align>
         {/* Video Section */}

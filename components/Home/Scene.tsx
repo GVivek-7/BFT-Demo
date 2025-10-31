@@ -97,7 +97,7 @@ const Scene: React.FC = () => {
       modelScale: 1,
       lineHeight: "110px",
     };
-  }, [mounted, isMobile, isTablet, isLg]);
+  }, [mounted, isMobile, isTablet]);
 
   // Animated Model Component
   const AnimatedModel = () => {
@@ -133,6 +133,10 @@ const Scene: React.FC = () => {
     const context = canvas.getContext("2d");
     if (!context) return;
     contextRef.current = context;
+
+    // Set canvas dimensions
+    canvas.width = 1920;
+    canvas.height = 1080;
 
     // Load images
     for (let i = 0; i < totalFrames; i++) {
@@ -187,6 +191,13 @@ const Scene: React.FC = () => {
 
     const initUnifiedTimeline = () => {
       const ctx = gsap.context(() => {
+        // Kill any existing ScrollTriggers on this element first
+        ScrollTrigger.getAll().forEach((trigger) => {
+          if (trigger.vars.trigger === containerRef.current) {
+            trigger.kill();
+          }
+        });
+
         // Create master timeline
         const masterTimeline = gsap.timeline({
           scrollTrigger: {
@@ -195,15 +206,19 @@ const Scene: React.FC = () => {
             end: "+=6000",
             scrub: 1,
             pin: true,
+            onRefresh: () => {
+              if (!containerRef.current) return;
+            },
           },
         });
 
+        // Set initial states for all elements
         gsap.set([ceciRef.current, tourismRef.current], {
           x: 0,
           opacity: 0,
           visibility: "hidden",
         });
-        // Set initial states for all elements
+
         gsap.set(imageSeqRef.current, {
           visibility: "visible",
           opacity: 1,
@@ -256,7 +271,6 @@ const Scene: React.FC = () => {
 
         // PHASE 1: Image Sequence Animation (0-2 in timeline)
         masterTimeline
-
           .to(
             HeadTextRef.current,
             {
@@ -454,17 +468,11 @@ const Scene: React.FC = () => {
             6
           )
 
-          // Ceci tourism joing
+          // Ceci tourism join
           .to(
             ceciRef.current,
             {
-              x: isMobile
-                ? -57
-                : isTablet
-                ? -115
-                : isLg
-                ? "-13.5vw" // 👈 new lg value
-                : "-15vw", // desktop stays the same
+              x: isMobile ? -57 : isTablet ? -115 : isLg ? "-13.5vw" : "-15vw",
               duration: 2,
               ease: "power2.inOut",
             },
@@ -473,13 +481,7 @@ const Scene: React.FC = () => {
           .to(
             tourismRef.current,
             {
-              x: isMobile
-                ? 57
-                : isTablet
-                ? 115
-                : isLg
-                ? "13.5vw" // 👈 new lg value
-                : "15vw", // desktop stays the same
+              x: isMobile ? 57 : isTablet ? 115 : isLg ? "13.5vw" : "15vw",
               duration: 2,
               ease: "power2.inOut",
             },
@@ -546,9 +548,14 @@ const Scene: React.FC = () => {
       };
     };
 
-    canvas.width = 1920;
-    canvas.height = 1080;
-  }, [mounted, isMobile, isTablet]);
+    // Cleanup function
+    return () => {
+      // Kill all ScrollTriggers first
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      // Clear image references
+      imagesRef.current = [];
+    };
+  }, [mounted, isMobile, isTablet, isLg]);
 
   if (!mounted) {
     return <div className=" bg-black" />;
@@ -601,28 +608,26 @@ const Scene: React.FC = () => {
           </Canvas>
         </div>
 
-        <div  className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 text-white text-sm md:text-base font-light tracking-wider ">
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 text-white text-sm md:text-base font-light tracking-wider ">
           <div className="flex items-center justify-center gap-2 sm:gap-3 md:gap-4 px-3 sm:px-4 py-2 sm:py-2.5 md:py-3">
-  {/* Animated Dots */}
-  <div className="flex items-center justify-center gap-1.5 sm:gap-2 md:gap-2.5">
-    <div className="dot-animation bg-white/60"></div>
-    <div
-      className="dot-animation bg-white/60"
-      style={{ animationDelay: "0.3s" }}
-    ></div>
-  </div>
+            {/* Animated Dots */}
+            <div className="flex items-center justify-center gap-1.5 sm:gap-2 md:gap-2.5">
+              <div className="dot-animation bg-white/60"></div>
+              <div
+                className="dot-animation bg-white/60"
+                style={{ animationDelay: "0.3s" }}
+              ></div>
+            </div>
 
-  {/* Text */}
-  <span className="text-xs md:text-[14px] font-semibold text-white/60  whitespace-nowrap">
-    KEEP SCROLLING
-  </span>
-</div>
-
+            {/* Text */}
+            <span className="text-xs md:text-[14px] font-semibold text-white/60  whitespace-nowrap">
+              KEEP SCROLLING
+            </span>
+          </div>
         </div>
 
-
         {/* Hero Seq Text */}
-        <div className="absolute z-100 inset-0 pointer-events-none flex flex-col items-start justify-between h-[60vh] md:mt-50 my-auto md:px-[80px] text-center px-4">
+        <div className="absolute z-100 inset-0 pointer-events-none flex flex-col items-start justify-between h-[60vh] md:mt-50 my-auto md:px-20 text-center px-4">
           <h1
             ref={HeadTextRef}
             className="
@@ -630,12 +635,13 @@ const Scene: React.FC = () => {
     text-[50px] leading-[50px]
     md:text-[70px] md:leading-[70px]
     lg:text-[70px] lg:leading-[70px]
-    xl:text-[80px] xl:leading-[80px]
-    2xl:text-[80px] 2xl:leading-[80px] text-left
+    xl:text-[80px] xl:leading-20
+    2xl:text-[80px] 2xl:leading-20 text-left
   "
             style={{ visibility: "hidden" }}
           >
-            Where vision ends, <br /> emotion begins.
+            Where vision ends, <br />{" "}
+            <span className="text-[#FFA62B]">Adventure</span> begins.
           </h1>
 
           <p
@@ -643,19 +649,19 @@ const Scene: React.FC = () => {
             className="
     text-white
     text-[16px] leading-[18px]
-    md:text-[18px] md:leading-[20px]
+    md:text-[18px] md:leading-5
     lg:text-[20px] lg:leading-[22px]
     xl:text-[20px] xl:leading-[22px]
-    2xl:text-[20px] 2xl:leading-[22px] max-w-md text-left tracking-wider
+    2xl:text-[20px] 2xl:leading-[22px] max-w-lg text-left tracking-wider
   "
             style={{ visibility: "hidden" }}
           >
-            Step into journeys that awaken every sense — hear the rhythm of
-            cities, feel the breath of nature, and see with your heart.
+            step into journeys that awaken every sense - hear the rhythm of
+            cities, feel the breath of nature , and see with your heart
           </p>
         </div>
 
-        <div className="absolute z-100 inset-0 pointer-events-none flex flex-col items-start justify-between h-[65vh] md:mt-50 my-auto md:px-[80px] text-center px-4">
+        <div className="absolute z-100 inset-0 pointer-events-none flex flex-col items-start justify-between h-[65vh] md:mt-50 my-auto md:px-20 text-center px-4">
           <h1
             ref={HeadText2Ref}
             className="
@@ -663,8 +669,8 @@ const Scene: React.FC = () => {
     text-[50px] leading-[50px]
     md:text-[70px] md:leading-[70px]
     lg:text-[70px] lg:leading-[70px]
-    xl:text-[80px] xl:leading-[80px]
-    2xl:text-[80px] 2xl:leading-[80px] text-left
+    xl:text-[80px] xl:leading-20
+    2xl:text-[80px] 2xl:leading-20 text-left
   "
             style={{ visibility: "hidden" }}
           >
@@ -677,16 +683,16 @@ const Scene: React.FC = () => {
             className="
     text-white
     text-[16px] leading-[18px]
-    md:text-[18px] md:leading-[20px]
+    md:text-[18px] md:leading-5 
     lg:text-[20px] lg:leading-[22px]
     xl:text-[20px] xl:leading-[22px]
-    2xl:text-[20px] 2xl:leading-[22px] max-w-xl text-left tracking-wider
+    2xl:text-[20px] 2xl:leading-[22px] max-w-2xl text-left tracking-wider
   "
             style={{ visibility: "hidden" }}
           >
-            Every journey with Blindfold Trips is designed to awaken your
+            Every journey with blindfold trips is designed to awaken your
             senses. Feel the textures of landscapes, hear the hidden rhythms of
-            cities, and immerse yourself in moments that go beyond sight.
+            cities , and immersive yourself in moments that go beyond sight.
           </p>
         </div>
 
@@ -728,7 +734,7 @@ const Scene: React.FC = () => {
               visibility: "hidden",
             }}
           >
-            C — Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            C — Curated: Every journey crafted with precision and heart.
           </p>
 
           <p
@@ -745,7 +751,7 @@ const Scene: React.FC = () => {
               visibility: "hidden",
             }}
           >
-            e — No plans, no maps just pure moments waiting to unfold.
+            E — Experiential: Created to be lived, not just seen.
           </p>
 
           <p
@@ -755,14 +761,14 @@ const Scene: React.FC = () => {
                 ? "bottom-[22%] right-[5%] text-sm max-w-[62%]"
                 : isTablet
                 ? "bottom-[20%] right-[8%] text-base max-w-[40%]"
-                : "bottom-[20%] right-[10%] text-lg max-w-[28%]"
+                : "bottom-[20%] right-[10%] text-lg max-w-[25%]"
             }`}
             style={{
               textShadow: "0 2px 10px rgba(0,0,0,0.7)",
               visibility: "hidden",
             }}
           >
-            C — Trust the journey, not the destination.
+            C — Cultural: Rooted in local stories and timeless emotion.
           </p>
 
           <p
@@ -772,14 +778,15 @@ const Scene: React.FC = () => {
                 ? "bottom-[10%] right-[5%] text-sm max-w-[62%]"
                 : isTablet
                 ? "bottom-[12%] right-[8%] text-base max-w-[40%]"
-                : "bottom-[10%] right-[10%] text-lg max-w-[30%]"
+                : "bottom-[10%] right-[10%] text-lg max-w-[25%]"
             }`}
             style={{
               textShadow: "0 2px 10px rgba(0,0,0,0.7)",
               visibility: "hidden",
             }}
           >
-            I — Step into the unknown, let curiosity guide you.
+            I — Immersive: Surrender to presence — that’s where you truly
+            arrive.
           </p>
 
           <p
@@ -837,8 +844,6 @@ const Scene: React.FC = () => {
             />
           </div>
         </div>
-
-
       </div>
     </div>
   );

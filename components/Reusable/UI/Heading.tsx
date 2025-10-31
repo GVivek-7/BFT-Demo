@@ -18,8 +18,8 @@ const Heading: React.FC<HeadingProps> = ({ title }) => {
       />
       {/* Heading */}
       <h2
-        className="md:text-lg text-sm font-medium text-black uppercase transition-colors duration-300 
-                     group-hover:text-gray-900"
+        className="md:text-lg text-sm font-regular text-[#04256C] uppercase transition-colors duration-300 
+                     group-hover:text-[#04256cc8]"
       >
         {title}
       </h2>

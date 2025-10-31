@@ -115,7 +115,7 @@ const ShowReel: React.FC = () => {
     <>
       <div 
         id="showreel-section" 
-        className='h-[100dvh] w-full relative overflow-hidden cursor-none'
+        className='h-dvh w-full relative overflow-hidden cursor-none'
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
