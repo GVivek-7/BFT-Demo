@@ -16,7 +16,7 @@ const Scene: React.FC = () => {
   const refs = useSceneRefs();
   useSceneAnimation(refs, responsiveState);
 
-  const { mounted, isMobile, isTablet, isLg, responsiveSettings } =
+  const { mounted, isMobile, isTablet, responsiveSettings } =
     responsiveState;
 
   const {
