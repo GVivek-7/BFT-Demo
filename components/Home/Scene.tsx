@@ -1,103 +1,44 @@
 "use client";
-import React, { useEffect, useRef, useMemo, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Group } from "three";
 import { Model } from "../Reusable/Earth";
 import { FullLogo } from "@/assets/home";
-
-// Register GSAP plugins
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import {  useSceneAnimation } from "@/hooks/useSceneAnimation";
+import { useResponsive } from "@/hooks/useResponsive";
+import { useSceneRefs } from "@/hooks/useSceneRef";
+import Image from "next/image";
 
 const Scene: React.FC = () => {
-  // Canvas refs
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const contextRef = useRef<CanvasRenderingContext2D | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const imageSeqRef = useRef<HTMLDivElement>(null);
-  const sceneContainerRef = useRef<HTMLDivElement>(null);
-  // Text refs
-  const HeadTextRef = useRef<HTMLHeadingElement>(null);
-  const ParaTextRef = useRef<HTMLParagraphElement>(null);
-  const HeadText2Ref = useRef<HTMLHeadingElement>(null);
-  const ParaText2Ref = useRef<HTMLParagraphElement>(null);
+  // Use custom hooks
+  const responsiveState = useResponsive();
+  const refs = useSceneRefs();
+  useSceneAnimation(refs, responsiveState);
 
-  const ceciRef = useRef<HTMLHeadingElement>(null);
-  const tourismRef = useRef<HTMLHeadingElement>(null);
-  const point1Ref = useRef<HTMLParagraphElement>(null);
-  const point2Ref = useRef<HTMLParagraphElement>(null);
-  const point3Ref = useRef<HTMLParagraphElement>(null);
-  const point4Ref = useRef<HTMLParagraphElement>(null);
-  const pioneerRef = useRef<HTMLParagraphElement>(null);
-  const worldRef = useRef<HTMLParagraphElement>(null);
-  const logoRef = useRef<HTMLDivElement>(null);
-  const modelGroupRef = useRef<Group | null>(null);
+  const { mounted, isMobile, isTablet, isLg, responsiveSettings } =
+    responsiveState;
 
-  // Image sequence setup
-  const totalFrames = 395;
-  const imagesRef = useRef<HTMLImageElement[]>([]);
-  const imgSeqRef = useRef({ frame: 0 });
-
-  const [mounted, setMounted] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isTablet, setIsTablet] = useState(false);
-  const [isLg, setIsLg] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    const checkMobile = () => window.innerWidth <= 767;
-    const checkTablet = () =>
-      window.innerWidth > 767 && window.innerWidth <= 1023;
-    const checkLg = () =>
-      window.innerWidth >= 1024 && window.innerWidth <= 1512;
-    setIsMobile(checkMobile());
-    setIsTablet(checkTablet());
-    setIsLg(checkLg());
-
-    const handleResize = () => {
-      setIsMobile(checkMobile());
-      setIsTablet(checkTablet());
-      setIsLg(checkLg());
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  // Responsive settings
-  const responsiveSettings = useMemo(() => {
-    if (!mounted) {
-      return {
-        cameraPosition: [0, 0, 4.9] as [number, number, number],
-        modelScale: 1,
-        lineHeight: "110px",
-      };
-    }
-
-    if (isMobile) {
-      return {
-        cameraPosition: [0, 0, 8] as [number, number, number],
-        modelScale: 0.7,
-        lineHeight: "50px",
-      };
-    } else if (isTablet) {
-      return {
-        cameraPosition: [0, 0, 8] as [number, number, number],
-        modelScale: 0.85,
-        lineHeight: "75px",
-      };
-    }
-
-    return {
-      cameraPosition: [0, 0, 4.9] as [number, number, number],
-      modelScale: 1,
-      lineHeight: "110px",
-    };
-  }, [mounted, isMobile, isTablet]);
+  const {
+    canvasRef,
+    containerRef,
+    imageSeqRef,
+    sceneContainerRef,
+    HeadTextRef,
+    ParaTextRef,
+    HeadText2Ref,
+    ParaText2Ref,
+    ceciRef,
+    tourismRef,
+    point1Ref,
+    point2Ref,
+    point3Ref,
+    point4Ref,
+    pioneerRef,
+    worldRef,
+    logoRef,
+    modelGroupRef,
+  } = refs;
 
   // Animated Model Component
   const AnimatedModel = () => {
@@ -120,449 +61,12 @@ const Scene: React.FC = () => {
     );
   };
 
-  const currentFrame = (index: number) =>
-    `/framesBft_new/frame_${(index + 1).toString().padStart(4, "0")}.webp`;
-
-  // Initialize everything
-  useEffect(() => {
-    if (!mounted || !containerRef.current) return;
-
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const context = canvas.getContext("2d");
-    if (!context) return;
-    contextRef.current = context;
-
-    // Set canvas dimensions
-    canvas.width = 1920;
-    canvas.height = 1080;
-
-    // Load images
-    for (let i = 0; i < totalFrames; i++) {
-      const img = new Image();
-      img.src = currentFrame(i);
-      imagesRef.current.push(img);
-    }
-
-    const render = () => {
-      const img = imagesRef.current[imgSeqRef.current.frame];
-      if (!img || !img.complete) return;
-      const canvas = canvasRef.current;
-      const context = contextRef.current;
-      if (!canvas || !context) return;
-
-      const canvasWidth = canvas.width;
-      const canvasHeight = canvas.height;
-      const imgWidth = img.naturalWidth || img.width;
-      const imgHeight = img.naturalHeight || img.height;
-
-      if (imgWidth === 0 || imgHeight === 0) return;
-
-      const scale = Math.max(canvasWidth / imgWidth, canvasHeight / imgHeight);
-      const x = canvasWidth / 2 - (imgWidth / 2) * scale;
-      const y = canvasHeight / 2 - (imgHeight / 2) * scale;
-
-      context.clearRect(0, 0, canvasWidth, canvasHeight);
-      context.drawImage(
-        img,
-        0,
-        0,
-        imgWidth,
-        imgHeight,
-        x,
-        y,
-        imgWidth * scale,
-        imgHeight * scale
-      );
-    };
-
-    // Wait for first image and model
-    imagesRef.current[0].onload = () => {
-      render();
-
-      const checkModelRef = setInterval(() => {
-        if (modelGroupRef.current) {
-          clearInterval(checkModelRef);
-          initUnifiedTimeline();
-        }
-      }, 50);
-    };
-
-    const initUnifiedTimeline = () => {
-      const ctx = gsap.context(() => {
-        // Kill any existing ScrollTriggers on this element first
-        ScrollTrigger.getAll().forEach((trigger) => {
-          if (trigger.vars.trigger === containerRef.current) {
-            trigger.kill();
-          }
-        });
-
-        // Create master timeline
-        const masterTimeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top top",
-            end: "+=6000",
-            scrub: 1,
-            pin: true,
-            onRefresh: () => {
-              if (!containerRef.current) return;
-            },
-          },
-        });
-
-        // Set initial states for all elements
-        gsap.set([ceciRef.current, tourismRef.current], {
-          x: 0,
-          opacity: 0,
-          visibility: "hidden",
-        });
-
-        gsap.set(imageSeqRef.current, {
-          visibility: "visible",
-          opacity: 1,
-          zIndex: 20,
-        });
-
-        gsap.set([HeadTextRef.current, ParaTextRef.current], {
-          opacity: 1,
-          visibility: "visible",
-        });
-
-        gsap.set([HeadText2Ref.current, ParaText2Ref.current], {
-          opacity: 0,
-          visibility: "hidden",
-        });
-
-        gsap.set(sceneContainerRef.current, {
-          opacity: 0,
-          visibility: "hidden",
-          zIndex: 10,
-        });
-
-        gsap.set([ceciRef.current, tourismRef.current], {
-          x: 0,
-          opacity: 0,
-          visibility: "hidden",
-        });
-
-        gsap.set(
-          [
-            point1Ref.current,
-            point2Ref.current,
-            point3Ref.current,
-            point4Ref.current,
-          ],
-          { opacity: 0, visibility: "hidden", y: 20 }
-        );
-
-        gsap.set([pioneerRef.current, worldRef.current], {
-          opacity: 0,
-          visibility: "hidden",
-          y: 20,
-        });
-
-        gsap.set(logoRef.current, {
-          opacity: 0,
-          visibility: "hidden",
-          scale: 0.8,
-        });
-
-        // PHASE 1: Image Sequence Animation (0-2 in timeline)
-        masterTimeline
-          .to(
-            HeadTextRef.current,
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.6,
-              ease: "power2.out",
-            },
-            0
-          )
-          // Then paragraph
-          .to(
-            ParaTextRef.current,
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.6,
-              ease: "power2.out",
-            },
-            0.15
-          )
-          .to(
-            imgSeqRef.current,
-            {
-              frame: totalFrames - 1,
-              snap: "frame",
-              ease: "none",
-              duration: 2,
-              onUpdate: render,
-            },
-            0
-          )
-          // First text fades out at mid-point of image sequence
-          .to(
-            [HeadTextRef.current, ParaTextRef.current],
-            {
-              opacity: 0,
-              y: -30,
-              duration: 0.3,
-              ease: "power2.inOut",
-            },
-            0.8
-          )
-          // Second text fades in immediately after - heading first
-          .to(
-            HeadText2Ref.current,
-            {
-              opacity: 1,
-              visibility: "visible",
-              y: 0,
-              duration: 0.4,
-              ease: "power2.out",
-            },
-            1.1
-          )
-          // Then paragraph
-          .to(
-            ParaText2Ref.current,
-            {
-              opacity: 1,
-              visibility: "visible",
-              y: 0,
-              duration: 0.4,
-              ease: "power2.out",
-            },
-            1.2
-          )
-          // Second text fades out near end of image sequence
-          .to(
-            [HeadText2Ref.current, ParaText2Ref.current],
-            {
-              opacity: 0,
-              y: -30,
-              duration: 0.3,
-              ease: "power2.inOut",
-            },
-            1.7
-          )
-
-          // Fade out image sequence and fade in 3D scene
-          .to(
-            imageSeqRef.current,
-            {
-              opacity: 0,
-              duration: 0.5,
-              ease: "power2.inOut",
-            },
-            1.8
-          )
-
-          .to(
-            sceneContainerRef.current,
-            {
-              visibility: "visible",
-              opacity: 1,
-              duration: 0.5,
-              ease: "power2.inOut",
-            },
-            2
-          )
-
-          // PHASE 2: Text Split Animation (2-4)
-          .to(
-            ceciRef.current,
-            {
-              x: isMobile ? -140 : isTablet ? -260 : "-27vw",
-              opacity: 1,
-              visibility: "visible",
-              duration: 1.5,
-              ease: "power2.out",
-            },
-            3
-          )
-          .to(
-            tourismRef.current,
-            {
-              opacity: 1,
-              visibility: "visible",
-              x: isMobile ? 140 : isTablet ? 260 : isLg ? "26.5vw" : "27vw",
-              duration: 1.5,
-              ease: "power2.out",
-            },
-            3
-          )
-
-          // PHASE 3: Point texts appear (3.5-6)
-          .to(
-            point1Ref.current,
-            {
-              opacity: 1,
-              visibility: "visible",
-              y: 0,
-              duration: 1,
-              ease: "power2.out",
-            },
-            3.5
-          )
-          .to(
-            point2Ref.current,
-            {
-              opacity: 1,
-              visibility: "visible",
-              y: 0,
-              duration: 1,
-              ease: "power2.out",
-            },
-            4
-          )
-          .to(
-            point3Ref.current,
-            {
-              opacity: 1,
-              visibility: "visible",
-              y: 0,
-              duration: 1,
-              ease: "power2.out",
-            },
-            4.5
-          )
-          .to(
-            point4Ref.current,
-            {
-              opacity: 1,
-              visibility: "visible",
-              y: 0,
-              duration: 1,
-              ease: "power2.out",
-            },
-            5
-          )
-
-          // PHASE 4: Model moves up, points fade (6-8)
-          .to(
-            modelGroupRef.current?.position || { y: 0 },
-            {
-              y: 5,
-              duration: 2,
-              ease: "power2.inOut",
-            },
-            6
-          )
-          .to(
-            [
-              point1Ref.current,
-              point2Ref.current,
-              point3Ref.current,
-              point4Ref.current,
-            ],
-            {
-              opacity: 0,
-              visibility: "hidden",
-              duration: 1,
-              ease: "power2.inOut",
-            },
-            6
-          )
-
-          // Ceci tourism join
-          .to(
-            ceciRef.current,
-            {
-              x: isMobile ? -57 : isTablet ? -115 : isLg ? "-13.5vw" : "-15vw",
-              duration: 2,
-              ease: "power2.inOut",
-            },
-            6
-          )
-          .to(
-            tourismRef.current,
-            {
-              x: isMobile ? 57 : isTablet ? 115 : isLg ? "13.5vw" : "15vw",
-              duration: 2,
-              ease: "power2.inOut",
-            },
-            6
-          )
-
-          // PHASE 5: Pioneer/Worldwide text (7-8.5)
-          .to(
-            pioneerRef.current,
-            {
-              opacity: 1,
-              visibility: "visible",
-              y: 0,
-              duration: 1.5,
-              ease: "power2.out",
-            },
-            7
-          )
-          .to(
-            worldRef.current,
-            {
-              opacity: 1,
-              visibility: "visible",
-              y: 0,
-              duration: 1.5,
-              ease: "power2.out",
-            },
-            7
-          )
-
-          // PHASE 6: All text moves up and fades (8.5-10.5)
-          .to(
-            [
-              ceciRef.current,
-              tourismRef.current,
-              pioneerRef.current,
-              worldRef.current,
-            ],
-            {
-              y: isMobile ? -300 : isTablet ? -400 : -500,
-              opacity: 0,
-              duration: 2,
-              ease: "power2.inOut",
-            },
-            8.5
-          )
-
-          // PHASE 7: Logo appears (10-11.5)
-          .to(
-            logoRef.current,
-            {
-              opacity: 1,
-              visibility: "visible",
-              scale: 1,
-              duration: 1.5,
-              ease: "back.out(1.7)",
-            },
-            10
-          );
-      }, containerRef);
-
-      return () => {
-        ctx.revert();
-      };
-    };
-
-    // Cleanup function
-    return () => {
-      // Kill all ScrollTriggers first
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-      // Clear image references
-      imagesRef.current = [];
-    };
-  }, [mounted, isMobile, isTablet, isLg]);
-
   if (!mounted) {
-    return <div className=" bg-black" />;
+    return <div className="bg-black h-screen w-full" />;
   }
 
   return (
-    <div ref={containerRef} className=" bg-black">
+    <div ref={containerRef} className="bg-black">
       <div className="relative w-full h-screen bg-black">
         {/* Image Sequence Layer */}
         <div
@@ -608,9 +112,9 @@ const Scene: React.FC = () => {
           </Canvas>
         </div>
 
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 text-white text-sm md:text-base font-light tracking-wider ">
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 text-white text-sm md:text-base font-light tracking-wider">
           <div className="flex items-center justify-center gap-2 sm:gap-3 md:gap-4 px-3 sm:px-4 py-2 sm:py-2.5 md:py-3">
-            {/* Animated Dots */}
             <div className="flex items-center justify-center gap-1.5 sm:gap-2 md:gap-2.5">
               <div className="dot-animation bg-white/60"></div>
               <div
@@ -618,26 +122,17 @@ const Scene: React.FC = () => {
                 style={{ animationDelay: "0.3s" }}
               ></div>
             </div>
-
-            {/* Text */}
-            <span className="text-xs md:text-[14px] font-semibold text-white/60  whitespace-nowrap">
+            <span className="text-xs md:text-[14px] font-semibold text-white/60 whitespace-nowrap">
               KEEP SCROLLING
             </span>
           </div>
         </div>
 
-        {/* Hero Seq Text */}
+        {/* First Hero Text */}
         <div className="absolute z-100 inset-0 pointer-events-none flex flex-col items-start justify-between h-[60vh] md:mt-50 my-auto md:px-20 text-center px-4">
           <h1
             ref={HeadTextRef}
-            className="
-    text-white heather tracking-wider uppercase
-    text-[50px] leading-[50px]
-    md:text-[70px] md:leading-[70px]
-    lg:text-[70px] lg:leading-[70px]
-    xl:text-[80px] xl:leading-20
-    2xl:text-[80px] 2xl:leading-20 text-left
-  "
+            className="text-white heather tracking-wider uppercase text-[50px] leading-[50px] md:text-[70px] md:leading-[70px] lg:text-[70px] lg:leading-[70px] xl:text-[80px] xl:leading-20 2xl:text-[80px] 2xl:leading-20 text-left"
             style={{ visibility: "hidden" }}
           >
             Where vision ends, <br />{" "}
@@ -646,32 +141,19 @@ const Scene: React.FC = () => {
 
           <p
             ref={ParaTextRef}
-            className="
-    text-white
-    text-[16px] leading-[18px]
-    md:text-[18px] md:leading-5
-    lg:text-[20px] lg:leading-[22px]
-    xl:text-[20px] xl:leading-[22px]
-    2xl:text-[20px] 2xl:leading-[22px] max-w-lg text-left tracking-wider
-  "
+            className="text-white text-[16px] leading-[18px] md:text-[18px] md:leading-5 lg:text-[20px] lg:leading-[22px] xl:text-[20px] xl:leading-[22px] 2xl:text-[20px] 2xl:leading-[22px] max-w-lg text-left tracking-wider"
             style={{ visibility: "hidden" }}
           >
             step into journeys that awaken every sense - hear the rhythm of
-            cities, feel the breath of nature , and see with your heart
+            cities, feel the breath of nature, and see with your heart
           </p>
         </div>
 
+        {/* Second Hero Text */}
         <div className="absolute z-100 inset-0 pointer-events-none flex flex-col items-start justify-between h-[65vh] md:mt-50 my-auto md:px-20 text-center px-4">
           <h1
             ref={HeadText2Ref}
-            className="
-    text-white heather tracking-wider uppercase
-    text-[50px] leading-[50px]
-    md:text-[70px] md:leading-[70px]
-    lg:text-[70px] lg:leading-[70px]
-    xl:text-[80px] xl:leading-20
-    2xl:text-[80px] 2xl:leading-20 text-left
-  "
+            className="text-white heather tracking-wider uppercase text-[50px] leading-[50px] md:text-[70px] md:leading-[70px] lg:text-[70px] lg:leading-[70px] xl:text-[80px] xl:leading-20 2xl:text-[80px] 2xl:leading-20 text-left"
             style={{ visibility: "hidden" }}
           >
             Experience destinations <br />
@@ -680,23 +162,16 @@ const Scene: React.FC = () => {
 
           <p
             ref={ParaText2Ref}
-            className="
-    text-white
-    text-[16px] leading-[18px]
-    md:text-[18px] md:leading-5 
-    lg:text-[20px] lg:leading-[22px]
-    xl:text-[20px] xl:leading-[22px]
-    2xl:text-[20px] 2xl:leading-[22px] max-w-2xl text-left tracking-wider
-  "
+            className="text-white text-[16px] leading-[18px] md:text-[18px] md:leading-5 lg:text-[20px] lg:leading-[22px] xl:text-[20px] xl:leading-[22px] 2xl:text-[20px] 2xl:leading-[22px] max-w-2xl text-left tracking-wider"
             style={{ visibility: "hidden" }}
           >
             Every journey with blindfold trips is designed to awaken your
             senses. Feel the textures of landscapes, hear the hidden rhythms of
-            cities , and immersive yourself in moments that go beyond sight.
+            cities, and immersive yourself in moments that go beyond sight.
           </p>
         </div>
 
-        {/* Text Overlay */}
+        {/* Text Overlay - CECITO URISM */}
         <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
           <h1
             ref={ceciRef}
@@ -722,6 +197,7 @@ const Scene: React.FC = () => {
             URISM
           </h1>
 
+          {/* Point Texts */}
           <p
             ref={point1Ref}
             className="absolute m-0 text-white leading-relaxed"
@@ -785,10 +261,11 @@ const Scene: React.FC = () => {
               visibility: "hidden",
             }}
           >
-            I — Immersive: Surrender to presence — that’s where you truly
+            I — Immersive: Surrender to presence — that&apos;s where you truly
             arrive.
           </p>
 
+          {/* Pioneer/Worldwide Text */}
           <p
             ref={pioneerRef}
             className={`absolute m-0 text-white font-light tracking-widest ${
@@ -823,6 +300,7 @@ const Scene: React.FC = () => {
             WORLDWIDE
           </p>
 
+          {/* Logo */}
           <div
             ref={logoRef}
             className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${
@@ -832,7 +310,7 @@ const Scene: React.FC = () => {
               visibility: "hidden",
             }}
           >
-            <img
+            <Image
               src={FullLogo}
               alt="Logo"
               className="w-full h-full"

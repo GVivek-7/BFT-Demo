@@ -7,27 +7,27 @@ import Image from 'next/image';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
-  
+const [isScrolled, setIsScrolled] = useState(false);
 
 useEffect(() => {
   const handleScroll = () => {
     const scrollPosition = window.scrollY + window.innerHeight;
     const pageHeight = document.body.scrollHeight;
-    
-    // Prevent division by zero
+
     if (pageHeight > 0) {
       const scrolledPercentage = scrollPosition / pageHeight;
       setIsScrolled(scrolledPercentage > 0.62);
     }
   };
 
-  // Initial check
   handleScroll();
-  
-  window.addEventListener('scroll', handleScroll);
-  return () => window.removeEventListener('scroll', handleScroll);
+  window.addEventListener("scroll", handleScroll, { passive: true });
+
+  return () => {
+    window.removeEventListener("scroll", handleScroll);
+  };
 }, []);
+
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
   const closeMenu = () => setIsMenuOpen(false)
