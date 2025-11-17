@@ -4,15 +4,14 @@
 
 body {
   background: black; 
-  font-family: var(--font-suisseintl), sans-serif;
+  font-family: var(--font-glacial), sans-serif;
 
 }
 
 
-.heather {
-  font-family: var(--font-heathergreen), serif;
+.mont {
+  font-family: var(--font-montserrat), sans-serif;
 }
-
 
 
 
@@ -25,7 +24,15 @@ html {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
   overflow-x: hidden;
+}
 
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
 

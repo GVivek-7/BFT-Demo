@@ -1,59 +1,64 @@
-import { motion, useMotionValue, animate } from "framer-motion";
-import { GoArrowUpLeft } from "react-icons/go";
-import { useState } from "react";
+"use client";
+import React, { ReactNode } from "react";
 
-export default function SwipeButton() {
-  const x = useMotionValue(0);
-  const maxDrag = 271;
-
-  const handleDragEnd = (
-    _: MouseEvent | TouchEvent | PointerEvent,
-    info: { offset: { x: number } }
-  ) => {
-    if (info.offset.x > maxDrag * 0.6) {
-      // Animate to the end position
-      animate(x, maxDrag, {
-        type: "spring",
-        stiffness: 300,
-        damping: 30,
-      });
-      animate(x, maxDrag, { type: "spring", stiffness: 300, damping: 30 });
-      setTimeout(() => {
-        animate(x, 0, { type: "spring", stiffness: 300, damping: 30 });
-      }, 1500);
-    } else {
-      // Snap back to start
-      animate(x, 0, {
-        type: "spring",
-        stiffness: 300,
-        damping: 30,
-      });
-    }
-  };
-
-  return (
-    <div className="">
-      <motion.button className="relative inline-flex items-center justify-between rounded-full p-1 overflow-hidden font-semibold select-none bg-[#FFA62B]">
-        {/* Draggable circle */}
-        <motion.div
-          drag="x"
-          dragConstraints={{ left: 0, right: maxDrag }}
-          style={{ x }}
-          dragElastic={0}
-          dragMomentum={false}
-          onDragEnd={handleDragEnd}
-          className="w-10 h-10 flex items-center justify-center rounded-full cursor-grab active:cursor-grabbing shadow-md z-10 flex-shrink-0 bg-white"
-        >
-          <div className="text-[#FFA62B]">
-            <GoArrowUpLeft size={22} />
-          </div>
-        </motion.div>
-
-        {/* Text (changes during swipe) */}
-        <span className="pointer-events-none tracking-wide text-sm font-semibold whitespace-nowrap px-4 pl-4 pr-4 text-white">
-          SWIPE TO UNLOCK SURPRISE TRIP
-        </span>
-      </motion.button>
-    </div>
-  );
+interface ButtonProps {
+  label: string;
+  logo?: ReactNode;
+  bgColor?: string;      // Button background
+  textColor?: string;    // Button text color
+  logoBg?: string;       // Circle background
+  hoverBgColor?: string; // Hover background
+  height?: string;       // Button height - now accepts Tailwind classes like "h-12"
+  maxWidth?: string;     // Button max-width
+  width?: string; 
+  onClick?: () => void;
+  className?: string;
 }
+
+const Button: React.FC<ButtonProps> = ({
+  label,
+  logo,
+  bgColor = "#FFA62B",
+  textColor = "#FFFFFF",
+  logoBg = "#FFFFFF",
+  hoverBgColor = "#FFA62B",
+  height = "h-12",
+  width = "w-auto",
+  maxWidth = "max-w-full",
+  onClick,
+  className = "",
+}) => {
+  return (
+    <button
+      onClick={onClick}
+      className={`flex items-center font-semibold rounded-full pr-4 pl-1 py-1 transition-all duration-300 cursor-pointer group z-10 ${height} ${width} ${maxWidth} ${className}`}
+      style={{
+        backgroundColor: bgColor,
+        color: textColor,
+      }}
+    >
+      {/* Circular Logo Container */}
+      <div
+        className="flex items-center justify-center rounded-full mr-3 transition-all duration-500"
+        style={{
+          backgroundColor: logoBg,
+          width: "2.5rem",
+          height: "2.5rem",
+        }}
+      >
+        {logo && (
+          <div className="transition-all duration-500 group-hover:scale-105">
+            {logo}
+          </div>
+        )}
+      </div>
+
+      {/* Button Text */}
+      <span className="font-light uppercase tracking-wider text-sm sm:text-[14px] transition-all duration-300">
+        {label}
+      </span>
+    </button>
+  );
+};
+
+export default Button;

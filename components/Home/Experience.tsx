@@ -3,7 +3,7 @@ import React from "react";
 import Heading from "../Reusable/UI/Heading";
 import Image from "next/image";
 import Align from "../Reusable/Align";
-import { ExperienceContents } from "../Data/Home/ExperinceContents";
+import { ExperienceContents } from "../../data/Home/ExperinceContents";
 import { GoArrowUpLeft } from "react-icons/go";
 
 const Experience = () => {
@@ -15,7 +15,7 @@ const Experience = () => {
             <Heading title="OUR EXPERIENCES" />
           </div>
 
-          <h1 className="text-[#141414] md:text-[40px] text-[30px] font-medium tracking-tight md:leading-[45px] leading-[35px] md:mb-2 md:max-w-sm max-w-[280px] uppercase">
+          <h1 className="mont text-[#141414] md:text-[40px] text-[30px] font-medium tracking-tight md:leading-[45px] leading-[35px] md:mb-2 md:max-w-sm max-w-[280px] uppercase">
             Four Journeys. One Emotion Freedom.
           </h1>
           <p className="text-black font-light md:text-[24px] text-[14px] md:leading-7 leading-4 md:mb-8 max-w-xl">

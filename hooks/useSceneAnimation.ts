@@ -1,7 +1,7 @@
+"use client";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
 import { useResponsive } from "./useResponsive";
 import { useSceneRefs } from "./useSceneRef";
 
@@ -48,10 +48,63 @@ export const useSceneAnimation = (
   // Local ref to track if animation has been initialized
   const isInitializedRef = useRef(false);
   const modelCheckIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const scrollTriggerInstanceRef = useRef<ScrollTrigger | null>(null);
+  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
+  const isCleaningUpRef = useRef(false);
 
   const currentFrame = (index: number) =>
-    `/framesBft_new/frame_${(index + 1).toString().padStart(4, "0")}.webp`;
+    `/BFT_FINAL/${(index + 1).toString().padStart(4, "0")}.webp`;
+
+  // Pre-navigation cleanup effect - handles browser navigation
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (isCleaningUpRef.current) return;
+      isCleaningUpRef.current = true;
+      isCleanedUpRef.current = true;
+      
+      // Stop all intervals immediately
+      if (modelCheckIntervalRef.current) {
+        clearInterval(modelCheckIntervalRef.current);
+        modelCheckIntervalRef.current = null;
+      }
+
+      // Kill GSAP animations with error handling
+      try {
+        if (timelineRef.current) {
+          timelineRef.current.kill();
+          timelineRef.current = null;
+        }
+        
+        if (scrollTriggerRef.current) {
+          scrollTriggerRef.current.kill(true);
+          scrollTriggerRef.current = null;
+        }
+
+        if (gsapContextRef.current) {
+          gsapContextRef.current.revert();
+          gsapContextRef.current = null;
+        }
+
+        ScrollTrigger.getAll().forEach(trigger => {
+          try {
+            trigger.kill(true);
+          } catch (e) {
+            // Silently handle individual trigger errors
+          }
+        });
+      } catch (error) {
+        // Silently handle GSAP cleanup errors
+      }
+    };
+
+    // Listen for route changes
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      handleBeforeUnload();
+    };
+  }, [gsapContextRef, isCleanedUpRef]);
 
   useEffect(() => {
     if (!mounted || !containerRef.current) return;
@@ -65,6 +118,7 @@ export const useSceneAnimation = (
     contextRef.current = context;
     isCleanedUpRef.current = false;
     isInitializedRef.current = false;
+    isCleaningUpRef.current = false;
 
     // Set canvas dimensions
     canvas.width = 1920;
@@ -119,43 +173,18 @@ export const useSceneAnimation = (
       
       isInitializedRef.current = true;
 
-      // Kill existing ScrollTriggers for this container BEFORE creating new context
-      ScrollTrigger.getAll().forEach((trigger) => {
-        if (trigger.vars.trigger === containerRef.current) {
-          trigger.kill(true);
-        }
-      });
-
-      // Create GSAP context
+      // Create GSAP context with error handling
       const ctx = gsap.context(() => {
         if (isCleanedUpRef.current) return;
-
-        // Create master timeline
-        const masterTimeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top top",
-            end: "+=6000",
-            scrub: 1,
-            pin: true,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-            onRefresh: () => {
-              if (isCleanedUpRef.current) return;
-            },
-            onUpdate: (self) => {
-              // Store reference to ScrollTrigger instance
-              scrollTriggerInstanceRef.current = self;
-            },
-          },
-        });
-
-        // Set initial states
-        gsap.set([ceciRef.current, tourismRef.current], {
-          x: 0,
-          opacity: 0,
-          visibility: "hidden",
-        });
+        
+        // Set initial states with null checks
+        if (ceciRef.current && tourismRef.current) {
+          gsap.set([ceciRef.current, tourismRef.current], {
+            x: 0,
+            opacity: 0,
+            visibility: "hidden",
+          });
+        }
 
         gsap.set(imageSeqRef.current, {
           visibility: "visible",
@@ -200,6 +229,25 @@ export const useSceneAnimation = (
           visibility: "hidden",
           scale: 0.8,
         });
+
+        // Create master timeline
+        const masterTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: "+=6000",
+            scrub: 1,
+            pin: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              scrollTriggerRef.current = self;
+            },
+          },
+        });
+
+        // Store timeline reference
+        timelineRef.current = masterTimeline;
 
         // Build timeline
         masterTimeline
@@ -298,7 +346,7 @@ export const useSceneAnimation = (
           .to(
             ceciRef.current,
             {
-              x: isMobile ? -140 : isTablet ? -260 : "-27vw",
+              x: isMobile ? -140 : isTablet ? -260 : isLg ? "-30vw" : "-27vw",
               opacity: 1,
               visibility: "visible",
               duration: 1.5,
@@ -311,7 +359,7 @@ export const useSceneAnimation = (
             {
               opacity: 1,
               visibility: "visible",
-              x: isMobile ? 140 : isTablet ? 260 : isLg ? "26.5vw" : "27vw",
+              x: isMobile ? 140 : isTablet ? 260 : isLg ? "29vw" : "27vw",
               duration: 1.5,
               ease: "power2.out",
             },
@@ -388,7 +436,7 @@ export const useSceneAnimation = (
           .to(
             ceciRef.current,
             {
-              x: isMobile ? -57 : isTablet ? -115 : isLg ? "-13.5vw" : "-15vw",
+              x: isMobile ? -57 : isTablet ? -117 : isLg ? "-14.5vw" : "-15.5vw",
               duration: 2,
               ease: "power2.inOut",
             },
@@ -397,7 +445,7 @@ export const useSceneAnimation = (
           .to(
             tourismRef.current,
             {
-              x: isMobile ? 57 : isTablet ? 115 : isLg ? "13.5vw" : "15vw",
+              x: isMobile ? 57 : isTablet ? 117 : isLg ? "14.5vw" : "15.5vw",
               duration: 2,
               ease: "power2.inOut",
             },
@@ -489,64 +537,55 @@ export const useSceneAnimation = (
       }, 50);
     };
 
-    // Enhanced cleanup function with proper order
-    cleanupRef.current = () => {
-      if (isCleanedUpRef.current) return;
-      
-      console.log("🧹 Starting cleanup...");
+    // Cleanup function
+    return () => {
+      if (isCleaningUpRef.current) return;
+      isCleaningUpRef.current = true;
       isCleanedUpRef.current = true;
 
-      // 1. Clear interval first
+      // Clear interval first
       if (modelCheckIntervalRef.current) {
         clearInterval(modelCheckIntervalRef.current);
         modelCheckIntervalRef.current = null;
       }
 
-      // 2. Kill all tweens BEFORE touching ScrollTrigger
-      gsap.killTweensOf("*");
-
-      // 3. Kill the specific ScrollTrigger instance if we have it
-      if (scrollTriggerInstanceRef.current) {
-        try {
-          scrollTriggerInstanceRef.current.kill(false); // false = don't revert
-          scrollTriggerInstanceRef.current = null;
-        } catch (e) {
-          console.warn("ScrollTrigger instance kill failed:", e);
-        }
-      }
-
-      // 4. Kill any remaining ScrollTriggers for this container
+      // Kill GSAP animations in correct order
       try {
-        const triggers = ScrollTrigger.getAll();
-        triggers.forEach((trigger) => {
-          if (trigger.vars.trigger === containerRef.current) {
-            trigger.kill(false); // false = don't revert to avoid DOM manipulation
+        if (timelineRef.current) {
+          timelineRef.current.kill();
+          timelineRef.current = null;
+        }
+
+        if (scrollTriggerRef.current) {
+          scrollTriggerRef.current.kill(true);
+          scrollTriggerRef.current = null;
+        }
+
+        if (gsapContextRef.current) {
+          gsapContextRef.current.revert();
+          gsapContextRef.current = null;
+        }
+
+        // Kill all ScrollTriggers to prevent DOM manipulation errors
+        ScrollTrigger.getAll().forEach(trigger => {
+          try {
+            trigger.kill(true);
+          } catch (e) {
+            // Silently handle individual trigger cleanup errors
           }
         });
-      } catch (e) {
-        console.warn("ScrollTrigger cleanup failed:", e);
+      } catch (error) {
+        // Silently handle cleanup errors
       }
 
-      // 5. Revert GSAP context (this should be safe now)
-      if (gsapContextRef.current) {
+      // Clear canvas
+      if (contextRef.current && canvasRef.current) {
         try {
-          gsapContextRef.current.revert();
+          contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
         } catch (e) {
-          console.warn("GSAP context revert failed:", e);
+          // Silently handle canvas cleanup errors
         }
-        gsapContextRef.current = null;
       }
-
-      // 6. Clear references
-      imagesRef.current = [];
-      modelGroupRef.current = null;
-      isInitializedRef.current = false;
-      
-      console.log("✅ Cleanup complete");
-    };
-
-    return () => {
-      if (cleanupRef.current) cleanupRef.current();
     };
   }, [
     mounted,
@@ -569,7 +608,7 @@ export const useSceneAnimation = (
     point2Ref,
     point3Ref,
     point4Ref,
-    pioneerRef,
+    pioneerRef, 
     worldRef,
     logoRef,
     modelGroupRef,
@@ -580,20 +619,4 @@ export const useSceneAnimation = (
     isCleanedUpRef,
     gsapContextRef,
   ]);
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      console.log("🧹 Component unmounting...");
-      if (cleanupRef.current) {
-        try {
-          cleanupRef.current();
-        } catch (err) {
-          console.warn("Cleanup error:", err);
-        } finally {
-          cleanupRef.current = null;
-        }
-      }
-    };
-  }, [cleanupRef]);
 };

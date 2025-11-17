@@ -2,45 +2,20 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/Navigation/Navbar";
-import LenisProvider from "@/components/Wrapper/LenisScroll";
+import LenisProvider from "@/wrapper/LenisScroll";
 import Footer from "@/components/Navigation/Footer";
 import Background from "@/components/Reusable/Background";
+import { Montserrat } from "next/font/google";
 
-const suisseIntl = localFont({
-  src: [
-    {
-      path: "../fonts/SuisseIntl-Light.ttf",
-      weight: "300",
-      style: "normal",
-    },
-    {
-      path: "../fonts/SuisseIntl-Regular.ttf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../fonts/SuisseIntl-Medium.ttf",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "../fonts/SuisseIntl-SemiBold.ttf",
-      weight: "600",
-      style: "normal",
-    },
-    {
-      path: "../fonts/SuisseIntl-Bold.ttf",
-      weight: "700",
-      style: "normal",
-    },
-  ],
-  variable: "--font-suisseintl",
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-montserrat",
   display: "swap",
 });
 
-const heatherGreen = localFont({
-  src: "../fonts/Heathergreen.otf",
-  variable: "--font-heathergreen",
+const glacialIndifference = localFont({
+  src: "../fonts/glacial-indifference.regular.otf",
+  variable: "--font-glacial",
   display: "swap",
 });
 
@@ -57,9 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${suisseIntl.variable} ${heatherGreen.variable} antialiased`}
-      >
+      <body className={`${montserrat.variable} ${glacialIndifference.variable} antialiased`}>
         <LenisProvider>
           <Background>
             <Navbar />

@@ -1,8 +1,7 @@
-import React from "react";
-import { CraftedJourney } from "../Data/Experience/CraftedJourney";
-import { MysteryVoyageContents } from "../Data/Experience/MysteryVoyage";
-import { PurposeRetreat } from "../Data/Experience/PurposeRetreat";
-import { TailoredEscape } from "../Data/Experience/TailoredEscape";
+import { CraftedJourney } from "../../data/Experience/CraftedJourney";
+import { MysteryVoyageContents } from "../../data/Experience/MysteryVoyage";
+import { PurposeRetreat } from "../../data/Experience/PurposeRetreat";
+import { TailoredEscape } from "../../data/Experience/TailoredEscape";
 import Journeys from "../Reusable/Journeys";
 import Heading from "../Reusable/UI/Heading";
 
@@ -29,6 +28,7 @@ const Experience = () => {
       {AllJourneys.map((item, index) => (
         <Journeys key={index} data={item} />
       ))}
+      
     </div>
   );
 };

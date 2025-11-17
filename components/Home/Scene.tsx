@@ -1,23 +1,23 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import { Group } from "three";
+import {  Object3D, Material, Mesh } from "three";
 import { Model } from "../Reusable/Earth";
 import { FullLogo } from "@/assets/home";
-import {  useSceneAnimation } from "@/hooks/useSceneAnimation";
+import { useSceneAnimation } from "@/hooks/useSceneAnimation";
 import { useResponsive } from "@/hooks/useResponsive";
 import { useSceneRefs } from "@/hooks/useSceneRef";
 import Image from "next/image";
 
+
 const Scene: React.FC = () => {
-  // Use custom hooks
+  // hooks
   const responsiveState = useResponsive();
   const refs = useSceneRefs();
   useSceneAnimation(refs, responsiveState);
 
-  const { mounted, isMobile, isTablet, responsiveSettings } =
-    responsiveState;
+  const { mounted, isMobile, isTablet, isLg, responsiveSettings } = responsiveState;
 
   const {
     canvasRef,
@@ -40,26 +40,43 @@ const Scene: React.FC = () => {
     modelGroupRef,
   } = refs;
 
-  // Animated Model Component
-  const AnimatedModel = () => {
-    const groupRef = useRef<Group>(null);
-
-    useEffect(() => {
-      if (groupRef.current) {
-        modelGroupRef.current = groupRef.current;
+  // Cleanup on unmount to prevent DOM errors during navigation
+  useEffect(() => {
+    // Capture the current ref value to ensure we're cleaning up the right resources
+    const modelGroup = modelGroupRef.current;
+    
+    return () => {
+      // Force cleanup flag to prevent any ongoing operations
+      if (refs.isCleanedUpRef.current !== undefined) {
+        refs.isCleanedUpRef.current = true;
       }
-    }, []);
 
-    return (
-      <group
-        ref={groupRef}
-        scale={responsiveSettings.modelScale}
-        position={[0, 0, 0]}
-      >
-        <Model />
-      </group>
-    );
-  };
+      // Clean up Three.js resources to prevent GPU memory leaks
+      try {
+        if (modelGroup) {
+          modelGroup.traverse((child: Object3D) => {
+            if ((child as Mesh).isMesh) {
+              const mesh = child as Mesh;
+              if (mesh.geometry) {
+                mesh.geometry.dispose();
+              }
+              if (mesh.material) {
+                if (Array.isArray(mesh.material)) {
+                  mesh.material.forEach((material: Material) => material.dispose());
+                } else {
+                  mesh.material.dispose();
+                }
+              }
+            }
+          });
+        }
+      } catch (error) {
+        // Silently handle cleanup errors
+      }
+    };
+  }, [modelGroupRef, refs]);
+
+
 
   if (!mounted) {
     return <div className="bg-black h-screen w-full" />;
@@ -87,7 +104,7 @@ const Scene: React.FC = () => {
           />
         </div>
 
-        {/* 3D Scene Layer */}
+        {/* Earth */}
         <div
           ref={sceneContainerRef}
           className="absolute inset-0 w-full h-screen"
@@ -107,7 +124,13 @@ const Scene: React.FC = () => {
             }}
           >
             <ambientLight intensity={1.5} />
-            <AnimatedModel />
+            <group
+              ref={modelGroupRef}
+              scale={responsiveSettings.modelScale}
+              position={[0, 0, 0]}
+            >
+              <Model />
+            </group>
             <OrbitControls enableZoom={false} autoRotate enablePan={false} />
           </Canvas>
         </div>
@@ -132,7 +155,7 @@ const Scene: React.FC = () => {
         <div className="absolute z-100 inset-0 pointer-events-none flex flex-col items-start justify-between h-[60vh] md:mt-50 my-auto md:px-20 text-center px-4">
           <h1
             ref={HeadTextRef}
-            className="text-white heather tracking-wider uppercase text-[50px] leading-[50px] md:text-[70px] md:leading-[70px] lg:text-[70px] lg:leading-[70px] xl:text-[80px] xl:leading-20 2xl:text-[80px] 2xl:leading-20 text-left"
+            className="text-white mont tracking-tighter font-semibold uppercase text-[50px] leading-[50px] md:text-[60px] md:leading-[60px] lg:text-[70px] lg:leading-[70px] xl:text-[80px] xl:leading-[80px]  2xl:text-[80px] 2xl:leading-20 text-left"
             style={{ visibility: "hidden" }}
           >
             Where vision ends, <br />{" "}
@@ -150,10 +173,10 @@ const Scene: React.FC = () => {
         </div>
 
         {/* Second Hero Text */}
-        <div className="absolute z-100 inset-0 pointer-events-none flex flex-col items-start justify-between h-[65vh] md:mt-50 my-auto md:px-20 text-center px-4">
+        <div className="absolute z-100 inset-0 pointer-events-none flex flex-col items-start justify-between h-[70vh] md:mt-40 my-auto md:px-20 text-center px-4">
           <h1
             ref={HeadText2Ref}
-            className="text-white heather tracking-wider uppercase text-[50px] leading-[50px] md:text-[70px] md:leading-[70px] lg:text-[70px] lg:leading-[70px] xl:text-[80px] xl:leading-20 2xl:text-[80px] 2xl:leading-20 text-left"
+            className="text-white mont tracking-tighter font-semibold uppercase text-[50px] leading-[50px] md:text-[60px] md:leading-[60px] lg:text-[70px] lg:leading-[70px] xl:text-[80px] xl:leading-[80px] 2xl:text-[80px] 2xl:leading-20 text-left"
             style={{ visibility: "hidden" }}
           >
             Experience destinations <br />
@@ -175,7 +198,7 @@ const Scene: React.FC = () => {
         <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
           <h1
             ref={ceciRef}
-            className="absolute m-0 font-light text-white 2xl:text-[140px] xl:text-[120px] lg:text-[100px] md:text-[70px] text-[35px]"
+            className="absolute m-0 mont tracking-tighter font-semibold text-white 2xl:text-[140px] xl:text-[120px] lg:text-[100px] md:text-[70px] text-[35px]"
             style={{
               lineHeight: responsiveSettings.lineHeight,
               textShadow: "0 0 20px rgba(0,0,0,0.5)",
@@ -187,7 +210,7 @@ const Scene: React.FC = () => {
 
           <h1
             ref={tourismRef}
-            className="absolute m-0 font-light text-white 2xl:text-[140px] xl:text-[120px] lg:text-[100px] md:text-[70px] text-[35px]"
+            className="absolute m-0  mont tracking-tighter font-semibold text-white 2xl:text-[140px] xl:text-[120px] lg:text-[100px] md:text-[70px] text-[35px]"
             style={{
               lineHeight: responsiveSettings.lineHeight,
               textShadow: "0 0 20px rgba(0,0,0,0.5)",
@@ -200,69 +223,95 @@ const Scene: React.FC = () => {
           {/* Point Texts */}
           <p
             ref={point1Ref}
-            className="absolute m-0 text-white leading-relaxed"
+            className="absolute m-0 text-white leading-[22px] flex items-center gap-2"
             style={{
               textShadow: "0 2px 10px rgba(0,0,0,0.7)",
-              top: isMobile ? "12%" : isTablet ? "10%" : "12%",
+              top: isMobile ? "12%" : isTablet ? "12%" : "15%",
               left: isMobile ? "5%" : isTablet ? "4%" : "6%",
-              fontSize: isMobile ? "0.875rem" : isTablet ? "1rem" : "1.125rem",
-              maxWidth: isMobile ? "75%" : isTablet ? "48%" : "24%",
+              fontSize: isMobile ? "0.875rem" : isTablet ? "20px" :  "20px",
+              maxWidth: isMobile ? "75%" : isTablet ? "55%" : isLg ? "60%" : "30%",
+              lineHeight: isMobile ? "75%" : isTablet ? "22px" : "22px",
               visibility: "hidden",
             }}
           >
-            C — Curated: Every journey crafted with precision and heart.
+            {/* Perfect straight vertical line on the left */}
+            <span className="w-[3px] h-12 bg-white rounded-sm inline-block"></span>
+
+            <span>
+              Curated:
+              <br />
+              Every journey crafted with precision and heart.
+            </span>
           </p>
 
           <p
             ref={point2Ref}
-            className={`absolute m-0 text-white leading-relaxed ${
+            className={`absolute m-0 text-white flex items-center gap-2 ${
               isMobile
                 ? "top-[24%] left-[5%] text-sm max-w-[60%]"
                 : isTablet
-                ? "top-[20%] left-[6%] text-base max-w-[40%]"
-                : "top-[24%] left-[6%] text-lg max-w-[20%]"
+                ? "top-[20%] left-[4%] text-[20px]  leading-[22px] max-w-[40%]"
+                  : isLg
+                ? "top-[25%] left-[6%] text-[20px]  leading-[22px] max-w-[40%]"
+                : "top-[24%] left-[6%] text-[20px]  leading-[22px] max-w-[20%]"
             }`}
             style={{
               textShadow: "0 2px 10px rgba(0,0,0,0.7)",
               visibility: "hidden",
             }}
           >
-            E — Experiential: Created to be lived, not just seen.
+            <span className="w-[3px] h-12 bg-white rounded-sm inline-block"></span>
+            Experiential:
+            <br />
+            Created to be lived, not just seen.
           </p>
 
           <p
             ref={point3Ref}
-            className={`absolute m-0 text-white leading-relaxed text-right ${
+            className={`absolute m-0 text-white  text-right flex items-center gap-2 ${
               isMobile
                 ? "bottom-[22%] right-[5%] text-sm max-w-[62%]"
                 : isTablet
-                ? "bottom-[20%] right-[8%] text-base max-w-[40%]"
-                : "bottom-[20%] right-[10%] text-lg max-w-[25%]"
+                ? "bottom-[20%] right-[5.6%] text-[20px] leading-[22px] max-w-[50%]"
+                : isLg
+                ? "bottom-[20%] right-[5%] text-[20px] leading-[22px] max-w-[50%]"
+                : "bottom-[20%] right-[10%]  max-w-[28%] text-[20px] leading-[22px]"
             }`}
             style={{
               textShadow: "0 2px 10px rgba(0,0,0,0.7)",
               visibility: "hidden",
             }}
           >
-            C — Cultural: Rooted in local stories and timeless emotion.
+            <span className="text-right">
+              Cultural:
+              <br />
+              Rooted in local stories and timeless emotion.
+            </span>
+
+            {/* Perfect straight vertical line on the right side */}
+            <span className="w-[3px] h-[40px] bg-white rounded-sm inline-block" />
           </p>
 
           <p
             ref={point4Ref}
-            className={`absolute m-0 text-white leading-relaxed text-right ${
+            className={`absolute m-0 text-white text-right flex items-center gap-2 ${
               isMobile
                 ? "bottom-[10%] right-[5%] text-sm max-w-[62%]"
                 : isTablet
-                ? "bottom-[12%] right-[8%] text-base max-w-[40%]"
-                : "bottom-[10%] right-[10%] text-lg max-w-[25%]"
+                ? "bottom-[12%] right-[5.6%] text-[20px] leading-[22px] max-w-[60%]"
+                : isLg
+                ? "bottom-[12%] right-[5%] text-[20px] leading-[22px] max-w-[50%]"
+                : "bottom-[10%] right-[10%] text-[20px] max-w-[32%] leading-[22px]  "
             }`}
             style={{
               textShadow: "0 2px 10px rgba(0,0,0,0.7)",
               visibility: "hidden",
             }}
           >
-            I — Immersive: Surrender to presence — that&apos;s where you truly
-            arrive.
+            Immersive: <br />
+Surrender to presence — that’s where you truly arrive.
+            <span className="w-[3px] h-[40px] bg-white rounded-sm inline-block" />
+
           </p>
 
           {/* Pioneer/Worldwide Text */}
@@ -272,8 +321,10 @@ const Scene: React.FC = () => {
               isMobile
                 ? "top-[45%] left-[23%] text-sm"
                 : isTablet
-                ? "top-[43%] left-[23%] text-xl"
-                : "top-[38%] left-[21%] text-2xl"
+                ? "top-[44%] left-[22%] text-xl"
+                 : isLg
+                ? "top-[40%] left-[22%] text-xl"
+                : "top-[38%] left-[20%] text-2xl"
             }`}
             style={{
               textShadow: "0 2px 10px rgba(0,0,0,0.7)",
@@ -289,8 +340,10 @@ const Scene: React.FC = () => {
               isMobile
                 ? "bottom-[45%] right-[24%] text-sm"
                 : isTablet
-                ? "bottom-[43%] right-[24%] text-xl"
-                : "bottom-[38%] right-[22.5%] text-2xl"
+                ? "bottom-[44%] right-[22.5%] text-xl"
+                : isLg 
+                ? "bottom-[40%] right-[22.3%] text-xl"
+                : "bottom-[38%] right-[19.9%] text-2xl"
             }`}
             style={{
               textShadow: "0 2px 10px rgba(0,0,0,0.7)",

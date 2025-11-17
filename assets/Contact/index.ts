@@ -1,0 +1,1 @@
+export const Fort = 'https://ik.imagekit.io/99y1fc9mh/BFT/Contact/image%20120.png?updatedAt=1762926311696'

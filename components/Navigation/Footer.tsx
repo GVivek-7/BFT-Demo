@@ -2,9 +2,11 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { navContents } from "../Constants";
-import { BeginYourUnknownImage } from "../Data/Footer/BeginYourUnknownImage";
-import { FooterSocailLinks } from "../Data/Footer/FooterSocials";
+import { usePathname } from "next/navigation";
+import { navContents } from "../../constants";
+import { BeginYourUnknownImage } from "../../data/Footer/BeginYourUnknownImage";
+import { FooterSocailLinks } from "../../data/Footer/FooterSocials";
+import { FooterContents } from "../../data/Footer/FooterContents";
 import Align from "../Reusable/Align";
 import { GoArrowUpLeft } from "react-icons/go";
 
@@ -12,12 +14,18 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
   const [scrollY, setScrollY] = useState(0);
   const footerRef = React.useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+
+  // Find the matching footer content based on pathname
+  const footerContent = FooterContents.find(
+    (content) => content.pathName === pathname
+  ) || FooterContents[0]; // Default to first item if no match
 
   useEffect(() => {
     const handleScroll = () => {
       if (footerRef.current) {
         const footerTop = footerRef.current.getBoundingClientRect().top;
-        const triggerPoint = window.innerHeight + 200; // Start 200px before footer enters viewport
+        const triggerPoint = window.innerHeight + 200;
 
         if (footerTop < triggerPoint) {
           const relativeScroll = triggerPoint - footerTop;
@@ -29,7 +37,7 @@ const Footer = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initial check
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -43,13 +51,11 @@ const Footer = () => {
         height={1000}
       />
       <div className="md:h-[490px] h-[362px] w-full flex flex-col items-center bg-white rounded-b-[40px] overflow-hidden px-4 py-8 md:py-20 xl:h-[490px] lg:h-[490px]">
-        <h1 className="font-heading text-[#141414] text-[28px] sm:text-[32px] md:text-[40px] font-semibold tracking-tighter leading-9 sm:leading-[42px] md:leading-[50px] mb-4 text-center">
-          The Beginning of the Unknown
+        <h1 className="mont text-[#141414] text-[28px] sm:text-[32px] md:text-[40px] font-semibold tracking-tighter leading-9 sm:leading-[42px] md:leading-[50px] mb-4 text-center uppercase">
+          {footerContent.title}
         </h1>
-        <p className="text-[16px] sm:text-[20px] md:text-[24px] leading-6 sm:leading-7 md:leading-8 max-w-5xl font-light text-center px-4">
-          There&apos;s a freer, wilder version of you waiting — beyond control,
-          beyond certainty. Close your eyes. Take the step. The world reveals
-          itself when you stop trying to see.
+        <p className="text-[16px] sm:text-[20px] md:text-[24px] leading-6 sm:leading-7 md:leading-8 max-w-6xl font-light text-center px-4">
+          {footerContent.desc}
         </p>
 
         <button className="flex items-center bg-[#FFA62B] text-white font-semibold rounded-full pr-3 pl-1 py-1 transition-all duration-300 cursor-pointer group hover:bg-[#FFA62B] hover:text-white z-10 mt-5">
@@ -151,19 +157,26 @@ const Footer = () => {
 
           {/* Main Title */}
           <div className="w-full flex justify-center px-4 mt-8 md:mt-12">
-            <h1
-              className="font-bold text-center leading-tight wrap-break-word select-none"
-              style={{
-                fontSize: "clamp(3rem, 12vw, 200px)", // slightly smaller max size
-                lineHeight: "clamp(3.2rem, 12.5vw, 210px)",
-                background:
-                  "linear-gradient(to bottom, #FFA62B 0%, #ff8900 70%, #000000 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              BlindFoldTrips
-            </h1>
+           <h1
+  className="
+    font-bold 
+    text-center 
+    select-none 
+    wrap-break-word
+    text-[clamp(3.8rem,14vw,230px)]          /* increased max size */
+    leading-[clamp(3.8rem,13vw,260px)]    /* increased max line height */
+    lg:text-[clamp(3rem,13vw,260px)]      /* bigger on large screens */
+    lg:leading-[clamp(3.8rem,14vw,300px)]
+    xl:text-[clamp(3rem,14vw,300px)]      /* even bigger on XL screens */
+    xl:leading-[clamp(3.8rem,15vw,340px)]
+    bg-linear-to-b from-[#FFA62B] via-[#ff8900] to-black
+    bg-clip-text text-transparent
+  "
+>
+  BlindFoldTrips
+</h1>
+
+
           </div>
 
           {/* Bottom Footer Info */}
@@ -186,14 +199,14 @@ const Footer = () => {
 
             <div>
               <Link
-                href="/privacy-policy"
+                href="#"
                 className="hover:text[#FFA62B]] transition-all duration-300 cursor-pointer"
               >
                 Privacy Policy
               </Link>{" "}
               |{" "}
               <Link
-                href="/terms"
+                href="#"
                 className="hover:text-[#FFA62B] transition-all duration-300 cursor-pointer"
               >
                 Terms & Condition

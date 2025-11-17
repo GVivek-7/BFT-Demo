@@ -1,5 +1,7 @@
 import React from "react";
 import Image from "next/image";
+import TearImage from "./TearImage";
+import Align from "./Align";
 
 export interface JourneyContent {
   no: string;
@@ -21,7 +23,8 @@ export interface JourneyProps {
 
 const Journeys: React.FC<JourneyProps> = ({ data }) => {
   return (
-    <div className="py-20">
+    <Align>
+<div className="pt-40">
       {data.map((item, index) => {
         const words = item.title.split(" ");
         const middleIndex = Math.floor(words.length / 2);
@@ -52,12 +55,12 @@ const Journeys: React.FC<JourneyProps> = ({ data }) => {
             </p>
 
             <div className="flex py-10">
-              <div className="grid grid-cols-2 gap-x-4 gap-y-8 max-w-6xl">
+              <div className="grid md:grid-cols-2  gap-x-4 gap-y-8 max-w-6xl">
                 {item.contents.map((content, cIndex) => (
                   <div
                     key={cIndex}
                     className={`flex ${
-                      cIndex % 2 === 0 ? "flex-col" : "flex-col-reverse"
+                      cIndex % 2 === 0 ? "flex-col" : "md:flex-col-reverse flex-col"
                     } items-center justify-center`}
                   >
                     <div className="flex flex-row justify-between gap-8 w-full items-center">
@@ -94,15 +97,22 @@ const Journeys: React.FC<JourneyProps> = ({ data }) => {
         );
       })}
 
-      <div className="flex flex-col gap-3 items-center justify-center py-10">
-        <h1 className="font-bold text-[20px] leading-[22px] tracking-tighter">
+      <div className="flex flex-col gap-3 items-center justify-center mt-10">
+        <div className="flex flex-col gap-3 items-center mb-5 ">
+ <h1 className="font-bold text-[20px] leading-[22px] tracking-tighter">
           Snip Your Mystery Ticket
         </h1>
         <p className="text-[16px] leading-[18px] font-light">
           Tap the ticket — and let the world of mysteries unfold before you
         </p>
+        </div>
+       
+      <TearImage />
+
       </div>
     </div>
+    </Align>
+    
   );
 };
 

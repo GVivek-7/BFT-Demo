@@ -43,6 +43,7 @@ const ShowReel: React.FC = () => {
   // Parallax scroll effect
   useEffect(() => {
     let ticking = false;
+    let rafId: number | null = null;
     
     const updateParallax = () => {
       const scrollY = window.scrollY;
@@ -59,12 +60,13 @@ const ShowReel: React.FC = () => {
       }
       
       ticking = false;
+      rafId = null;
     };
     
     const handleScroll = () => {
       if (!ticking) {
         ticking = true;
-        requestAnimationFrame(updateParallax);
+        rafId = requestAnimationFrame(updateParallax);
       }
     };
     
@@ -72,6 +74,9 @@ const ShowReel: React.FC = () => {
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
     };
   }, []);
 

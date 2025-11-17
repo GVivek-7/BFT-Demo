@@ -28,7 +28,7 @@ export const useSceneRefs = () => {
   const modelGroupRef = useRef<Group | null>(null);
 
   // Image sequence refs
-  const totalFrames = 395;
+  const totalFrames = 425;
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const imgSeqRef = useRef({ frame: 0 });
   const cleanupRef = useRef<(() => void) | null>(null);

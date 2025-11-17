@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { GoArrowUpLeft } from "react-icons/go";
-import { BeyondTravelContents } from "../Data/Home/BeyondTravel";
+import { BeyondTravelContents } from "../../data/Home/BeyondTravel";
 
 
 
