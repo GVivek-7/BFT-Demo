@@ -48,7 +48,7 @@ const ChapterNavigation = ({
         </h1>
 
         {/* Horizontal Scrolling Chapter Cards */}
-        <div className="relative pt-20 pb-70">
+        <div className="relative pt-20 pb-10">
           <div className="flex gap-6 overflow-x-auto pb-6 px-4 scrollbar-hide scroll-smooth">
             {chapters.map((chapter, index) => {
               const title =
