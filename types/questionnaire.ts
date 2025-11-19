@@ -1,3 +1,5 @@
+import { StaticImageData } from "next/image";
+
 export type QuestionType = "radio" | "checkbox" | "text";
 
 export interface QuestionOption {
@@ -15,13 +17,14 @@ export interface Question {
 
 export interface Section {
   name: string;
+  image?: string | StaticImageData;
   questions: Question[];
 }
 
 export interface Chapter {
   id: number;
   title?: string;
-  image?: string;
+  image?: string | StaticImageData;
   name?: string;
   questions?: Question[];
   sections?: Section[];

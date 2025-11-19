@@ -2,10 +2,10 @@ import { CraftedJourney } from "../../data/Experience/CraftedJourney";
 import { MysteryVoyageContents } from "../../data/Experience/MysteryVoyage";
 import { PurposeRetreat } from "../../data/Experience/PurposeRetreat";
 import { TailoredEscape } from "../../data/Experience/TailoredEscape";
-import Journeys from "../Reusable/Journeys";
+import Journeys, { JourneyItem } from "../Reusable/Journeys";
 import Heading from "../Reusable/UI/Heading";
 
-const AllJourneys = [
+const AllJourneys: JourneyItem[][] = [
   MysteryVoyageContents,
   TailoredEscape,
   PurposeRetreat,

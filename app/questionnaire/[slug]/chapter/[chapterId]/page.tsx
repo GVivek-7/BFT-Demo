@@ -78,9 +78,8 @@ const ChapterPage = () => {
   const handleSubmit = () => {
     console.log("Submitting answers:", answers);
     // Handle submission logic here
-    alert("Questionnaire submitted successfully!");
     localStorage.removeItem(`questionnaire_${slug}`);
-    router.push("/questionnaire");
+    router.push(`/questionnaire/${slug}/end`);
   };
 
   return (

@@ -3,9 +3,10 @@ import { SOCIAL_LOGINS } from "@/data/Auth/Socials";
 import Button from "@/components/Reusable/UI/Button";
 import { Input } from "@/components/Reusable/UI/Input";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GoArrowUpLeft } from "react-icons/go";
 import Image from "next/image";
+import { AuthBg1, AuthBg2, AuthBg3, AuthBg4, AuthBg5, AuthBg6 } from "@/assets/Auth";
 
 interface FormFields {
   name: string;
@@ -19,6 +20,7 @@ type FormData = FormFields;
 type FormErrors = Record<keyof FormFields, string>;
 
 const Page = () => {
+  const [bgIndex, setBgIndex] = useState(0);
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -110,15 +112,37 @@ const Page = () => {
     }
   };
 
+  const BG_IMAGES = [
+    {img:AuthBg1},
+    {img:AuthBg2},
+    {img:AuthBg3},
+    {img:AuthBg4},
+    {img:AuthBg5},
+    {img:AuthBg6},
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBgIndex((prev) => (prev + 1) % BG_IMAGES.length);
+    }, 4000); // change every 4 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div
-      className="w-full min-h-screen bg-cover bg-center flex items-center justify-center md:justify-start md:px-50 px-4"
-      style={{
-        backgroundImage:
-          "url('https://ik.imagekit.io/99y1fc9mh/BFT/Sign%20Up.png?updatedAt=1761997977228')",
-      }}
-    >
-      <div className="flex lg:flex-row flex-col-reverse items-center lg:items-start justify-center lg:justify-start gap-6 lg:gap-10 w-full lg:w-auto py-8 lg:py-0">
+    <div className="relative w-full min-h-screen flex items-center justify-center md:justify-start md:px-50 px-4">
+      {BG_IMAGES.map((bg, index) => (
+        <div
+          key={index}
+          className="absolute inset-0 bg-cover z-0 bg-center transition-opacity duration-1000 ease-in-out"
+          style={{
+            backgroundImage: `url(${bg.img.src})`,
+            opacity: index === bgIndex ? 1 : 0,
+            zIndex: index === bgIndex ? 1 : 0,
+          }}
+        />
+      ))}
+      <div className="relative z-10 flex lg:flex-row flex-col-reverse items-center lg:items-start justify-center lg:justify-start gap-6 lg:gap-10 w-full lg:w-auto py-8 lg:py-0">
         <div className="bg-white/70 border border-white/20 rounded-[12px] p-6 sm:p-8 lg:p-12 w-full max-w-[434px]">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>

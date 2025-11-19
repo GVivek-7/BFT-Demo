@@ -1,8 +1,11 @@
-export const MysteryVoyageContents = [
+import { JourneyItem } from "../../components/Reusable/Journeys";
+
+export const MysteryVoyageContents: JourneyItem[] = [
   {
     title: "The Mystery Voyage",
-    desc: "The Mystery Trip is not your usual travel. You won’t know the destination until you arrive, but every detail is a surprise — from stunning landscapes to unique cultural experiences and unforgettable adventures.",
+    desc: "The Mystery Trip is not your usual travel. You won't know the destination until you arrive, but every detail is a surprise — from stunning landscapes to unique cultural experiences and unforgettable adventures.",
     textColor: "#04256C",
+    destinationUrl: "/questionnaire/mystery-voyage",
     contents: [
       {
         no: "01",
@@ -19,7 +22,7 @@ export const MysteryVoyageContents = [
       {
         no: "03",
         title: "Surprise Destinations",
-        desc: "You won’t know where you’re heading until the last moment, making the journey full of anticipation.",
+        desc: "You won't know where you're heading until the last moment, making the journey full of anticipation.",
         img: "https://ik.imagekit.io/99y1fc9mh/BFT/Experience/Container%20(6).png?updatedAt=1761893460128",
       },
       {

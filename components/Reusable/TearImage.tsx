@@ -2,8 +2,14 @@
 import React, { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { MdFlight } from "react-icons/md";
+import { useRouter } from "next/navigation";
 
-const TearImage: React.FC = () => {
+interface TearImageProps {
+  destinationUrl?: string;
+}
+
+const TearImage: React.FC<TearImageProps> = ({ destinationUrl = "/questionnaire" }) => {
+  const router = useRouter();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const leftRef = useRef<HTMLDivElement | null>(null);
   const rightRef = useRef<HTMLDivElement | null>(null);
@@ -15,6 +21,13 @@ const TearImage: React.FC = () => {
   const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
     if (isTorn) return;
     e.preventDefault();
+    
+    // On mobile (touch), trigger tear immediately on click
+    if ('touches' in e) {
+      executeTear();
+      return;
+    }
+    
     setIsDragging(true);
   };
 
@@ -106,13 +119,18 @@ const TearImage: React.FC = () => {
       }, delay);
       delay += anim.duration;
     });
+
+    // Navigate after animation completes
+    setTimeout(() => {
+      router.push(destinationUrl);
+    }, delay + 300);
   };
 
   return (
-    <div className="flex items-center justify-center w-full">
+    <div className="flex items-center justify-center w-full px-4">
       <div
         ref={containerRef}
-        className="relative w-full max-w-6xl mx-auto h-[400px] rounded-2xl"
+        className="relative w-full md:max-w-6xl mx-auto h-[110px] sm:h-[250px] md:h-[400px] md:rounded-2xl rounded-md"
         style={{
           perspective: "1200px",
         }}
@@ -209,13 +227,13 @@ const TearImage: React.FC = () => {
               transition: "opacity 0.3s ease-out",
             }}
           >
-            <MdFlight className="rotate-180 size-12 text-[#04256C]" />
+            <MdFlight className="rotate-180 size-8 sm:size-10 md:size-12 text-[#04256C]" />
           </div>
         </div>
       </div>
 
-      <div className="absolute bottom-8 text-neutral-300 text-sm">
-        {isTorn ? "Torn!" : isDragging ? `${Math.round(dragProgress * 100)}% - ${dragProgress >= 0.9 ? 'Release to tear!' : 'Keep dragging...'}` : "Drag the icon down to tear"}
+      <div className="absolute -bottom-6 sm:bottom-8 text-neutral-400 text-xs sm:text-sm text-center px-4">
+        {isTorn ? "Redirecting..." : isDragging ? `${Math.round(dragProgress * 100)}% - ${dragProgress >= 0.9 ? 'Release to tear!' : 'Keep dragging...'}` : "Drag the icon down to tear"}
       </div>
     </div>
   );

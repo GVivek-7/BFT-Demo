@@ -36,10 +36,10 @@ const Location: React.FC = () => {
                   <Icon />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <span className="font-semibold mont text-[#04256C] text-[20px] leading-[22px]">
+                  <span className="font-semibold mont text-[#04256C] md:text-[20px] text-[15px] md:leading-[22px]">
                     {item.title}
                   </span>
-                  <span className="text-black text-[20px] leading-[22px]">
+                  <span className="text-black md:text-[20px] text-[15px] md:leading-[22px]">
                     {item.desc}
                   </span>
                 </div>

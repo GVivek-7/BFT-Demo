@@ -42,7 +42,10 @@ const Hero: React.FC = () => {
   }, []);
 
   return (
-    <div className="h-dvh w-full relative overflow-hidden " suppressHydrationWarning>
+    <div
+      className="h-dvh w-full relative overflow-hidden "
+      suppressHydrationWarning
+    >
       <div
         ref={bgRef}
         className="absolute inset-0 w-full h-full will-change-transform"
@@ -57,11 +60,13 @@ const Hero: React.FC = () => {
 
       <div
         ref={textRef}
-        className="absolute top-43 left-20 inset-0 flex flex-col items-start justify-start will-change-transform"
+        className="absolute top-43 md:left-20 left-10 inset-0 flex flex-col items-start justify-start will-change-transform"
       >
-        <p className="text-[34px] leading-9 text-white">Let’s Plan the Unknown</p>
-        <h1 className="text-[#E6AF2E] text-[120px] font-bold mont tracking-tighter leading-[122px] text-center uppercase">
-        Together
+        <p className="md:text-[34px] text-[20px] md:leading-9 text-white">
+          Let’s Plan the Unknown
+        </p>
+        <h1 className="text-[#E6AF2E] md:text-[120px] text-[50px] font-bold mont tracking-tighter md:leading-[122px] text-center uppercase">
+          Together
         </h1>
       </div>
 

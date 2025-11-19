@@ -13,7 +13,22 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 const pathname = usePathname();
- const scrollThreshold = pathScrollThresholds[pathname] || pathScrollThresholds["/"];
+ 
+  // Check for exact match first, then check for pattern matches
+  const getScrollThreshold = () => {
+    if (pathScrollThresholds[pathname]) {
+      return pathScrollThresholds[pathname];
+    }
+    
+    // Check if pathname starts with /questionnaire
+    if (pathname.startsWith('/questionnaire')) {
+      return pathScrollThresholds["/questionnaire/*"];
+    }
+    
+    return pathScrollThresholds["/"];
+  };
+  
+  const scrollThreshold = getScrollThreshold();
 
  useEffect(() => {
     const handleScroll = () => {

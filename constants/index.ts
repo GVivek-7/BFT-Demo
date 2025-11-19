@@ -16,6 +16,7 @@ export const pathScrollThresholds: Record<string, number> = {
   "/sign-in": -1,
   "/sign-up": -1,
   "/forgot-password": -1,
-  "/questionnaire" : -1
+"/questionnaire/*": -1
+
 };
 

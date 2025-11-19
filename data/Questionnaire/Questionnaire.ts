@@ -1,4 +1,15 @@
-import { whosJumpingIn } from "@/assets/Questionnaire";
+import {
+  ChapterImage1,
+  ChapterImage10,
+  ChapterImage2,
+  ChapterImage3,
+  ChapterImage4,
+  ChapterImage5,
+  ChapterImage6,
+  ChapterImage7,
+  ChapterImage8,
+  ChapterImage9,
+} from "@/assets/Questionnaire/ChapterNavigation";
 import { QuestionnaireDataArray } from "@/types/questionnaire";
 
 export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
@@ -9,7 +20,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 1,
         title: "Who's Jumping In?",
-        image: whosJumpingIn,
+        image: ChapterImage1,
         questions: [
           {
             id: "1_1",
@@ -53,6 +64,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 2,
         title: "Social Vibe Check",
+        image: ChapterImage2,
         questions: [
           {
             id: "2_1",
@@ -97,6 +109,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 3,
         title: "Boundaries + Safety *",
+        image: ChapterImage3,
         questions: [
           {
             id: "3_1",
@@ -131,6 +144,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 4,
         title: "What You Want From This Shared Trip",
+        image: ChapterImage4,
         questions: [
           {
             id: "4_1",
@@ -161,6 +175,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 5,
         title: "Exploration Style",
+        image: ChapterImage5,
         questions: [
           {
             id: "5_1",
@@ -172,8 +187,13 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
               { value: "culture", label: "Culture + heritage + story layers" },
               { value: "food", label: "Food hunts + street discovery" },
               { value: "adventure", label: "Light adventure activities" },
-              { value: "premium", label: "Premium comfort + unwind + feel rich",},
-              { value: "content", label: "Content / creator aesthetic journey",
+              {
+                value: "premium",
+                label: "Premium comfort + unwind + feel rich",
+              },
+              {
+                value: "content",
+                label: "Content / creator aesthetic journey",
               },
             ],
           },
@@ -183,6 +203,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 6,
         title: "Travel Setup",
+        image: ChapterImage6,
         questions: [
           {
             id: "6_1",
@@ -227,6 +248,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 7,
         title: "Budget",
+        image: ChapterImage7,
         questions: [
           {
             id: "7_1",
@@ -239,6 +261,8 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 8,
         title: "International Ready?",
+        image: ChapterImage8,
+
         questions: [
           {
             id: "8_1",
@@ -281,6 +305,8 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 9,
         title: "Personality Filters",
+        image: ChapterImage9,
+
         questions: [
           {
             id: "9_1",
@@ -303,6 +329,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 10,
         title: "Contact & Consent",
+        image: ChapterImage10,
         questions: [
           {
             id: "10_1",
@@ -341,6 +368,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 1,
         title: "Basic Trip Info",
+        image: ChapterImage1,
         questions: [
           {
             id: "1_1",
@@ -381,6 +409,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 2,
         title: "Work Requirements & Timings",
+        image: ChapterImage2,
         questions: [
           {
             id: "2_1",
@@ -449,6 +478,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 3,
         title: "How You Want to Explore",
+        image: ChapterImage3,
         questions: [
           {
             id: "3_1",
@@ -481,6 +511,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 4,
         title: "Exploration Preference Style",
+        image: ChapterImage4,
         questions: [
           {
             id: "4_1",
@@ -502,6 +533,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 5,
         title: "Comfort + Boundaries",
+        image: ChapterImage5,
         questions: [
           {
             id: "5_1",
@@ -537,6 +569,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 6,
         title: "Travel Setup",
+        image: ChapterImage6,
         questions: [
           {
             id: "6_1",
@@ -562,8 +595,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
           {
             id: "6_4",
             type: "radio",
-            ques:
-              "Do you need to return to the same home city after this trip ends?",
+            ques: "Do you need to return to the same home city after this trip ends?",
             options: [
               { value: "yes", label: "Yes" },
               { value: "no", label: "No" },
@@ -633,6 +665,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 7,
         title: "Additional Inputs",
+        image: ChapterImage7,
         questions: [
           {
             id: "7_1",
@@ -650,6 +683,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 8,
         title: "Contact + Final Confirmation",
+        image: ChapterImage8,
         questions: [
           {
             id: "8_1",
@@ -688,6 +722,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 1,
         name: "The Basics",
+        image: ChapterImage1,
         questions: [
           {
             id: "1_1",
@@ -721,6 +756,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 2,
         name: "Your Comfort Zone (or Not)",
+        image: ChapterImage2,
         questions: [
           {
             id: "2_1",
@@ -743,6 +779,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 3,
         name: "Pick Your Travel Vibe",
+        image: ChapterImage3,
         questions: [
           {
             id: "3_1",
@@ -767,6 +804,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 4,
         name: "What You’re Really After",
+        image: ChapterImage4,
         questions: [
           {
             id: "4_1",
@@ -823,6 +861,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
       {
         id: 5,
         name: "The Travel Basics",
+        image: ChapterImage5,
         questions: [
           {
             id: "5_1",
@@ -893,6 +932,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
         sections: [
           {
             name: "Final Touches",
+           image: ChapterImage6,
             questions: [
               {
                 id: "6_1",
@@ -974,257 +1014,322 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
   },
 
   // Crafted Jounrey
- {
-  slug: "crafted-journey",
-  chapters: [
-    // chapter - 1 "The Basics"
-    {
-      id: 1,
-      name: "The Basics",
-      questions: [
-        {
-          id: "1_1",
-          ques: "How many travellers will be joining?",
-          type: "radio",
-          options: [
-            { value: "solo", label: "Solo" },
-            { value: "duo", label: "Duo" },
-            { value: "friends_group", label: "Friends group" },
-            { value: "family_pack", label: "Family pack" }
-          ]
-        },
-        {
-          id: "1_2",
-          ques: "When was your last trip & how did that experience feel?",
-          type: "radio",
-          options: [
-            { value: "loved_it", label: "Loved it" },
-            { value: "mid", label: "Mid" },
-            { value: "stressful", label: "Stressful" },
-            { value: "didnt_enjoy", label: "Didn't enjoy" }
-          ] 
-        },
-        {
-          id: "1_3",
-          ques: "Tell us your name — it feels nicer than calling you “you”",
-          type: "text"
-        }
-      ]
-    },
+  {
+    slug: "crafted-journey",
+    chapters: [
+      // chapter - 1 "The Basics"
+      {
+        id: 1,
+        name: "The Basics",
+        image: ChapterImage1,
+        questions: [
+          {
+            id: "1_1",
+            ques: "How many travellers will be joining?",
+            type: "radio",
+            options: [
+              { value: "solo", label: "Solo" },
+              { value: "duo", label: "Duo" },
+              { value: "friends_group", label: "Friends group" },
+              { value: "family_pack", label: "Family pack" },
+            ],
+          },
+          {
+            id: "1_2",
+            ques: "When was your last trip & how did that experience feel?",
+            type: "radio",
+            options: [
+              { value: "loved_it", label: "Loved it" },
+              { value: "mid", label: "Mid" },
+              { value: "stressful", label: "Stressful" },
+              { value: "didnt_enjoy", label: "Didn't enjoy" },
+            ],
+          },
+          {
+            id: "1_3",
+            ques: "Tell us your name — it feels nicer than calling you “you”",
+            type: "text",
+          },
+        ],
+      },
 
-    // chapter - 2 "Your Comfort Zone"
-    {
-      id: 2,
-      name: "Your Comfort Zone",
-      questions: [
-        {
-          id: "2_1",
-          ques: "Any fears, phobias, medical needs or movement limitations we should keep in mind?",
-          type: "text"
-        },
-        {
-          id: "2_2",
-          ques: "Any strict NO activities?",
-          type: "radio",
-          options: [
-            { value: "deep_water", label: "Deep Water" },
-            { value: "extreme_heights", label: "Extreme heights" },
-            { value: "long_treks", label: "Long treks" },
-            { value: "scary_places", label: "Scary places" },
-            { value: "others", label: "Others" }
-          ]
-        },
-        {
-          id: "2_3",
-          ques: "Food preferences + restrictions",
-          type: "radio",
-          options: [
-            { value: "veg", label: "Veg" },
-            { value: "non_veg", label: "Non Veg" },
-            { value: "vegan", label: "Vegan" },
-            { value: "jain", label: "Jain" },
-            { value: "allergies", label: "Allergies" },
-            { value: "religious_code", label: "Religious code" }
-          ]
-        }
-      ]
-    },
+      // chapter - 2 "Your Comfort Zone"
+      {
+        id: 2,
+        name: "Your Comfort Zone",
+        image: ChapterImage2,
+        questions: [
+          {
+            id: "2_1",
+            ques: "Any fears, phobias, medical needs or movement limitations we should keep in mind?",
+            type: "text",
+          },
+          {
+            id: "2_2",
+            ques: "Any strict NO activities?",
+            type: "radio",
+            options: [
+              { value: "deep_water", label: "Deep Water" },
+              { value: "extreme_heights", label: "Extreme heights" },
+              { value: "long_treks", label: "Long treks" },
+              { value: "scary_places", label: "Scary places" },
+              { value: "others", label: "Others" },
+            ],
+          },
+          {
+            id: "2_3",
+            ques: "Food preferences + restrictions",
+            type: "radio",
+            options: [
+              { value: "veg", label: "Veg" },
+              { value: "non_veg", label: "Non Veg" },
+              { value: "vegan", label: "Vegan" },
+              { value: "jain", label: "Jain" },
+              { value: "allergies", label: "Allergies" },
+              { value: "religious_code", label: "Religious code" },
+            ],
+          },
+        ],
+      },
 
-    // chapter - 3 "Pick Your Personal Travel Vibe"
-    {
-      id: 3,
-      name: "Pick Your Personal Travel Vibe",
-      questions: [
-        {
-          id: "3_1",
-          ques: "Choose up to 3 that describes YOUR trip mood:",
-          type: "radio",
-          options: [
-            { value: "slow_nature_calm_days", label: "Slow nature + calm days" },
-            { value: "adventure_outdoors_exciting", label: "Adventure outdoors + excitement" },
-            { value: "cute_towns_scenic_corners", label: "Cute aesthetic towns + scenic corners" },
-            { value: "cultural_historical", label: "Cultural + historical exploring" },
-            { value: "food_discovery", label: "Food discovery & street food trails" },
-            { value: "art_museums_local_craft", label: "Art + museums + local craft" },
-            { value: "urban_luxury", label: "Urban luxury + comfort lifestyle" }
-          ]
-        }
-      ]
-    },
+      // chapter - 3 "Pick Your Personal Travel Vibe"
+      {
+        id: 3,
+        name: "Pick Your Personal Travel Vibe",
+        image: ChapterImage3,
+        questions: [
+          {
+            id: "3_1",
+            ques: "Choose up to 3 that describes YOUR trip mood:",
+            type: "radio",
+            options: [
+              {
+                value: "slow_nature_calm_days",
+                label: "Slow nature + calm days",
+              },
+              {
+                value: "adventure_outdoors_exciting",
+                label: "Adventure outdoors + excitement",
+              },
+              {
+                value: "cute_towns_scenic_corners",
+                label: "Cute aesthetic towns + scenic corners",
+              },
+              {
+                value: "cultural_historical",
+                label: "Cultural + historical exploring",
+              },
+              {
+                value: "food_discovery",
+                label: "Food discovery & street food trails",
+              },
+              {
+                value: "art_museums_local_craft",
+                label: "Art + museums + local craft",
+              },
+              {
+                value: "urban_luxury",
+                label: "Urban luxury + comfort lifestyle",
+              },
+            ],
+          },
+        ],
+      },
 
-    // chapter - 4 "What You Want From This Personalised Trip"
-    {
-      id: 4,
-      name: "What You Want From This Personalised Trip",
-      questions: [
-        {
-          id: "4_1",
-          ques: "Activity pace preference:",
-          type: "radio",
-          options: [
-            { value: "mostly_chill", label: "Mostly Chill" },
-            { value: "balanced", label: "Balanced" },
-            { value: "high_activity", label: "High Activity" },
-            { value: "full_exploration_mode", label: "Full exploration mode" }
-          ]
-        },
-        {
-          id: "4_2",
-          ques: "Weather preference:",
-          type: "radio",
-          options: [
-            { value: "warm", label: "Warm" },
-            { value: "cool", label: "Cool" },
-            { value: "neutral", label: "Neutral" }
-          ]
-        },
-        {
-          id: "4_3",
-          ques: "Emotional vibe you want",
-          type: "radio",
-          options: [
-            { value: "romantic", label: "Romantic" },
-            { value: "peaceful", label: "Peaceful" },
-            { value: "fun_playful", label: "Fun playful" },
-            { value: "adventure", label: "Adventure" },
-            { value: "mixed", label: "Mixed" }
-          ]
-        },
-        {
-          id: "4_4",
-          ques: "Any dream state / region / country already on your mind? Any dream destination on your mind?",
-          type: "text"
-        },
+      // chapter - 4 "What You Want From This Personalised Trip"
+      {
+        id: 4,
+        name: "What You Want From This Personalised Trip",
+        image: ChapterImage4,
 
-         {
-          id: "4_5",
-          ques: "Any destination you DO NOT want",
-          type: "text"
-        },
-         {
-          id: "4_6",
-          ques: "Places you’ve already done & don’t want again",
-          type: "text"
-        },
-      ]
-    },
+        questions: [
+          {
+            id: "4_1",
+            ques: "Activity pace preference:",
+            type: "radio",
+            options: [
+              { value: "mostly_chill", label: "Mostly Chill" },
+              { value: "balanced", label: "Balanced" },
+              { value: "high_activity", label: "High Activity" },
+              {
+                value: "full_exploration_mode",
+                label: "Full exploration mode",
+              },
+            ],
+          },
+          {
+            id: "4_2",
+            ques: "Weather preference:",
+            type: "radio",
+            options: [
+              { value: "warm", label: "Warm" },
+              { value: "cool", label: "Cool" },
+              { value: "neutral", label: "Neutral" },
+            ],
+          },
+          {
+            id: "4_3",
+            ques: "Emotional vibe you want",
+            type: "radio",
+            options: [
+              { value: "romantic", label: "Romantic" },
+              { value: "peaceful", label: "Peaceful" },
+              { value: "fun_playful", label: "Fun playful" },
+              { value: "adventure", label: "Adventure" },
+              { value: "mixed", label: "Mixed" },
+            ],
+          },
+          {
+            id: "4_4",
+            ques: "Any dream state / region / country already on your mind? Any dream destination on your mind?",
+            type: "text",
+          },
 
-    // chapter - 5 "Travel Foundations"
-    {
-      id: 5,
-      name: "Travel Foundations",
-      questions: [
-        { id: "5_1", ques: "Starting city/state:", type: "text" },
-        { id: "5_2", ques: "Passport you hold", type: "text" },
-        { id: "5_3", ques: "Any active visas? If yes, which ones?", type: "text" },
+          {
+            id: "4_5",
+            ques: "Any destination you DO NOT want",
+            type: "text",
+          },
+          {
+            id: "4_6",
+            ques: "Places you’ve already done & don’t want again",
+            type: "text",
+          },
+        ],
+      },
 
-        {
-          id: "5_4",
-          ques: "Travel preference:",
-          type: "radio",
-          options: [
-            { value: "flight", label: "Flight" },
-            { value: "train", label: "Train" },
-            { value: "road_trip", label: "Road Trip" },
-            { value: "open_to_any", label: "Open to any" }
-          ]
-        },
+      // chapter - 5 "Travel Foundations"
+      {
+        id: 5,
+        name: "Travel Foundations",
+        image: ChapterImage5,
 
-        { id: "5_5", ques: "Departure airport/station options you can take off from", type: "text" },
-        { id: "5_6", ques: "Need to return to same city at end?", type: "text" },
-        { id: "5_7", ques: "Trip duration:", type: "text" },
-        { id: "5_8", ques: "Budget range for this trip", type: "text" },
-        { id: "5_9", ques: "Travel dates: Which works best?", type: "text" },
+        questions: [
+          { id: "5_1", ques: "Starting city/state:", type: "text" },
+          { id: "5_2", ques: "Passport you hold", type: "text" },
+          {
+            id: "5_3",
+            ques: "Any active visas? If yes, which ones?",
+            type: "text",
+          },
 
-        {
-          id: "5_10",
-          ques: "Stay preference:",
-          type: "radio",
-          options: [
-            { value: "cozy_apartment", label: "Cozy apartment" },
-            { value: "hotel", label: "Hotel" },
-            { value: "boutique_stay", label: "Boutique stay" },
-            { value: "unique_themed_stay", label: "Unique themed stay" }
-          ]
-        },
+          {
+            id: "5_4",
+            ques: "Travel preference:",
+            type: "radio",
+            options: [
+              { value: "flight", label: "Flight" },
+              { value: "train", label: "Train" },
+              { value: "road_trip", label: "Road Trip" },
+              { value: "open_to_any", label: "Open to any" },
+            ],
+          },
 
-        {
-          id: "5_11",
-          ques: "Special stay requests?",
-          type: "radio",
-          options: [
-            { value: "pool", label: "Pool" },
-            { value: "mountain_view", label: "Mountain view" },
-            { value: "nature_stay", label: "Nature stay" },
-            { value: "sea_facing", label: "Sea facing" },
-            { value: "wifi_for_work", label: "WiFi for work" },
-            { value: "others", label: "Others" }
-          ]
-        }
-      ]
-    },
+          {
+            id: "5_5",
+            ques: "Departure airport/station options you can take off from",
+            type: "text",
+          },
+          {
+            id: "5_6",
+            ques: "Need to return to same city at end?",
+            type: "text",
+          },
+          { id: "5_7", ques: "Trip duration:", type: "text" },
+          { id: "5_8", ques: "Budget range for this trip", type: "text" },
+          { id: "5_9", ques: "Travel dates: Which works best?", type: "text" },
 
-    // chapter - 6 "Personal Touch Layer"
-    {
-      id: 6,
-      name: "Personal Touch Layer",
-      questions: [
-        { id: "6_1", ques: "Three things that GUARANTEE you will enjoy a trip?", type: "text" },
-        { id: "6_2", ques: "Two things that instantly ruin a trip for you?", type: "text" },
-        {
-          id: "6_3",
-          ques: "Who are you travelling with?",
-          type: "radio",
-          options: [
-            { value: "solo", label: "Solo" },
-            { value: "duo", label: "Duo" },
-            { value: "sibling", label: "Sibling" },
-            { value: "friend", label: "Friend" },
-            { value: "group", label: "Group" }
-          ]
-        }
-      ]
-    },
+          {
+            id: "5_10",
+            ques: "Stay preference:",
+            type: "radio",
+            options: [
+              { value: "cozy_apartment", label: "Cozy apartment" },
+              { value: "hotel", label: "Hotel" },
+              { value: "boutique_stay", label: "Boutique stay" },
+              { value: "unique_themed_stay", label: "Unique themed stay" },
+            ],
+          },
 
-    // chapter - 7 "Contact + Final"
-    {
-      id: 7,
-      name: "Contact + Final",
-      questions: [
-        { id: "7_1", ques: "Your preferred number — so we know where to send the magic", type: "text" },
-        { id: "7_2", ques: "Should we send you trip ideas that come out of nowhere (the good kind)?", type: "text" },
-        { id: "7_3", ques: "Who sent you here first — friend, feed… or fate?", type: "text" },
-        {
-          id: "7_4",
-          ques: "Final checkbox — can you approve our Privacy Policy before we continue?",
-          type: "radio",
-          options: [
-            { value: "privacy_policy_approved", label: "Yes, I approve" }
-          ]
-        }
-      ]
-    }
-  ]
-}
+          {
+            id: "5_11",
+            ques: "Special stay requests?",
+            type: "radio",
+            options: [
+              { value: "pool", label: "Pool" },
+              { value: "mountain_view", label: "Mountain view" },
+              { value: "nature_stay", label: "Nature stay" },
+              { value: "sea_facing", label: "Sea facing" },
+              { value: "wifi_for_work", label: "WiFi for work" },
+              { value: "others", label: "Others" },
+            ],
+          },
+        ],
+      },
 
+      // chapter - 6 "Personal Touch Layer"
+      {
+        id: 6,
+        name: "Personal Touch Layer",
+        image: ChapterImage6,
+
+        questions: [
+          {
+            id: "6_1",
+            ques: "Three things that GUARANTEE you will enjoy a trip?",
+            type: "text",
+          },
+          {
+            id: "6_2",
+            ques: "Two things that instantly ruin a trip for you?",
+            type: "text",
+          },
+          {
+            id: "6_3",
+            ques: "Who are you travelling with?",
+            type: "radio",
+            options: [
+              { value: "solo", label: "Solo" },
+              { value: "duo", label: "Duo" },
+              { value: "sibling", label: "Sibling" },
+              { value: "friend", label: "Friend" },
+              { value: "group", label: "Group" },
+            ],
+          },
+        ],
+      },
+
+      // chapter - 7 "Contact + Final"
+      {
+        id: 7,
+        name: "Contact + Final",
+        image: ChapterImage7,
+        questions: [
+          {
+            id: "7_1",
+            ques: "Your preferred number — so we know where to send the magic",
+            type: "text",
+          },
+          {
+            id: "7_2",
+            ques: "Should we send you trip ideas that come out of nowhere (the good kind)?",
+            type: "text",
+          },
+          {
+            id: "7_3",
+            ques: "Who sent you here first — friend, feed… or fate?",
+            type: "text",
+          },
+          {
+            id: "7_4",
+            ques: "Final checkbox — can you approve our Privacy Policy before we continue?",
+            type: "radio",
+            options: [
+              { value: "privacy_policy_approved", label: "Yes, I approve" },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 ];

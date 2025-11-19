@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Navbar from "@/components/Navigation/Navbar";
-import LenisProvider from "@/wrapper/LenisScroll";
-import Footer from "@/components/Navigation/Footer";
-import Background from "@/components/Reusable/Background";
 import { Montserrat } from "next/font/google";
+import LayoutWrapper from "@/components/Navigation/LayoutWrapper";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -33,13 +30,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${montserrat.variable} ${glacialIndifference.variable} antialiased`}>
-        <LenisProvider>
-          <Background>
-            <Navbar />
-            {children}
-            <Footer />
-          </Background>
-        </LenisProvider>
+        <LayoutWrapper>
+          {children}
+        </LayoutWrapper>
       </body>
     </html>
   );
