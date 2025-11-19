@@ -158,8 +158,8 @@ const Scene: React.FC = () => {
             className="text-white mont tracking-tighter font-semibold uppercase text-[50px] leading-[50px] md:text-[60px] md:leading-[60px] lg:text-[70px] lg:leading-[70px] xl:text-[80px] xl:leading-[80px]  2xl:text-[80px] 2xl:leading-20 text-left"
             style={{ visibility: "hidden" }}
           >
-            Where vision ends, <br />{" "}
-            <span className="text-[#FFA62B]">Adventure</span> begins.
+            Where vision ends <br />{" "}
+            <span className="text-[#FFA62B]">Adventure</span> begins
           </h1>
 
           <p
@@ -317,7 +317,7 @@ Surrender to presence — that’s where you truly arrive.
           {/* Pioneer/Worldwide Text */}
           <p
             ref={pioneerRef}
-            className={`absolute m-0 text-white font-light tracking-widest ${
+            className={`absolute m-0 text-white font-light tracking-widest mont${
               isMobile
                 ? "top-[45%] left-[23%] text-sm"
                 : isTablet
@@ -336,7 +336,7 @@ Surrender to presence — that’s where you truly arrive.
 
           <p
             ref={worldRef}
-            className={`absolute m-0 text-white font-light tracking-widest text-right ${
+            className={`absolute m-0 text-white font-light tracking-widest text-right mont${
               isMobile
                 ? "bottom-[45%] right-[24%] text-sm"
                 : isTablet
@@ -350,7 +350,7 @@ Surrender to presence — that’s where you truly arrive.
               visibility: "hidden",
             }}
           >
-            WORLDWIDE
+            Across Destination
           </p>
 
           {/* Logo */}
