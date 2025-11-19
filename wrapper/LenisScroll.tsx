@@ -47,56 +47,68 @@ export const triggerGlobalCleanup = () => {
 };
 
 export default function LenisProvider({ children }: { children: ReactNode }) {
-  const pathname = usePathname();
   const lenisRef = useRef<Lenis | null>(null);
   const rafIdRef = useRef<number | null>(null);
 
   useEffect(() => {
-    // Trigger global cleanup on route change
-    triggerGlobalCleanup();
-    
-    // Small delay to ensure previous cleanup completes
-    const timeoutId = setTimeout(() => {
-      const lenis = new Lenis({
-        duration: 1, // Increase duration for slower scrolling
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Smoother easing curve
-        lerp: 0.1, // Lower lerp for more inertia and slower response
-        smoothWheel: true, // Ensure wheel scrolling is smooth
+    // Kill all ScrollTriggers IMMEDIATELY before initializing new Lenis
+    try {
+      ScrollTrigger.getAll().forEach(trigger => {
+        trigger.kill(true);
       });
+      gsap.killTweensOf('*');
+    } catch (e) {
+      // Silently handle cleanup errors
+    }
+    
+    // Initialize Lenis after cleanup
+    const lenis = new Lenis({
+      duration: 1,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      lerp: 0.1,
+      smoothWheel: true,
+    });
 
-      lenisRef.current = lenis;
+    lenisRef.current = lenis;
 
-      function raf(time: number) {
-        if (lenisRef.current) {
-          lenisRef.current.raf(time);
-          rafIdRef.current = requestAnimationFrame(raf);
-        }
+    function raf(time: number) {
+      if (lenisRef.current) {
+        lenisRef.current.raf(time);
+        rafIdRef.current = requestAnimationFrame(raf);
       }
+    }
 
-      rafIdRef.current = requestAnimationFrame(raf);
-    }, 50);
+    rafIdRef.current = requestAnimationFrame(raf);
 
+    // Cleanup function
     return () => {
-      // Clear timeout if component unmounts before initialization
-      clearTimeout(timeoutId);
-
-      // Cancel animation frame first
+      // Cancel animation frame
       if (rafIdRef.current !== null) {
         cancelAnimationFrame(rafIdRef.current);
         rafIdRef.current = null;
       }
 
-      // Then destroy Lenis
+      // Destroy Lenis
       if (lenisRef.current) {
         try {
           lenisRef.current.destroy();
         } catch (e) {
-          // Silently handle Lenis cleanup errors
+          // Silently handle errors
         }
         lenisRef.current = null;
       }
+
+      // Kill all ScrollTriggers and tweens
+      try {
+        ScrollTrigger.getAll().forEach(trigger => {
+          trigger.kill(true);
+        });
+        gsap.killTweensOf('*');
+      } catch (e) {
+        // Silently handle errors
+      }
     };
-  }, [pathname]);
+  }, []); // Empty dependency - only run once per mount
 
   return <>{children}</>;
 }

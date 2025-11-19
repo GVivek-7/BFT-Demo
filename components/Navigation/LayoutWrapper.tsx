@@ -19,7 +19,7 @@ export default function LayoutWrapper({
                      ["/sign-in", "/sign-up", "/forgot-password"].includes(pathname);
 
   return (
-    <LenisProvider>
+    <LenisProvider key={pathname}>
          <Background>
       <Navbar />
       {children}

@@ -2,11 +2,10 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 import Align from "../Reusable/Align";
 import Button from "../Reusable/UI/Button";
 import { GoArrowLeft, GoArrowUpLeft } from "react-icons/go";
-import Link from "next/link";
-import { IoIosArrowBack } from "react-icons/io";
 
 const IMAGES = [
   {
@@ -35,7 +34,8 @@ interface WelcomeProps {
   slug: string;
 }
 
-const Welcome = ({ onComplete, slug }: WelcomeProps) => {
+const Welcome = ({ onComplete }: WelcomeProps) => {
+  const router = useRouter();
   const [step, setStep] = useState(1);
   const [userName, setUserName] = useState("");
 
@@ -45,30 +45,32 @@ const Welcome = ({ onComplete, slug }: WelcomeProps) => {
     }
   };
 
+  const handleBackToExperience = () => {
+    router.push("/experience");
+  };
+
   return (
     <Align>
-      <Link href="/experience" className="absolute top-8 left-30 hidden md:block">
-         <Button
-                  label="BACK TO EXPERIENCES"
-                  bgColor="#000"
-                  textColor="#FFFFFF"
-                  logo={<GoArrowUpLeft size={22} color="#000" />}
-                  logoBg="#FFFFFF"
-                  height="h-12"
-                  width="w-59"
-                  className="px-5"
-                />
-      </Link>
+
 
       <div className="flex flex-col items-center justify-center py-30 lg:py-35 ">
-        <h1 className="mont text-[24px] sm:text-[28px] md:text-[36px] lg:text-[40px] leading-[30px] sm:leading-[36px] md:leading-[44px] lg:leading-[50px] uppercase font-medium tracking-tighter text-[#04256C] text-center mb-2">
-          <span className="text-black font-light">The</span> BlindfoldTrips
-          Travel Vibe Check
-        </h1>
+        <div className="relative w-full mb-2 flex items-center justify-center">
+          <button 
+            onClick={handleBackToExperience}
+            className="absolute left-0 top-1/2 -translate-y-1/2 bg-[#E1E1E1] p-3 rounded-full block cursor-pointer z-10 hover:bg-[#E1E1E1]/90 transition-colors"
+          >
+            <GoArrowLeft color="black" size={22} />
+          </button>
+          <h1 className="mont text-[24px] sm:text-[28px] md:text-[36px] lg:text-[40px] leading-[30px] sm:leading-[36px] md:leading-[44px] lg:leading-[50px] uppercase font-medium tracking-tighter text-[#04256C] text-center">
+            <span className="text-black font-light">The</span> BlindfoldTrips
+            Travel Vibe Check
+          </h1>
+        </div>
+
         <p className="text-[16px] sm:text-[18px] md:text-[20px] lg:text-[24px] leading-[20px] sm:leading-[22px] md:leading-[24px] lg:leading-[26px] text-center mb-6 sm:mb-8 md:mb-10 lg:mb-12 px-4">
           Where the only spoiler is the destination
         </p>
-        <div className="flex flex-col lg:flex-row gap-6 md:gap-8 lg:gap-10 items-center justify-center w-full max-w-7xl">
+        <div className="flex flex-col lg:flex-row gap-6 md:gap-8 lg:gap-10 items-center justify-center w-full ">
           <div className="flex flex-row gap-2 sm:gap-3 md:gap-5 shrink-0">
             {IMAGES.map((item) => (
               <Image
@@ -100,10 +102,6 @@ const Welcome = ({ onComplete, slug }: WelcomeProps) => {
                   </div>
                 ))}
 
-                <div className="flex flex-row gap-2">
- <Link href="/experience" className="bg-black p-3 rounded-full md:hidden block">
-            <GoArrowLeft  color="white" size={22} className="" />
-            </Link>
                 <Button
                   label="Get started!"
                   bgColor="#FFA62B"
@@ -115,7 +113,6 @@ const Welcome = ({ onComplete, slug }: WelcomeProps) => {
                   className="px-5"
                   onClick={() => setStep(2)}
                 />
-                </div>
                 
               </motion.div>
             ) : (

@@ -68,23 +68,9 @@ export const useSceneAnimation = (
         modelCheckIntervalRef.current = null;
       }
 
-      // Kill GSAP animations with error handling
+      // Kill GSAP animations with error handling - order matters!
       try {
-        if (timelineRef.current) {
-          timelineRef.current.kill();
-          timelineRef.current = null;
-        }
-        
-        if (scrollTriggerRef.current) {
-          scrollTriggerRef.current.kill(true);
-          scrollTriggerRef.current = null;
-        }
-
-        if (gsapContextRef.current) {
-          gsapContextRef.current.revert();
-          gsapContextRef.current = null;
-        }
-
+        // First, kill all ScrollTriggers to stop DOM manipulation
         ScrollTrigger.getAll().forEach(trigger => {
           try {
             trigger.kill(true);
@@ -92,13 +78,39 @@ export const useSceneAnimation = (
             // Silently handle individual trigger errors
           }
         });
+        
+        // Then kill the timeline
+        if (timelineRef.current) {
+          timelineRef.current.kill();
+          timelineRef.current = null;
+        }
+        
+        // Kill the specific scrollTrigger reference
+        if (scrollTriggerRef.current) {
+          scrollTriggerRef.current.kill(true);
+          scrollTriggerRef.current = null;
+        }
+
+        // Finally revert the GSAP context
+        if (gsapContextRef.current) {
+          gsapContextRef.current.revert();
+          gsapContextRef.current = null;
+        }
+        
+        // Kill all remaining tweens
+        gsap.killTweensOf('*');
       } catch (error) {
         // Silently handle GSAP cleanup errors
       }
     };
 
-    // Listen for route changes
+    // Listen for route changes and visibility changes
     window.addEventListener('beforeunload', handleBeforeUnload);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        handleBeforeUnload();
+      }
+    });
     
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
@@ -436,7 +448,7 @@ export const useSceneAnimation = (
           .to(
             ceciRef.current,
             {
-              x: isMobile ? -59 : isTablet ? -117 : isLg ? "-14.5vw" : "-15.5vw",
+              x: isMobile ? -59 : isTablet ? -117 : isLg ? "-14vw" : "-15.5vw",
               duration: 2,
               ease: "power2.inOut",
             },
@@ -445,7 +457,7 @@ export const useSceneAnimation = (
           .to(
             tourismRef.current,
             {
-              x: isMobile ? 59 : isTablet ? 117 : isLg ? "14.5vw" : "15.5vw",
+              x: isMobile ? 59 : isTablet ? 117 : isLg ? "14vw" : "15.5vw",
               duration: 2,
               ease: "power2.inOut",
             },
@@ -549,24 +561,9 @@ export const useSceneAnimation = (
         modelCheckIntervalRef.current = null;
       }
 
-      // Kill GSAP animations in correct order
+      // Kill GSAP animations in correct order - ScrollTriggers FIRST
       try {
-        if (timelineRef.current) {
-          timelineRef.current.kill();
-          timelineRef.current = null;
-        }
-
-        if (scrollTriggerRef.current) {
-          scrollTriggerRef.current.kill(true);
-          scrollTriggerRef.current = null;
-        }
-
-        if (gsapContextRef.current) {
-          gsapContextRef.current.revert();
-          gsapContextRef.current = null;
-        }
-
-        // Kill all ScrollTriggers to prevent DOM manipulation errors
+        // CRITICAL: Kill all ScrollTriggers FIRST to stop DOM manipulation
         ScrollTrigger.getAll().forEach(trigger => {
           try {
             trigger.kill(true);
@@ -574,6 +571,27 @@ export const useSceneAnimation = (
             // Silently handle individual trigger cleanup errors
           }
         });
+        
+        // Then kill timeline
+        if (timelineRef.current) {
+          timelineRef.current.kill();
+          timelineRef.current = null;
+        }
+
+        // Kill specific scrollTrigger reference
+        if (scrollTriggerRef.current) {
+          scrollTriggerRef.current.kill(true);
+          scrollTriggerRef.current = null;
+        }
+
+        // Finally revert GSAP context
+        if (gsapContextRef.current) {
+          gsapContextRef.current.revert();
+          gsapContextRef.current = null;
+        }
+        
+        // Kill all remaining tweens
+        gsap.killTweensOf('*');
       } catch (error) {
         // Silently handle cleanup errors
       }
