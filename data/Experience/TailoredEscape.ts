@@ -3,7 +3,7 @@ import { JourneyItem } from "../../components/Reusable/Journeys";
 export const TailoredEscape: JourneyItem[] = [
   {
     title: 'The Tailored Escape',
-    desc: 'The Kindred Voyage is a soulful travel experience that connects people through shared journeys and meaningful moments — made for those who seek stories to live and friendships to build along the way.',
+    desc: 'The Tailored Escape is a soulful travel experience that connects people through shared journeys and meaningful moments — made for those who seek stories to live and friendships to build along the way.',
     textColor: '#E6AF2E',
     destinationUrl: '/questionnaire/tailored-escape',
     contents: [

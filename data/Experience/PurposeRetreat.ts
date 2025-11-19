@@ -3,7 +3,7 @@ import { JourneyItem } from "../../components/Reusable/Journeys";
 export const PurposeRetreat: JourneyItem[] = [
   {
     title: 'The Purpose Retreat',
-    desc: 'The Kindred Voyage is a soulful travel experience that connects people through shared journeys and meaningful moments — made for those who seek stories to live and friendships to build along the way.',
+    desc: 'The Purpose Path is a mindful travel experience that blends exploration with meaning — created for those who wish to journey with intention, give back to the world, and rediscover themselves along the way.',
     textColor: '#155A52',
     destinationUrl: '/questionnaire/purpose-retreat',
     contents: [

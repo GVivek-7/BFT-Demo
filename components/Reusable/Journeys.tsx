@@ -32,7 +32,7 @@ const Journeys: React.FC<JourneyProps> = ({ data }) => {
 
         return (
           <div key={index} className="flex flex-col items-center">
-            <h1 className="text-[#141414] mont tracking-tighter text-[30px] sm:text-[32px] md:text-[40px] tracking-tight leading-9 sm:leading-[42px] md:leading-[50px] mb-2 text-center uppercase">
+            <h1 className="text-[#141414] mont tracking-tighter text-[30px] sm:text-[32px] md:text-[40px] leading-9 sm:leading-[42px] md:leading-[50px] mb-2 text-center uppercase">
               {words.map((word, i) => {
                 const isMiddle = i === middleIndex;
 
