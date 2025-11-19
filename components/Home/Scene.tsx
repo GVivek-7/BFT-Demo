@@ -319,7 +319,7 @@ Surrender to presence — that’s where you truly arrive.
             ref={pioneerRef}
             className={`absolute m-0 text-white font-light tracking-widest ${
               isMobile
-                ? "top-[45%] left-[23%] text-sm"
+                ? "top-[45%] left-[20%] text-sm"
                 : isTablet
                 ? "top-[44%] left-[22%] text-xl"
                  : isLg
@@ -338,7 +338,7 @@ Surrender to presence — that’s where you truly arrive.
             ref={worldRef}
             className={`absolute m-0 text-white font-light tracking-widest text-right ${
               isMobile
-                ? "bottom-[45%] right-[24%] text-sm"
+                ? "bottom-[45%] right-[22%] text-sm"
                 : isTablet
                 ? "bottom-[44%] right-[22.5%] text-xl"
                 : isLg 

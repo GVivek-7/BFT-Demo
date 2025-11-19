@@ -168,7 +168,7 @@ const Footer = () => {
     lg:text-[clamp(3rem,13vw,260px)]      /* bigger on large screens */
     lg:leading-[clamp(3.8rem,14vw,300px)]
     xl:text-[clamp(2.6rem,13vw,330px)]      /* even bigger on XL screens */
-    xl:leading-[clamp(3.8rem,15vw,340px)]
+    xl:leading-[clamp(2.6rem,13vw,330px)]
     bg-linear-to-b from-[#FFA62B] via-[#ff8900] to-black
     bg-clip-text text-transparent
     tracking-tighter

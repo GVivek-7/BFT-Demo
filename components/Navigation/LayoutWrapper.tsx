@@ -16,7 +16,7 @@ export default function LayoutWrapper({
 
   // Define routes that should hide Navbar and Footer
   const hideLayout = pathname.startsWith("/questionnaire") ||  
-                     ["/login", "/sign-up", "/forgot-password"].includes(pathname);
+                     ["/sign-in", "/sign-up", "/forgot-password"].includes(pathname);
 
   return (
     <LenisProvider>

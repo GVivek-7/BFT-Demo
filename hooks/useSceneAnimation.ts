@@ -346,7 +346,7 @@ export const useSceneAnimation = (
           .to(
             ceciRef.current,
             {
-              x: isMobile ? -140 : isTablet ? -260 : isLg ? "-30vw" : "-27vw",
+              x: isMobile ? "-33vw" : isTablet ? -260 : isLg ? "-30vw" : "-27vw",
               opacity: 1,
               visibility: "visible",
               duration: 1.5,
@@ -359,7 +359,7 @@ export const useSceneAnimation = (
             {
               opacity: 1,
               visibility: "visible",
-              x: isMobile ? 140 : isTablet ? 260 : isLg ? "29vw" : "27vw",
+              x: isMobile ? "33vw" : isTablet ? 260 : isLg ? "29vw" : "27vw",
               duration: 1.5,
               ease: "power2.out",
             },
@@ -436,7 +436,7 @@ export const useSceneAnimation = (
           .to(
             ceciRef.current,
             {
-              x: isMobile ? -57 : isTablet ? -117 : isLg ? "-14.5vw" : "-15.5vw",
+              x: isMobile ? "-15vw" : isTablet ? -117 : isLg ? "-14.5vw" : "-15.5vw",
               duration: 2,
               ease: "power2.inOut",
             },
@@ -445,7 +445,7 @@ export const useSceneAnimation = (
           .to(
             tourismRef.current,
             {
-              x: isMobile ? 57 : isTablet ? 117 : isLg ? "14.5vw" : "15.5vw",
+              x: isMobile ? "15vw" : isTablet ? 117 : isLg ? "14.5vw" : "15.5vw",
               duration: 2,
               ease: "power2.inOut",
             },

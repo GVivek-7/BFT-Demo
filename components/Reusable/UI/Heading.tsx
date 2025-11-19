@@ -8,7 +8,7 @@ interface HeadingProps {
 const Heading: React.FC<HeadingProps> = ({ title }) => {
   return (
     <div
-      className="flex items-center bg-[#eeeeee] w-auto px-5 py-2 rounded-full shadow-md cursor-pointer transition-all duration-500 ease-in-out 
+      className="flex items-center bg-[#eeeeee] w-auto px-6 py-2 rounded-full shadow-md cursor-pointer transition-all duration-500 ease-in-out 
              hover:shadow-xl group overflow-hidden"
     >
       {/* Plane Icon */}
@@ -18,7 +18,7 @@ const Heading: React.FC<HeadingProps> = ({ title }) => {
       />
       {/* Heading */}
       <h2
-        className="md:text-lg text-sm font-regular text-[#04256C] uppercase transition-colors duration-300 
+        className="md:text-md text-sm font-regular text-[#04256C] uppercase transition-colors duration-300 
                      group-hover:text-[#04256cc8]"
       >
         {title}
