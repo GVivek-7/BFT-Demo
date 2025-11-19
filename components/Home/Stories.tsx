@@ -31,7 +31,7 @@ const ParallaxImage = ({ src }: { src: string }) => {
   return (
     <div
       ref={ref}
-      className="overflow-hidden rounded-lg w-full h-[300px] sm:h-[350px] md:h-[400px] relative"
+      className="overflow-hidden rounded-lg w-full h-[300px] sm:h-[350px] md:h-[470px] relative"
     >
       <motion.div 
         style={{ y }} 

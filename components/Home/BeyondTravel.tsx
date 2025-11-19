@@ -83,7 +83,7 @@ const BeyondTravel = () => {
               index === 0 ? "top-5 left-5" : "bottom-5 left-5"
             }`}
           >
-            <h2 className="font-heading md:text-[40px] text-[30px] md:leading-[50px] leading-10 tracking-tighter uppercase font-semibold mb-2 max-w-lg">
+            <h2 className="font-heading md:text-[40px] text-[30px] md:leading-[50px] leading-10 tracking-tighter uppercase font-semibold mont mb-2 max-w-xl">
               {item.title}
             </h2>
             <p className="md:text-[20px] text-[14px] leading-4 md:leading-[26px] max-w-xl mb-4 font-light">

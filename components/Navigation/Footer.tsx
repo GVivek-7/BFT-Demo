@@ -163,14 +163,16 @@ const Footer = () => {
     text-center 
     select-none 
     wrap-break-word
-    text-[clamp(3.8rem,14vw,230px)]          /* increased max size */
+    text-[clamp(3.3rem,12vw,200px)]          /* increased max size */
     leading-[clamp(3.8rem,13vw,260px)]    /* increased max line height */
     lg:text-[clamp(3rem,13vw,260px)]      /* bigger on large screens */
     lg:leading-[clamp(3.8rem,14vw,300px)]
-    xl:text-[clamp(3rem,14vw,300px)]      /* even bigger on XL screens */
+    xl:text-[clamp(2.6rem,13vw,330px)]      /* even bigger on XL screens */
     xl:leading-[clamp(3.8rem,15vw,340px)]
     bg-linear-to-b from-[#FFA62B] via-[#ff8900] to-black
     bg-clip-text text-transparent
+    tracking-tighter
+    mont
   "
 >
   BlindFoldTrips
@@ -180,7 +182,7 @@ const Footer = () => {
           </div>
 
           {/* Bottom Footer Info */}
-          <div className="flex flex-col lg:flex-row justify-between text-white font-medium text-[14px] md:text-[18px] leading-[18px] md:leading-5 tracking-normal mt-6 md:mt-10 flex-wrap text-center lg:text-left gap-4">
+          <div className="flex flex-col lg:flex-row justify-between text-white font-medium text-[14px] md:text-[18px] leading-[18px] md:leading-5 tracking-normal mt-6 md:mt-10 flex-wrap text-center lg:text-left gap-4 mont">
             <div>© {currentYear} BlindFoldTrips. All Rights Reserved.</div>
 
             <div>
@@ -200,14 +202,14 @@ const Footer = () => {
             <div>
               <Link
                 href="#"
-                className="hover:text[#FFA62B]] transition-all duration-300 cursor-pointer"
+                className="hover:text[#FFA62B]] transition-all duration-300 cursor-pointer mont"
               >
                 Privacy Policy
               </Link>{" "}
               |{" "}
               <Link
                 href="#"
-                className="hover:text-[#FFA62B] transition-all duration-300 cursor-pointer"
+                className="hover:text-[#FFA62B] transition-all duration-300 cursor-pointer mont"
               >
                 Terms & Condition
               </Link>

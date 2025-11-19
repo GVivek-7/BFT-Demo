@@ -15,7 +15,7 @@ const Experience = () => {
             <Heading title="OUR EXPERIENCES" />
           </div>
 
-          <h1 className="mont text-[#141414] md:text-[40px] text-[30px] font-medium tracking-tight md:leading-[45px] leading-[35px] md:mb-2 md:max-w-sm max-w-[280px] uppercase">
+          <h1 className="mont text-[#141414] md:text-[40px] text-[30px] font-semibold tracking-tight md:leading-[45px] leading-[35px] md:mb-2 md:max-w-sm max-w-[280px] uppercase">
             Four Journeys. One Emotion Freedom.
           </h1>
           <p className="text-black font-light md:text-[24px] text-[14px] md:leading-7 leading-4 md:mb-8 max-w-xl">
@@ -46,7 +46,7 @@ const Experience = () => {
                   index % 2 === 0 ? "top-0" : "bottom-0"
                 }`}
               >
-                <h3 className="text-white text-[22px] font-semibold mb-2">
+                <h3 className="text-white text-[22px] font-semibold mb-2 mont leading-[100%]">
                   {content.title}
                 </h3>
                 <p className="text-white/90 font-light text-[16px] leading-5">
@@ -62,7 +62,7 @@ const Experience = () => {
           <div className="bg-white w-10 h-10 flex items-center justify-center rounded-full mr-3 transition-all duration-500 group-hover:bg-white">
             <GoArrowUpLeft
               size={25}
-              className="text-[#FFA62B] text-base transition-all duration-500 group-hover:text-[#FFA62B]"
+              className="text-black text-base transition-all duration-500 group-hover:text-[#FFA62B]"
             />
           </div>
           <span className="tracking-wide text-sm sm:text-base transition-all duration-300">

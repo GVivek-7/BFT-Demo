@@ -143,7 +143,7 @@ const ShowReel: React.FC = () => {
           ref={textRef}
           className='absolute top-42 inset-0 flex flex-col items-center justify-start will-change-transform pointer-events-none'
         >
-          <h1 className='text-white md:text-[120px] text-[35px] font-medium font-heading tracking-tighter leading-[122px] text-center'>
+          <h1 className='text-white md:text-[120px] text-[35px] font-medium font-heading tracking-tighter leading-[122px] text-center mont tracking-tight'>
             WATCH SHOWREEL
           </h1>
         </div>

@@ -59,9 +59,9 @@ const Surprise: React.FC = () => {
 
         {/* Content Layer */}
         <Align className="w-full flex flex-col items-start justify-center gap-5 py-15 relative z-10">
-          <div className="flex">
+          {/* <div className="flex">
             <Heading title="THE SCIENCE OF SURPRISE" />
-          </div>
+          </div> */}
 
           <h1 className="text-white md:text-[40px] text-[30px] md:leading-10 leading-[30px] uppercase mont font-semibold">
             The Psychology of <span className="text-[#FFA62B]">Surprise</span>
