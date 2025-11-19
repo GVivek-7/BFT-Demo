@@ -363,7 +363,7 @@ export const QUESTIONNAIRE_DATA: QuestionnaireDataArray = [
 
   //   The Tailored Escape
   {
-    slug: "Tailored-escape",
+    slug: "tailored-escape",
     chapters: [
       {
         id: 1,

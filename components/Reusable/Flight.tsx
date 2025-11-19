@@ -89,7 +89,7 @@ const Flight = ({ isVisible, onComplete }: FlightProps) => {
         frame: totalFrames - 1,
         snap: "frame",
         ease: "power1.inOut",
-        duration: 3,
+        duration: 6,
         onUpdate: render,
         onComplete: () => {
           if (onComplete) onComplete();
@@ -107,7 +107,15 @@ const Flight = ({ isVisible, onComplete }: FlightProps) => {
   return (
     <section
       ref={sectionRef}
-      className="fixed inset-0 w-full h-screen overflow-hidden bg-white z-[9999]"
+      className="fixed inset-0 w-full h-screen overflow-hidden  z-[9999]"
+      style={{
+          backgroundImage:
+            "url('https://ik.imagekit.io/99y1fc9mh/BFT/Experience/bft%20banner%204.png?updatedAt=1761896072995')",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+        }}
+
     >
       <div className="w-full h-screen flex items-center justify-center overflow-hidden">
         <canvas
