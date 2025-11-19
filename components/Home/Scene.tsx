@@ -317,7 +317,7 @@ Surrender to presence — that’s where you truly arrive.
           {/* Pioneer/Worldwide Text */}
           <p
             ref={pioneerRef}
-            className={`absolute m-0 text-white font-light tracking-widest mont${
+            className={`absolute m-0 text-white font-light tracking-widest ${
               isMobile
                 ? "top-[45%] left-[23%] text-sm"
                 : isTablet
@@ -336,7 +336,7 @@ Surrender to presence — that’s where you truly arrive.
 
           <p
             ref={worldRef}
-            className={`absolute m-0 text-white font-light tracking-widest text-right mont${
+            className={`absolute m-0 text-white font-light tracking-widest text-right ${
               isMobile
                 ? "bottom-[45%] right-[24%] text-sm"
                 : isTablet
@@ -350,7 +350,7 @@ Surrender to presence — that’s where you truly arrive.
               visibility: "hidden",
             }}
           >
-            Across Destination
+            ACROSS DESTINATION
           </p>
 
           {/* Logo */}
