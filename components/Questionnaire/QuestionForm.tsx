@@ -200,7 +200,7 @@ const QuestionForm = ({
         className="pt-30 py-10 "
       >
         <motion.div
-          className="flex items-center justify-between max-w-xl mb-8"
+          className="flex flex-col-reverse gap-4 items-start justify-between max-w-xl mb-8"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.4 }}
@@ -350,7 +350,7 @@ const QuestionForm = ({
 
           <Button
             label={isLastChapter ? "CONCLUDE THE CHAPTER" : "MOVE TO NXT CHAPTER"}
-            bgColor="#04256C"
+            bgColor="#FFA62B"
             textColor="#FFFFFF"
             logo={<IoAirplaneSharp  size={19} color="#000" />}
             logoBg="#FFFFFF"

@@ -65,7 +65,7 @@ const Hero: React.FC = () => {
         <p className="md:text-[34px] text-[20px] md:leading-9 text-white">
           Let’s Plan the Unknown
         </p>
-        <h1 className="text-[#E6AF2E] md:text-[120px] text-[50px] font-bold mont tracking-tighter md:leading-[122px] text-center uppercase">
+        <h1 className="text-[#F0B938] md:text-[120px] text-[50px] font-bold mont tracking-tighter md:leading-[122px] text-center uppercase">
           Together
         </h1>
       </div>

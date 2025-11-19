@@ -133,7 +133,8 @@ const Page = () => {
 
 
   return (
- <div className="relative w-full min-h-screen flex items-center justify-center md:justify-start md:px-50 px-4">
+ <div className="relative w-full min-h-screen flex items-center justify-center md:justify-center px-4">
+  <div className="absolute bg-black opacity-50 inset-0  z-10"/>
   {BG_IMAGES.map((bg, index) => (
     <div
       key={index}
@@ -146,7 +147,8 @@ const Page = () => {
     />
   ))}
   <div className="relative z-10 flex lg:flex-row flex-col-reverse items-center lg:items-start justify-center lg:justify-start gap-6 lg:gap-10 w-full lg:w-auto py-8 lg:py-0">
-    <div className="bg-white/70 border border-white/20 rounded-[12px] p-6 sm:p-8 lg:p-12 w-full max-w-[434px]">
+    <div className="bg-white/70 border border-white/20 rounded-[12px] p-6 sm:p-8 lg:p-12 w-full max-w-[504px]">
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <Input
@@ -225,12 +227,12 @@ const Page = () => {
       </form>
     </div>
 
-    <h1 className="text-black mont text-[24px] leading-[32px] sm:text-[28px] sm:leading-[38px] md:text-[30px] md:leading-[40px] xl:text-[40px] xl:leading-[50px] uppercase text-center lg:text-left px-4 lg:px-0">
+    {/* <h1 className="text-black mont text-[24px] leading-[32px] sm:text-[28px] sm:leading-[38px] md:text-[30px] md:leading-[40px] xl:text-[40px] xl:leading-[50px] uppercase text-center lg:text-left px-4 lg:px-0">
       <span className="text-[#FFA62B]">
         WELCOME BACK <br />
       </span>
       ready for your next surprise?
-    </h1>
+    </h1> */}
   </div>
 </div>
   );

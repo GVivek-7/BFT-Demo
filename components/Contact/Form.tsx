@@ -3,7 +3,9 @@ import React, { useState } from "react";
 import { Input } from "../Reusable/UI/Input";
 import Button from "../Reusable/UI/Button";
 import { MdFlight } from "react-icons/md";
-
+import Link from "next/link";
+import { FooterSocailLinks } from "@/data/Footer/FooterSocials";
+import Image from "next/image";
 
 interface FormFields {
   name: string;
@@ -147,16 +149,36 @@ const Form = () => {
             )}
           </div>
         </form>
-        <Button
-                label="SUMBIT"
-                bgColor="#FFA62B"
-                textColor="#FFFFFF"
-                logo={<MdFlight size={22} color="#000" className="rotate-90" />}
-                logoBg="#FFFFFF"
-                height="h-12"
-                width="w-90 sm:w-35"
-                className="px-5 mt-8"
-              />
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-start gap-6 mt-8">
+          <Button
+            label="SUMBIT"
+            bgColor="#FFA62B"
+            textColor="#FFFFFF"
+            logo={<MdFlight size={22} color="#000" className="rotate-90" />}
+            logoBg="#FFFFFF"
+            height="h-12"
+            width="w-full sm:w-35"
+            className="px-5"
+          />
+          <div className="flex flex-row gap-4 md:gap-5 items-center">
+            {FooterSocailLinks.map((item, index) => (
+              <Link
+                href={item.link}
+                key={index}
+                className="transition-transform duration-300 hover:scale-103 cursor-pointer"
+              >
+                <Image
+                  src={item.icon}
+                  alt={item.name}
+                  className="w-8 h-8 md:w-10 md:h-10 object-contain"
+                  width={40}
+                  height={40}
+                />
+              </Link>
+            ))}
+          </div>
+        </div>
+      
       </div>
     </>
   );

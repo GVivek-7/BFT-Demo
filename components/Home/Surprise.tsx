@@ -43,19 +43,26 @@ const Surprise: React.FC = () => {
         ref={sectionRef}
         className="flex flex-col items-start md:gap-5 gap-4 w-full h-[740px] relative overflow-hidden"
       >
-        {/* Parallax Background Layer */}
+        {/* Parallax Background Video Layer */}
         <div
           style={{
-            backgroundImage:
-              "url('https://ik.imagekit.io/99y1fc9mh/BFT/Frame%20606.png?updatedAt=1762597499115')",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
             transform: `translateY(${offsetY}px)`,
             transition: "transform 0.1s ease-out",
           }}
-          className="absolute inset-0 w-full h-full"
-        />
+          className="absolute inset-0 w-full h-full z-0"
+        >
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+            preload="auto"
+          >
+            <source src="https://ik.imagekit.io/99y1fc9mh/BFT/IMG_0181.MP4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
 
         {/* Content Layer */}
         <Align className="w-full flex flex-col items-start justify-center gap-5 py-15 relative z-10">

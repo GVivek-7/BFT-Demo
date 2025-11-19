@@ -1,7 +1,6 @@
 "use client";
 import { Chapter } from "@/types/questionnaire";
 import { motion } from "framer-motion";
-import Align from "../Reusable/Align";
 import Image from "next/image";
 import * as ChapterImages from "@/assets/Questionnaire/ChapterNavigation";
 
@@ -32,8 +31,8 @@ const ChapterNavigation = ({
       '#374151', // gray-700
       '#1F2937', // gray-800
       '#111827', // gray-900
-      '#0C1E3D', // dark blue
-      '#04256C', // final dark blue
+      '#0C1E3D', 
+      '#04256C',
     ];
     return colors[Math.min(index, 9)];
   };
@@ -42,7 +41,7 @@ const ChapterNavigation = ({
         <h1 className="mont text-[32px] sm:text-[40px] md:text-[48px] lg:text-[40px] lg:leading-[50px] uppercase font-light tracking-tighter text-black text-center mb-4 max-w-5xl mx-auto px-5">
           Flip through the{" "}
           <span className="font-medium text-[#155A52]">
-            chapters of your journey
+            chapters of your journey  
           </span>{" "}
           and see where the story takes you
         </h1>

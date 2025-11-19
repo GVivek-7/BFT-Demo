@@ -16,22 +16,22 @@ const Faq = () => {
   };
 
   return (
-    <div className="flex flex-col md:space-y-0 space-y-5 md:pb-0 pb-10">
-    <h1 className="mont md:text-[40px] md:leading-11 font-light uppercase tracking-tighter md:mb-10">
+    <div className="flex flex-col  md:pb-0 pb-5 max-w-3xl mx-auto">
+    <h1 className="mont md:text-[40px] md:leading-11 font-light uppercase tracking-tighter text-center md:mb-10">
           Got Something{" "}
           <span className="font-medium text-[#155A52]">Specific in Mind?</span>
         </h1>
-      <div className="flex md:flex-row flex-col-reverse  w-full md:h-[350px]">
+      <div className="flex md:flex-row flex-col-reverse  w-full ">
       {/* Left Section - FAQ */}
-      <div className="md:w-1/2 h-full flex flex-col justify-center md:mt-0 mt-5">
+      <div className="h-full flex flex-col justify-center md:mt-0 mt-5 ">
         <div className="space-y-2.5 ">
           {FAQ_CONTENTS.map((item) => (
-            <div key={item.id} className=" pb-3">
+            <div key={item.id} className=" pb-3 bg-[#EbEbEb] p-3 md:p-6 rounded-md">
               <button
                 onClick={() => toggleFaq(item.id)}
-                className="w-full flex items-start justify-between gap-4 text-left group"
+                className="w-full flex items-start justify-between gap-4 text-left group "
               >
-                <h3 className="mont uppercase md:text-[24px] md:leading-[26px] font-light text-black transition-colors">
+                <h3 className="mont capitalize md:text-[24px] md:leading-[26px] font-medium text-black transition-colors">
                   {item.ques}
                 </h3>
                 <motion.div
@@ -67,7 +67,7 @@ const Faq = () => {
       </div>
       
       {/* Right Section - Image */}
-      <div className="md:w-1/2 w-full h-full flex items-center justify-center">
+      {/* <div className="md:w-1/2 w-full h-full flex items-center justify-center">
         <Image
           src="https://ik.imagekit.io/99y1fc9mh/BFT/Contact/Frame%20897.png?updatedAt=1762934443975"
           alt="FAQ Illustration"
@@ -75,7 +75,7 @@ const Faq = () => {
           height={500}
           className="object-contain md:w-[90%] w-full h-full rounded-xl"
         />
-      </div>
+      </div> */}
     </div>
     </div>
   

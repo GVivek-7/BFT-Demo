@@ -53,7 +53,7 @@ export const useSceneAnimation = (
   const isCleaningUpRef = useRef(false);
 
   const currentFrame = (index: number) =>
-    `/BFT_FINAL/${(index + 1).toString().padStart(4, "0")}.webp`;
+    `/framesBft_new/frame_${(index + 1).toString().padStart(4, "0")}.webp`;
 
   // Pre-navigation cleanup effect - handles browser navigation
   useEffect(() => {
@@ -436,7 +436,7 @@ export const useSceneAnimation = (
           .to(
             ceciRef.current,
             {
-              x: isMobile ? "-15vw" : isTablet ? -117 : isLg ? "-14.5vw" : "-15.5vw",
+              x: isMobile ? -59 : isTablet ? -117 : isLg ? "-14.5vw" : "-15.5vw",
               duration: 2,
               ease: "power2.inOut",
             },
@@ -445,7 +445,7 @@ export const useSceneAnimation = (
           .to(
             tourismRef.current,
             {
-              x: isMobile ? "15vw" : isTablet ? 117 : isLg ? "14.5vw" : "15.5vw",
+              x: isMobile ? 59 : isTablet ? 117 : isLg ? "14.5vw" : "15.5vw",
               duration: 2,
               ease: "power2.inOut",
             },

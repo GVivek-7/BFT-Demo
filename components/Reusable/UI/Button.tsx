@@ -21,7 +21,6 @@ const Button: React.FC<ButtonProps> = ({
   bgColor = "#FFA62B",
   textColor = "#FFFFFF",
   logoBg = "#FFFFFF",
-  hoverBgColor = "#FFA62B",
   height = "h-12",
   width = "w-auto",
   maxWidth = "max-w-full",

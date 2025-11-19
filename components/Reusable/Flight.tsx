@@ -107,7 +107,7 @@ const Flight = ({ isVisible, onComplete }: FlightProps) => {
   return (
     <section
       ref={sectionRef}
-      className="fixed inset-0 w-full h-screen overflow-hidden  z-[9999]"
+      className="fixed inset-0 w-full h-screen overflow-hidden  z-[999]"
       style={{
           backgroundImage:
             "url('https://ik.imagekit.io/99y1fc9mh/BFT/Experience/bft%20banner%204.png?updatedAt=1761896072995')",
@@ -117,14 +117,22 @@ const Flight = ({ isVisible, onComplete }: FlightProps) => {
         }}
 
     >
+<h1 className="text-[#04256C] md:text-[120px] text-[45px] mont font-bold z-99 absolute left-1/2 top-1/3     -translate-x-1/2 -translate-y-1/2">
+  BlindFoldTrips
+</h1>
+
+
+
       <div className="w-full h-screen flex items-center justify-center overflow-hidden">
         <canvas
           ref={canvasRef}
           width={1920}
           height={1080}
-          className="absolute inset-0 w-full h-screen object-cover"
+          className="absolute inset-0 w-full z-9999 h-screen object-cover"
         />
       </div>
+
+
     </section>
   );
 };

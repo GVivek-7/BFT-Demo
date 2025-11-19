@@ -4,7 +4,9 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import Align from "../Reusable/Align";
 import Button from "../Reusable/UI/Button";
-import { GoArrowUpLeft } from "react-icons/go";
+import { GoArrowLeft, GoArrowUpLeft } from "react-icons/go";
+import Link from "next/link";
+import { IoIosArrowBack } from "react-icons/io";
 
 const IMAGES = [
   {
@@ -45,6 +47,19 @@ const Welcome = ({ onComplete, slug }: WelcomeProps) => {
 
   return (
     <Align>
+      <Link href="/experience" className="absolute top-8 left-30 hidden md:block">
+         <Button
+                  label="BACK TO EXPERIENCES"
+                  bgColor="#000"
+                  textColor="#FFFFFF"
+                  logo={<GoArrowUpLeft size={22} color="#000" />}
+                  logoBg="#FFFFFF"
+                  height="h-12"
+                  width="w-59"
+                  className="px-5"
+                />
+      </Link>
+
       <div className="flex flex-col items-center justify-center py-30 lg:py-35 ">
         <h1 className="mont text-[24px] sm:text-[28px] md:text-[36px] lg:text-[40px] leading-[30px] sm:leading-[36px] md:leading-[44px] lg:leading-[50px] uppercase font-medium tracking-tighter text-[#04256C] text-center mb-2">
           <span className="text-black font-light">The</span> BlindfoldTrips
@@ -84,9 +99,14 @@ const Welcome = ({ onComplete, slug }: WelcomeProps) => {
                     <p className="flex-1">{text}</p>
                   </div>
                 ))}
+
+                <div className="flex flex-row gap-2">
+ <Link href="/experience" className="bg-black p-3 rounded-full md:hidden block">
+            <GoArrowLeft  color="white" size={22} className="" />
+            </Link>
                 <Button
                   label="Get started!"
-                  bgColor="#04256C"
+                  bgColor="#FFA62B"
                   textColor="#FFFFFF"
                   logo={<GoArrowUpLeft size={22} color="#000" />}
                   logoBg="#FFFFFF"
@@ -95,6 +115,8 @@ const Welcome = ({ onComplete, slug }: WelcomeProps) => {
                   className="px-5"
                   onClick={() => setStep(2)}
                 />
+                </div>
+                
               </motion.div>
             ) : (
               // Step 2
@@ -125,7 +147,7 @@ const Welcome = ({ onComplete, slug }: WelcomeProps) => {
                 </div>
                 <Button
                   label="Continue"
-                  bgColor="#04256C"
+                  bgColor="#FFA62B"
                   textColor="#FFFFFF"
                   logo={<GoArrowUpLeft size={22} color="#000" />}
                   logoBg="#FFFFFF"

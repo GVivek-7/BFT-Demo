@@ -74,7 +74,7 @@ const Journeys: React.FC<JourneyProps> = ({ data }) => {
                         {content.no}
                       </h1>
                       <div className="flex-1">
-                        <h2 className="text-base sm:text-lg font-medium mont tracking-travel">
+                        <h2 className="text-base sm:text-lg uppercase font-semibold mont tracking-travel">
                           {content.title}
                         </h2>
                         <p className="text-xs sm:text-sm text-gray-600 mt-1">
@@ -97,7 +97,7 @@ const Journeys: React.FC<JourneyProps> = ({ data }) => {
 
             <div className="flex flex-col gap-3 items-center justify-center mt-6 sm:mt-8 md:mt-10 w-full">
               <div className="flex flex-col gap-2 sm:gap-3 items-center mb-3 sm:mb-5 ">
-                <h1 className="font-bold text-[18px] sm:text-[20px] leading-[20px] mont sm:leading-[22px] tracking-tighter text-center">
+                <h1 className="font-semibold uppercase text-[18px] sm:text-[20px] leading-[20px] mont sm:leading-[22px] tracking-tighter text-center">
                   Snip Your Mystery Ticket
                 </h1>
                 <p className="text-[14px] sm:text-[16px] leading-[16px] sm:leading-[18px] font-light text-center">
