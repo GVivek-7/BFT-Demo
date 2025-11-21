@@ -29,8 +29,8 @@ const Hero: React.FC = () => {
         </h1>
       </div>
 
-      {/* Palace Monument at Bottom - Properly scaled to fill full width */}
-      <div className="absolute bottom-0 left-0 right-0 w-full h-[68%] xs:h-[70%] sm:h-[62%] md:h-[60%] lg:h-[58%] xl:h-[60%] 2xl:h-[62%] z-40 pointer-events-none">
+      {/* Palace Monument at Bottom - Adjusted for Mac screens */}
+      <div className="absolute bottom-0 left-0 right-0 w-full h-[68%] xs:h-[70%] sm:h-[62%] md:h-[60%] lg:h-[62%] xl:h-[65%] 2xl:h-[68%] z-40 pointer-events-none">
         <img
           src={Mountain2}
           alt="Monument"
