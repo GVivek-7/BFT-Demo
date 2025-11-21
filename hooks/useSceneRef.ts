@@ -30,7 +30,7 @@ export const useSceneRefs = () => {
   // Image sequence refs
   const totalFrames = TOTAL_FRAMES;
   const imagesRef = useRef<HTMLImageElement[]>([]);
-  const imgSeqRef = useRef({ frame: 0 });
+  const imgSeqRef = useRef({ frame: 6 }); // Start from frame 0007.webp
   const cleanupRef = useRef<(() => void) | null>(null);
   const isCleanedUpRef = useRef(false);
   const gsapContextRef = useRef<gsap.Context | null>(null);

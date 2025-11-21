@@ -97,7 +97,7 @@ const Scene: React.FC = () => {
             height={1080}
             className="w-full h-screen object-cover"
             style={{
-              backgroundImage: "url(/framesBft_new/frame_0001.webp)",
+              backgroundImage: "url(/framesBft_new/frame_0007.webp)",
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
