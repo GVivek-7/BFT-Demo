@@ -127,7 +127,7 @@ const Page = () => {
     }, 4000); // change every 4 seconds
 
     return () => clearInterval(interval);
-  }, []);
+  }, [BG_IMAGES.length]);
 
   return (
     <div className="relative w-full min-h-screen flex items-center justify-center md:justify-center  px-4 pt-30">

@@ -6,7 +6,6 @@ interface InputProps extends React.ComponentProps<"input"> {
 }
 
 function Input({ className, type, label, placeholder, ...props }: InputProps) {
-  const [isFocused, setIsFocused] = React.useState(false)
   const [hasValue, setHasValue] = React.useState(false)
   const inputRef = React.useRef<HTMLInputElement>(null)
 
@@ -17,12 +16,10 @@ function Input({ className, type, label, placeholder, ...props }: InputProps) {
   }, [props.value, props.defaultValue])
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    setIsFocused(true)
     props.onFocus?.(e)
   }
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    setIsFocused(false)
     props.onBlur?.(e)
   }
 

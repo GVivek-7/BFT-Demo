@@ -10,7 +10,7 @@ const ChapterPage = () => {
   const slug = params.slug as string;
   const chapterId = parseInt(params.chapterId as string);
 
-  const [answers, setAnswers] = useState<Record<string, any>>({});
+  const [answers, setAnswers] = useState<Record<string, string | string[] | number>>({});
 
   const questionnaireData = QUESTIONNAIRE_DATA.find((q) => q.slug === slug);
 
@@ -47,7 +47,7 @@ const ChapterPage = () => {
     );
   }
 
-  const handleAnswerChange = (questionId: string, value: any) => {
+  const handleAnswerChange = (questionId: string, value: string | string[] | number) => {
     setAnswers((prev) => ({
       ...prev,
       [questionId]: value,

@@ -20,7 +20,7 @@ export const triggerGlobalCleanup = () => {
   if (cleanupCallback) {
     try {
       cleanupCallback();
-    } catch (e) {
+    } catch {
       // Silently handle cleanup errors
     }
     cleanupCallback = null;
@@ -31,12 +31,12 @@ export const triggerGlobalCleanup = () => {
     triggers.forEach(trigger => {
       try {
         trigger.kill(true);
-      } catch (e) {
+      } catch {
         // Silently handle individual trigger errors
       }
     });
     gsap.killTweensOf('*');
-  } catch (e) {
+  } catch {
     // Silently handle GSAP cleanup errors
   }
 };
@@ -68,7 +68,7 @@ export default function LenisProvider({ children }: { children: ReactNode }) {
     try {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill(true));
       gsap.killTweensOf('*');
-    } catch (e) {
+    } catch {
       // Silently handle cleanup errors
     }
     
@@ -99,7 +99,7 @@ export default function LenisProvider({ children }: { children: ReactNode }) {
       if (lenisRef.current) {
         try {
           lenisRef.current.destroy();
-        } catch (e) {
+        } catch {
           // Silently handle errors
         }
         lenisRef.current = null;
@@ -108,7 +108,7 @@ export default function LenisProvider({ children }: { children: ReactNode }) {
       try {
         ScrollTrigger.getAll().forEach(trigger => trigger.kill(true));
         gsap.killTweensOf('*');
-      } catch (e) {
+      } catch {
         // Silently handle errors
       }
     };

@@ -1,6 +1,5 @@
 import { motion, useMotionValue, animate } from "framer-motion";
 import { GoArrowUpLeft } from "react-icons/go";
-import { useState } from "react";
 
 export default function SwipeButton() {
   const x = useMotionValue(0);

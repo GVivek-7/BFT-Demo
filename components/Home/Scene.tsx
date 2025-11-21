@@ -70,7 +70,7 @@ const Scene: React.FC = () => {
             }
           });
         }
-      } catch (error) {
+      } catch {
         // Silently handle cleanup errors
       }
     };

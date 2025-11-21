@@ -22,7 +22,7 @@ const ParallaxImage = ({ src }: { src: string }) => {
       try {
         y.destroy?.();
         scrollYProgress.destroy?.();
-      } catch (e) {
+      } catch {
         // Silently handle cleanup errors
       }
     };

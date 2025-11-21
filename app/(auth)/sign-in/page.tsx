@@ -129,7 +129,7 @@ const Page = () => {
     }, 4000); // change every 4 seconds
 
     return () => clearInterval(interval);
-  }, []);
+  }, [BG_IMAGES.length]);
 
 
   return (

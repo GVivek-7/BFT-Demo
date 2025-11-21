@@ -1,11 +1,9 @@
 "use client";
-import { SOCIAL_LOGINS } from "@/data/Auth/Socials";
 import Button from "@/components/Reusable/UI/Button";
 import { Input } from "@/components/Reusable/UI/Input";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { GoArrowUpLeft } from "react-icons/go";
-import Image from "next/image";
 import { AuthBg1, AuthBg2, AuthBg3, AuthBg4, AuthBg5, AuthBg6 } from "@/assets/Auth";
 
 interface FormFields {
@@ -127,7 +125,7 @@ const Page = () => {
     }, 4000); // change every 4 seconds
 
     return () => clearInterval(interval);
-  }, []);
+  }, [BG_IMAGES.length]);
 
   return (
     <div className="relative w-full min-h-screen flex items-center justify-center md:justify-center  px-4">

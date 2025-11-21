@@ -2,7 +2,6 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { useRouter } from "next/navigation";
 import Align from "../Reusable/Align";
 import Button from "../Reusable/UI/Button";
 import { GoArrowLeft, GoArrowUpLeft } from "react-icons/go";
@@ -35,7 +34,6 @@ interface WelcomeProps {
 }
 
 const Welcome = ({ onComplete, slug }: WelcomeProps) => {
-  const router = useRouter();
   const [step, setStep] = useState(1);
   const [userName, setUserName] = useState("");
 
@@ -47,7 +45,7 @@ const Welcome = ({ onComplete, slug }: WelcomeProps) => {
 
   const handleBackToExperience = () => {
     sessionStorage.setItem("skipLoader", "true");
-    window.location.href = `/experience#${slug}`;
+    window.location.href = `/experience#mystery-voyage`;
   };
 
   // Get journey-specific content based on slug

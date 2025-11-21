@@ -1,78 +1,43 @@
 "use client";
-import React, { useEffect, useRef } from "react";
-import Image from "next/image";
-import { Mountain2 } from "@/assets/Experience";
+import React from "react";
+import { Mountain2, ExperienceHeroBG } from "@/assets/Experience";
 
 const Hero: React.FC = () => {
-  const bgRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    let ticking = false;
-
-    const updateParallax = () => {
-      const scrollY = window.scrollY;
-
-      if (bgRef.current) {
-        bgRef.current.style.transform = `translate3d(0, ${scrollY * 0.5}px, 0)`;
-      }
-
-      if (textRef.current) {
-        textRef.current.style.transform = `translate3d(0, ${
-          scrollY * 0.3
-        }px, 0)`;
-      }
-
-      ticking = false;
-    };
-
-    const handleScroll = () => {
-      if (!ticking) {
-        ticking = true;
-
-        requestAnimationFrame(updateParallax);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   return (
-    <div className="h-dvh w-full relative overflow-hidden " suppressHydrationWarning>
-      <div
-        ref={bgRef}
-        className="absolute inset-0 w-full h-full will-change-transform"
-        style={{
-          backgroundImage:
-            "url('https://ik.imagekit.io/99y1fc9mh/BFT/Experience/bft%20banner%204.png?updatedAt=1761896072995')",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-        }}
-      />
+    <div 
+      id="hero-section" 
+      className="relative w-full h-screen overflow-hidden bg-[#5DBBCE]" 
+      suppressHydrationWarning
+    >
+      {/* Background Sky Image */}
+      <div className="absolute top-0 left-0 w-full h-full">
+        <img
+          src={ExperienceHeroBG}
+          alt="Experience Background"
+          className="w-full h-full object-cover"
+          loading="eager"
+        />
+      </div>
 
-      <div
-        ref={textRef}
-        className="absolute md:top-50 xl:top-60 2xl:top-70 top-60 inset-0 flex flex-col items-center justify-start will-change-transform"
-      >
-        <p className="md:text-[34px] text-[24px] md:leading-9 text-white">The Blindfold</p>
-        <h1 className="mont text-[#E6AF2E] md:text-[120px] text-[60px] font-bold font-heading tracking-tighter leading-[62px] md:leading-[122px] text-center">
+      {/* Text Content - Positioned right above palace on mobile */}
+      <div className="absolute left-0 right-0 flex flex-col items-center px-4 bottom-[55%] sm:bottom-auto sm:top-[10%] md:top-[12%] lg:top-[12%]">
+        <p className="text-white text-[20px] sm:text-[24px] md:text-[32px] lg:text-[40px] font-light tracking-wide mb-1 sm:mb-2 md:mb-3 relative z-50">
+          The Blindfold
+        </p>
+        <h1 className="mont text-[#FFA726] text-[50px] sm:text-[60px] md:text-[100px] lg:text-[120px] xl:text-[140px] font-bold tracking-tighter leading-[50px] sm:leading-[60px] md:leading-[100px] lg:leading-[120px] xl:leading-[140px] text-center uppercase relative z-30">
           EXPERIENCE
         </h1>
       </div>
 
-      <Image
-        src={Mountain2}
-        alt="Mountain"
-        width={1000}
-        height={1000}
-        className="absolute bottom-0 w-full h-full object-cover pointer-events-none"
-        priority
-      />
+      {/* Palace Monument at Bottom - Responsive height, higher on mobile */}
+      <div className="absolute bottom-0 left-0 w-full h-[72%] sm:h-[68%] md:h-[65%] lg:h-[63%] xl:h-[65%] z-40 pointer-events-none">
+        <img
+          src={Mountain2}
+          alt="Monument"
+          className="w-full h-full object-cover object-bottom"
+          loading="eager"
+        />
+      </div>
     </div>
   );
 };

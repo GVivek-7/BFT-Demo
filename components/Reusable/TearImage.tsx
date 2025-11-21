@@ -32,54 +32,100 @@ const TearImage: React.FC<TearImageProps> = ({ destinationUrl = "/questionnaire"
     setIsDragging(true);
   };
 
-  const handleDragMove = (clientY: number) => {
-    if (!isDragging || isTorn || !containerRef.current) return;
-    const container = containerRef.current;
-    const rect = container.getBoundingClientRect();
-    const relativeY = clientY - rect.top;
-    const progress = Math.max(0, Math.min(1, relativeY / rect.height));
-    
-    setDragProgress(progress);
-
-    // Trigger tear at 90%
-    if (progress >= 0.9) {
-      executeTear();
-    }
-  };
-
-  const handleMouseMove = (e: MouseEvent) => {
-    handleDragMove(e.clientY);
-  };
-
-  const handleTouchMove = (e: TouchEvent) => {
-    if (e.touches.length > 0) {
-      handleDragMove(e.touches[0].clientY);
-    }
-  };
-
-  const handleDragEnd = () => {
-    setIsDragging(false);
-    if (!isTorn) {
-      // Smooth return to 50% if not torn
-      setDragProgress(0.5);
-    }
-  };
-
   useEffect(() => {
-    if (isDragging) {
-      window.addEventListener("mousemove", handleMouseMove);
-      window.addEventListener("mouseup", handleDragEnd);
-      window.addEventListener("touchmove", handleTouchMove);
-      window.addEventListener("touchend", handleDragEnd);
+    if (!isDragging) return;
 
-      return () => {
-        window.removeEventListener("mousemove", handleMouseMove);
-        window.removeEventListener("mouseup", handleDragEnd);
-        window.removeEventListener("touchmove", handleTouchMove);
-        window.removeEventListener("touchend", handleDragEnd);
-      };
-    }
-  }, [isDragging, isTorn]);
+    const handleDragMove = (clientY: number) => {
+      if (isTorn || !containerRef.current) return;
+      const container = containerRef.current;
+      const rect = container.getBoundingClientRect();
+      const relativeY = clientY - rect.top;
+      const progress = Math.max(0, Math.min(1, relativeY / rect.height));
+      
+      setDragProgress(progress);
+
+      // Trigger tear at 90%
+      if (progress >= 0.9) {
+        if (isTorn) return;
+        setIsTorn(true);
+        setIsDragging(false);
+
+        const right = rightRef.current;
+        if (!right) return;
+
+        const animations = [
+          { x: 15, rotateY: 1, duration: 120, ease: "ease-in" },
+          {
+            x: 180,
+            y: -15,
+            rotateY: 25,
+            duration: 500,
+            ease: "ease-out",
+          },
+          { x: 190, y: -15, rotateY: 25, opacity: 0, duration: 250 },
+        ];
+
+        let delay = 0;
+        animations.forEach((anim, i) => {
+          setTimeout(() => {
+            const {
+              x = 0,
+              y = 0,
+              rotateY = 0,
+              opacity = 1,
+              duration,
+              ease,
+            } = anim;
+            right.style.transition = `transform ${duration}ms ${ease}, opacity ${duration}ms ${ease}`;
+            right.style.transform = `translateX(${x}px) translateY(${y}px) rotateY(${rotateY}deg)`;
+            if (i === animations.length - 1) {
+              right.style.opacity = opacity.toString();
+            }
+          }, delay);
+          delay += anim.duration;
+        });
+
+        // Navigate after animation completes
+        setTimeout(() => {
+          // Store the section ID in sessionStorage before navigating
+          if (sectionId) {
+            sessionStorage.setItem('returnSection', sectionId);
+          }
+          router.push(destinationUrl);
+        }, delay + 300);
+      }
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      handleDragMove(e.clientY);
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        handleDragMove(e.touches[0].clientY);
+      }
+    };
+
+    const handleDragEnd = () => {
+      setIsDragging(false);
+      if (!isTorn) {
+        // Smooth return to 50% if not torn
+        setDragProgress(0.5);
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleDragEnd);
+    window.addEventListener("touchmove", handleTouchMove);
+    window.addEventListener("touchend", handleDragEnd);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleDragEnd);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleDragEnd);
+    };
+  }, [isDragging, isTorn, router, destinationUrl, sectionId]);
 
   const executeTear = () => {
     if (isTorn) return;

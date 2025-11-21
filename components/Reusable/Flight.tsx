@@ -20,8 +20,7 @@ const Flight = ({ isVisible = true, onComplete }: FlightProps) => {
   const text3Ref = useRef<HTMLDivElement | null>(null);
   const text4Ref = useRef<HTMLDivElement | null>(null);
   const text5Ref = useRef<HTMLDivElement | null>(null);
-  const [isFadingOut, setIsFadingOut] = useState(false);
-  const [shouldRender, setShouldRender] = useState(true);
+
   const [isMobile, setIsMobile] = useState<boolean | null>(null);
   const [isReady, setIsReady] = useState(false);
 
@@ -203,37 +202,9 @@ const Flight = ({ isVisible = true, onComplete }: FlightProps) => {
           scrub: 1,
           pin: true,
           onLeave: () => {
-            setIsFadingOut(true);
-            
-            if (canvasScrollTrigger) {
-              canvasScrollTrigger.scroll(canvasScrollTrigger.end);
+            if (onComplete) {
+              onComplete();
             }
-            
-            setTimeout(() => {
-              if (textScrollTrigger) {
-                textScrollTrigger.kill(true);
-              }
-              if (canvasScrollTrigger) {
-                canvasScrollTrigger.kill(true);
-              }
-              
-              gsap.to(sectionRef.current, {
-                opacity: 0,
-                duration: 0.5,
-                ease: "power2.inOut",
-                onComplete: () => {
-                  // Reset scroll position before unmounting
-                  window.scrollTo(0, 0);
-                  document.documentElement.scrollTop = 0;
-                  document.body.scrollTop = 0;
-                  
-                  setShouldRender(false);
-                  if (onComplete) {
-                    onComplete();
-                  }
-                },
-              });
-            }, 50);
           },
         },
         onUpdate: render,
@@ -272,35 +243,24 @@ const Flight = ({ isVisible = true, onComplete }: FlightProps) => {
         canvasScrollTrigger.kill(true);
       }
       
-      ScrollTrigger.getAll().forEach((trigger) => {
-        if (trigger.trigger === sectionRef.current) {
-          trigger.kill(true);
-        }
-      });
-      
-      // Reset scroll on cleanup
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
+      const currentSection = sectionRef.current;
+      if (currentSection) {
+        ScrollTrigger.getAll().forEach((trigger) => {
+          if (trigger.trigger === currentSection) {
+            trigger.kill(true);
+          }
+        });
+      }
     };
   }, [onComplete, isMobile, isReady]);
 
-  if (!isVisible || !shouldRender) return null;
+  if (!isVisible) return null;
 
   return (
     <section
       ref={sectionRef}
-      className="w-full bg-[#BDD5E8] h-screen relative overflow-hidden z-9999"
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        opacity: 1,
+      className="w-full bg-[#BDD5E8] h-screen relative overflow-hidden"
 
-        transition: isFadingOut ? "none" : "opacity 0.3s ease-in-out",
-      }}
     >
       <div className="w-full h-screen flex items-center justify-center overflow-hidden">
         <canvas

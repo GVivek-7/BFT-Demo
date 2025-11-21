@@ -79,7 +79,7 @@ export const useSceneAnimation = (
         ScrollTrigger.getAll().forEach(trigger => {
           try {
             trigger.kill(true);
-          } catch (e) {
+          } catch {
             // Silently handle individual trigger errors
           }
         });
@@ -104,7 +104,7 @@ export const useSceneAnimation = (
         
         // Kill all remaining tweens
         gsap.killTweensOf('*');
-      } catch (error) {
+      } catch {
         // Silently handle GSAP cleanup errors
       }
     };
@@ -606,7 +606,7 @@ export const useSceneAnimation = (
         ScrollTrigger.getAll().forEach(trigger => {
           try {
             trigger.kill(true);
-          } catch (e) {
+          } catch {
             // Silently handle individual trigger cleanup errors
           }
         });
@@ -631,15 +631,17 @@ export const useSceneAnimation = (
         
         // Kill all remaining tweens
         gsap.killTweensOf('*');
-      } catch (error) {
+      } catch {
         // Silently handle cleanup errors
       }
 
-      // Clear canvas
-      if (contextRef.current && canvasRef.current) {
+      // Clear canvas - capture ref values before cleanup
+      const canvas = canvasRef.current;
+      const context = contextRef.current;
+      if (context && canvas) {
         try {
-          contextRef.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-        } catch (e) {
+          context.clearRect(0, 0, canvas.width, canvas.height);
+        } catch {
           // Silently handle canvas cleanup errors
         }
       }
@@ -647,5 +649,7 @@ export const useSceneAnimation = (
       // Reset initialization flag for next mount
       isInitializedRef.current = false;
     };
+    // currentFrame is defined inside the effect and depends on isMobile which is already in deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mounted, isMobile, isTablet, isLg, responsiveSettings.modelScale, canvasRef, contextRef, containerRef, imageSeqRef, sceneContainerRef, HeadTextRef, ParaTextRef, HeadText2Ref, ParaText2Ref, ceciRef, tourismRef, point1Ref, point2Ref, point3Ref, point4Ref, pioneerRef, worldRef, logoRef, modelGroupRef, totalFrames, imagesRef, imgSeqRef, cleanupRef, isCleanedUpRef, gsapContextRef, frameCount]);
 };
