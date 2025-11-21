@@ -19,8 +19,8 @@ const Hero: React.FC = () => {
         />
       </div>
 
-      {/* Text Content - Moved higher on tablets and desktops */}
-      <div className="absolute left-0 right-0 flex flex-col items-center px-4 bottom-[55%] xs:bottom-[58%] sm:bottom-auto sm:top-[5%] md:top-[6%] lg:top-[8%] xl:top-[10%]">
+      {/* Text Content - Moved higher to show entire palace image */}
+      <div className="absolute left-0 right-0 flex flex-col items-center px-4 bottom-[58%] xs:bottom-[60%] sm:bottom-auto sm:top-[3%] md:top-[4%] lg:top-[5%] xl:top-[6%]">
         <p className="text-white text-[18px] xs:text-[20px] sm:text-[24px] md:text-[32px] lg:text-[36px] xl:text-[40px] font-light tracking-wide mb-1 sm:mb-2 md:mb-3 relative z-50">
           The Blindfold
         </p>
