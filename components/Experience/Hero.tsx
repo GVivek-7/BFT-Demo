@@ -29,18 +29,16 @@ const Hero: React.FC = () => {
         </h1>
       </div>
 
-      {/* Palace Monument at Bottom - Fully responsive without cropping */}
-      <div className="absolute bottom-[-2%] left-0 right-0 w-full h-[68%] xs:h-[70%] sm:h-[62%] md:h-[60%] lg:h-[58%] xl:h-[60%] 2xl:h-[62%] z-40 pointer-events-none flex items-end justify-center">
+      {/* Palace Monument at Bottom - Fills width while showing full image */}
+      <div className="absolute bottom-0 left-0 right-0 w-full h-[68%] xs:h-[70%] sm:h-[62%] md:h-[60%] lg:h-[58%] xl:h-[60%] 2xl:h-[62%] z-40 pointer-events-none overflow-hidden">
         <img
           src={Mountain2}
           alt="Monument"
-          className="w-full h-full"
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 h-full w-auto min-w-full"
           loading="eager"
           style={{ 
-            objectFit: 'contain',
-            objectPosition: 'bottom center',
-            maxWidth: '100%',
-            maxHeight: '100%'
+            objectFit: 'cover',
+            objectPosition: 'bottom center'
           }}
         />
       </div>
