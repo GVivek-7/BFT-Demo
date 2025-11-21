@@ -2,6 +2,7 @@ import { JourneyItem } from "../../components/Reusable/Journeys";
 
 export const PurposeRetreat: JourneyItem[] = [
   {
+    id: 'purpose-retreat',
     title: 'The Purpose Retreat',
     desc: 'The Purpose Path is a mindful travel experience that blends exploration with meaning — created for those who wish to journey with intention, give back to the world, and rediscover themselves along the way.',
     textColor: '#155A52',

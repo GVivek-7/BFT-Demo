@@ -2,6 +2,7 @@ import { JourneyItem } from "../../components/Reusable/Journeys";
 
 export const TailoredEscape: JourneyItem[] = [
   {
+    id: 'tailored-escape',
     title: 'The Tailored Escape',
     desc: 'The Tailored Escape is a soulful travel experience that connects people through shared journeys and meaningful moments — made for those who seek stories to live and friendships to build along the way.',
     textColor: '#E6AF2E',

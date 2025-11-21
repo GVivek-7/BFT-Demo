@@ -2,6 +2,7 @@ import { JourneyItem } from "../../components/Reusable/Journeys";
 
 export const MysteryVoyageContents: JourneyItem[] = [
   {
+    id: "mystery-voyage",
     title: "The Mystery Voyage",
     desc: "The Mystery Trip is not your usual travel. You won't know the destination until you arrive, but every detail is a surprise — from stunning landscapes to unique cultural experiences and unforgettable adventures.",
     textColor: "#04256C",

@@ -2,6 +2,7 @@ import { JourneyItem } from "../../components/Reusable/Journeys";
 
 export const CraftedJourney: JourneyItem[] = [
   {
+    id: 'crafted-journey',
     title: 'The Crafted Journey',
     desc: 'The Crafted Journey is a bespoke travel experience designed for those who value detail, and comfort — every moment thoughtfully curated to create a journey that feels personal, seamless, and unforgettable.',
     textColor: '#FFA62B',

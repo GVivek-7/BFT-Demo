@@ -45,6 +45,9 @@ export const useSceneAnimation = (
   const { mounted, isMobile, isTablet, isLg, responsiveSettings } =
     responsiveState;
 
+  // Determine frame count based on device
+  const frameCount = isMobile ? totalFrames.MOBILE : totalFrames.WEB;
+
   // Local ref to track if animation has been initialized
   const isInitializedRef = useRef(false);
   const modelCheckIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -52,8 +55,10 @@ export const useSceneAnimation = (
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const isCleaningUpRef = useRef(false);
 
-  const currentFrame = (index: number) =>
-    `/framesBft_new/frame_${(index + 1).toString().padStart(4, "0")}.webp`;
+  const currentFrame = (index: number) => {
+    const folder = isMobile ? "/MFrames" : "/WFrames";
+    return `${folder}/${(index + 1).toString().padStart(4, "0")}.webp`;
+  };
 
   // Pre-navigation cleanup effect - handles browser navigation
   useEffect(() => {
@@ -104,19 +109,24 @@ export const useSceneAnimation = (
       }
     };
 
+    const handleVisibilityChange = () => {
+      if (!document.hidden && mounted) {
+        // Page became visible again - refresh ScrollTrigger
+        requestAnimationFrame(() => {
+          ScrollTrigger.refresh();
+        });
+      }
+    };
+
     // Listen for route changes and visibility changes
     window.addEventListener('beforeunload', handleBeforeUnload);
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        handleBeforeUnload();
-      }
-    });
+    document.addEventListener('visibilitychange', handleVisibilityChange);
     
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
-      handleBeforeUnload();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [gsapContextRef, isCleanedUpRef]);
+  }, [gsapContextRef, isCleanedUpRef, mounted]);
 
   useEffect(() => {
     if (!mounted || !containerRef.current) return;
@@ -132,13 +142,21 @@ export const useSceneAnimation = (
     isInitializedRef.current = false;
     isCleaningUpRef.current = false;
 
-    // Set canvas dimensions
-    canvas.width = 1920;
-    canvas.height = 1080;
+    // Refresh ScrollTrigger on mount to handle navigation
+    ScrollTrigger.refresh();
+
+    // Set canvas dimensions based on device
+    if (isMobile) {
+      canvas.width = 1080;
+      canvas.height = 1920;
+    } else {
+      canvas.width = 1920;
+      canvas.height = 1080;
+    }
 
     // Load images
     const images: HTMLImageElement[] = [];
-    for (let i = 0; i < totalFrames; i++) {
+    for (let i = 0; i < frameCount; i++) {
       const img = new Image();
       img.src = currentFrame(i);
       images.push(img);
@@ -184,6 +202,9 @@ export const useSceneAnimation = (
       if (isCleanedUpRef.current || !containerRef.current || isInitializedRef.current) return;
       
       isInitializedRef.current = true;
+
+      // Ensure ScrollTrigger is registered
+      gsap.registerPlugin(ScrollTrigger);
 
       // Create GSAP context with error handling
       const ctx = gsap.context(() => {
@@ -247,8 +268,8 @@ export const useSceneAnimation = (
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top top",
-            end: "+=6000",
-            scrub: 1,
+            end: "+=7000",
+            scrub: 1.5,
             pin: true,
             anticipatePin: 1,
             invalidateOnRefresh: true,
@@ -286,7 +307,7 @@ export const useSceneAnimation = (
           .to(
             imgSeqRef.current,
             {
-              frame: totalFrames - 1,
+              frame: frameCount - 1,
               snap: "frame",
               ease: "none",
               duration: 2,
@@ -358,7 +379,7 @@ export const useSceneAnimation = (
           .to(
             ceciRef.current,
             {
-              x: isMobile ? "-33vw" : isTablet ? -260 : isLg ? "-30vw" : "-27vw",
+              x: isMobile ? "-33vw" : isTablet ? -260 : isLg ? "-28vw" : "-30vw",
               opacity: 1,
               visibility: "visible",
               duration: 1.5,
@@ -371,7 +392,7 @@ export const useSceneAnimation = (
             {
               opacity: 1,
               visibility: "visible",
-              x: isMobile ? "33vw" : isTablet ? 260 : isLg ? "29vw" : "27vw",
+              x: isMobile ? "33vw" : isTablet ? 260 : isLg ? "25vw" : "27vw",
               duration: 1.5,
               ease: "power2.out",
             },
@@ -448,7 +469,7 @@ export const useSceneAnimation = (
           .to(
             ceciRef.current,
             {
-              x: isMobile ? -59 : isTablet ? -117 : isLg ? "-14vw" : "-15.5vw",
+              x: isMobile ? -59 : isTablet ? -117 : isLg ? "-14.2vw" : "-15.5vw",
               duration: 2,
               ease: "power2.inOut",
             },
@@ -457,7 +478,7 @@ export const useSceneAnimation = (
           .to(
             tourismRef.current,
             {
-              x: isMobile ? 59 : isTablet ? 117 : isLg ? "14vw" : "15.5vw",
+              x: isMobile ? 59 : isTablet ? 117 : isLg ? "14.2vw" : "15.5vw",
               duration: 2,
               ease: "power2.inOut",
             },
@@ -516,38 +537,56 @@ export const useSceneAnimation = (
       gsapContextRef.current = ctx;
     };
 
-    imagesRef.current[0].onload = () => {
-      if (isCleanedUpRef.current) return;
-      
-      render();
-
-      modelCheckIntervalRef.current = setInterval(() => {
-        if (isCleanedUpRef.current) {
-          if (modelCheckIntervalRef.current) {
-            clearInterval(modelCheckIntervalRef.current);
-            modelCheckIntervalRef.current = null;
-          }
-          return;
-        }
-
-        if (
-          modelGroupRef.current &&
-          containerRef.current &&
-          !isCleanedUpRef.current
-        ) {
-          if (modelCheckIntervalRef.current) {
-            clearInterval(modelCheckIntervalRef.current);
-            modelCheckIntervalRef.current = null;
-          }
-          
-          requestAnimationFrame(() => {
-            if (!isCleanedUpRef.current) {
-              initAnimation();
+    // Preload first few frames for smoother start
+    let loadedCount = 0;
+    const framesToPreload = Math.min(10, frameCount);
+    
+    const checkPreloadComplete = () => {
+      loadedCount++;
+      if (loadedCount >= framesToPreload && !isCleanedUpRef.current) {
+        render();
+        
+        // Wait for model to be ready
+        modelCheckIntervalRef.current = setInterval(() => {
+          if (isCleanedUpRef.current) {
+            if (modelCheckIntervalRef.current) {
+              clearInterval(modelCheckIntervalRef.current);
+              modelCheckIntervalRef.current = null;
             }
-          });
-        }
-      }, 50);
+            return;
+          }
+
+          if (
+            modelGroupRef.current &&
+            containerRef.current &&
+            !isCleanedUpRef.current
+          ) {
+            if (modelCheckIntervalRef.current) {
+              clearInterval(modelCheckIntervalRef.current);
+              modelCheckIntervalRef.current = null;
+            }
+            
+            requestAnimationFrame(() => {
+              if (!isCleanedUpRef.current) {
+                initAnimation();
+              }
+            });
+          }
+        }, 50);
+      }
     };
+
+    // Attach load handlers to first few frames
+    for (let i = 0; i < framesToPreload; i++) {
+      if (imagesRef.current[i]) {
+        if (imagesRef.current[i].complete) {
+          checkPreloadComplete();
+        } else {
+          imagesRef.current[i].onload = checkPreloadComplete;
+          imagesRef.current[i].onerror = checkPreloadComplete; // Continue even if some frames fail
+        }
+      }
+    }
 
     // Cleanup function
     return () => {
@@ -604,37 +643,9 @@ export const useSceneAnimation = (
           // Silently handle canvas cleanup errors
         }
       }
+
+      // Reset initialization flag for next mount
+      isInitializedRef.current = false;
     };
-  }, [
-    mounted,
-    isMobile,
-    isTablet,
-    isLg,
-    responsiveSettings.modelScale,
-    canvasRef,
-    contextRef,
-    containerRef,
-    imageSeqRef,
-    sceneContainerRef,
-    HeadTextRef,
-    ParaTextRef,
-    HeadText2Ref,
-    ParaText2Ref,
-    ceciRef,
-    tourismRef,
-    point1Ref,
-    point2Ref,
-    point3Ref,
-    point4Ref,
-    pioneerRef, 
-    worldRef,
-    logoRef,
-    modelGroupRef,
-    totalFrames,
-    imagesRef,
-    imgSeqRef,
-    cleanupRef,
-    isCleanedUpRef,
-    gsapContextRef,
-  ]);
+  }, [mounted, isMobile, isTablet, isLg, responsiveSettings.modelScale, canvasRef, contextRef, containerRef, imageSeqRef, sceneContainerRef, HeadTextRef, ParaTextRef, HeadText2Ref, ParaText2Ref, ceciRef, tourismRef, point1Ref, point2Ref, point3Ref, point4Ref, pioneerRef, worldRef, logoRef, modelGroupRef, totalFrames, imagesRef, imgSeqRef, cleanupRef, isCleanedUpRef, gsapContextRef, frameCount]);
 };

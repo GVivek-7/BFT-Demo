@@ -83,7 +83,7 @@ const Scene: React.FC = () => {
   }
 
   return (
-    <div ref={containerRef} className="bg-black">
+    <div ref={containerRef} className="bg-black relative w-full h-screen">
       <div className="relative w-full h-screen bg-black">
         {/* Image Sequence Layer */}
         <div
@@ -317,13 +317,13 @@ Surrender to presence — that’s where you truly arrive.
           {/* Pioneer/Worldwide Text */}
           <p
             ref={pioneerRef}
-            className={`absolute m-0 text-white font-light tracking-widest ${
+            className={`absolute m-0 text-white  tracking-tight font-semibold mont ${
               isMobile
-                ? "top-[44vh] left-[20%] text-sm"
+                ? "max-[400px]:top-[44.5%] max-[376px]:top-[44%] max-[376px]:left-18 top-[45%] max-[400px]:left-20 min-[401px]:max-[490px]:left-24 text-sm"
                 : isTablet
                 ? "top-[44%] left-[22%] text-xl"
                  : isLg
-                ? "top-[40%] left-[22%] text-xl"
+                ? "top-[38%] left-[22%] text-xl"
                 : "top-[38%] left-[20%] text-2xl"
             }`}
             style={{
@@ -336,13 +336,13 @@ Surrender to presence — that’s where you truly arrive.
 
           <p
             ref={worldRef}
-            className={`absolute m-0 text-white font-light tracking-widest text-right ${
+            className={`mont tracking-tight font-semibold absolute m-0 text-white   text-right ${
               isMobile
-                ? "bottom-[44vh] right-[23%] text-sm"
+                ? "bottom-[45%] max-[400px]:bottom-[44.5%] max-[376px]:bottom-[44%] max-[376px]:right-18   max-[400px]:right-20 min-[401px]:max-[490px]:right-24  right-10 text-sm"
                 : isTablet
                 ? "bottom-[44%] right-[22.5%] text-xl"
                 : isLg 
-                ? "bottom-[40%] right-[22.3%] text-xl"
+                ? "bottom-[38%] right-[22.3%] text-xl"
                 : "bottom-[38%] right-[19.9%] text-2xl"
             }`}
             style={{
@@ -350,7 +350,7 @@ Surrender to presence — that’s where you truly arrive.
               visibility: "hidden",
             }}
           >
-            ACROSS DESTINATION
+            ACROSS DESTINATIONS
           </p>
 
           {/* Logo */}

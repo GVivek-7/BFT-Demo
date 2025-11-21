@@ -34,7 +34,7 @@ interface WelcomeProps {
   slug: string;
 }
 
-const Welcome = ({ onComplete }: WelcomeProps) => {
+const Welcome = ({ onComplete, slug }: WelcomeProps) => {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [userName, setUserName] = useState("");
@@ -46,23 +46,38 @@ const Welcome = ({ onComplete }: WelcomeProps) => {
   };
 
   const handleBackToExperience = () => {
-    router.push("/experience");
+    sessionStorage.setItem("skipLoader", "true");
+    window.location.href = `/experience#${slug}`;
+  };
+
+  // Get journey-specific content based on slug
+  const getJourneyTitle = () => {
+    switch (slug) {
+      case "mystery-voyage":
+        return "The Mystery Voyage";
+      case "crafted-journey":
+        return "The Crafted Journey";
+      case "tailored-escape":
+        return "The Tailored Escape";
+      case "purpose-retreat":
+        return "The Purpose Retreat";
+      default:
+        return "BlindfoldTrips";
+    }
   };
 
   return (
     <Align>
-
-
       <div className="flex flex-col items-center justify-center py-30 lg:py-35 ">
         <div className="relative w-full mb-2 flex items-center justify-center">
-          <button 
+          <button
             onClick={handleBackToExperience}
-            className="absolute left-0 top-1/2 -translate-y-1/2 bg-[#E1E1E1] p-3 rounded-full block cursor-pointer z-10 hover:bg-[#E1E1E1]/90 transition-colors"
+            className="absolute left-0 top-1/2 -translate-y-1/2 bg-[#E1E1E1] p-3 rounded-full block cursor-pointer z-10 hover:bg-[#E1E1E1]/90 transition-colors md:block hidden"
           >
             <GoArrowLeft color="black" size={22} />
           </button>
           <h1 className="mont text-[24px] sm:text-[28px] md:text-[36px] lg:text-[40px] leading-[30px] sm:leading-[36px] md:leading-[44px] lg:leading-[50px] uppercase font-medium tracking-tighter text-[#04256C] text-center">
-            <span className="text-black font-light">The</span> BlindfoldTrips
+            <span className="text-black font-light">{getJourneyTitle()}</span>{" "}
             Travel Vibe Check
           </h1>
         </div>
@@ -90,7 +105,7 @@ const Welcome = ({ onComplete }: WelcomeProps) => {
               <motion.div
                 key="step1"
                 initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}  
+                animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3 }}
                 className="flex flex-col gap-4 md:gap-6 text-[16px] md:text-[18px] lg:text-[20px] leading-[22px] md:leading-[24px] tracking-tight"
@@ -101,19 +116,25 @@ const Welcome = ({ onComplete }: WelcomeProps) => {
                     <p className="flex-1">{text}</p>
                   </div>
                 ))}
-
-                <Button
-                  label="Get started!"
-                  bgColor="#FFA62B"
-                  textColor="#FFFFFF"
-                  logo={<GoArrowUpLeft size={22} color="#000" />}
-                  logoBg="#FFFFFF"
-                  height="h-12"
-                  width="w-45"
-                  className="px-5"
-                  onClick={() => setStep(2)}
-                />
-                
+                <div className="flex flex-row gap-2">
+                  <button
+                    onClick={handleBackToExperience}
+                    className=" bg-[#E1E1E1] p-3 rounded-full block cursor-pointer z-10 hover:bg-[#E1E1E1]/90 transition-colors md:hidden block"
+                  >
+                    <GoArrowLeft color="black" size={22} />
+                  </button>
+                  <Button
+                    label="Get started!"
+                    bgColor="#FFA62B"
+                    textColor="#FFFFFF"
+                    logo={<GoArrowUpLeft size={22} color="#000" />}
+                    logoBg="#FFFFFF"
+                    height="h-12"
+                    width="w-45"
+                    className="px-5"
+                    onClick={() => setStep(2)}
+                  />
+                </div>
               </motion.div>
             ) : (
               // Step 2
@@ -142,6 +163,7 @@ const Welcome = ({ onComplete }: WelcomeProps) => {
                     onChange={(e) => setUserName(e.target.value)}
                   />
                 </div>
+
                 <Button
                   label="Continue"
                   bgColor="#FFA62B"

@@ -11,6 +11,7 @@ export interface JourneyContent {
 }
 
 export interface JourneyItem {
+  id: string;
   title: string;
   desc: string;
   textColor: string;
@@ -23,15 +24,23 @@ export interface JourneyProps {
 }
 
 const Journeys: React.FC<JourneyProps> = ({ data }) => {
+  // Extract slug from destinationUrl for section ID
+  const getSectionId = (url?: string) => {
+    if (!url) return undefined;
+    const parts = url.split('/');
+    return parts[parts.length - 1]; // e.g., "mystery-voyage"
+  };
+
   return (
     <Align>
-<div className="pt-20 sm:pt-32 md:pt-40">
+<div className="pt-20 sm:pt-32 md:pt-20">
       {data.map((item, index) => {
         const words = item.title.split(" ");
         const middleIndex = Math.floor(words.length / 2);
+        const sectionId = getSectionId(item.destinationUrl);
 
         return (
-          <div key={index} className="flex flex-col items-center">
+          <div key={index} id={sectionId} className="flex flex-col items-center scroll-mt-20">
             <h1 className="text-[#141414] mont tracking-tighter text-[30px] sm:text-[32px] md:text-[40px] leading-9 sm:leading-[42px] md:leading-[50px] mb-2 text-center uppercase">
               {words.map((word, i) => {
                 const isMiddle = i === middleIndex;
@@ -105,7 +114,7 @@ const Journeys: React.FC<JourneyProps> = ({ data }) => {
                 </p>
               </div>
              
-              <TearImage destinationUrl={item.destinationUrl} />
+              <TearImage destinationUrl={item.destinationUrl} sectionId={sectionId} />
             </div>
           </div>
         );

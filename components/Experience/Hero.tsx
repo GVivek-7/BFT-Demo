@@ -57,7 +57,7 @@ const Hero: React.FC = () => {
 
       <div
         ref={textRef}
-        className="absolute md:top-50 xl:top-60 2xl:top-70 top-65 inset-0 flex flex-col items-center justify-start will-change-transform"
+        className="absolute md:top-50 xl:top-60 2xl:top-70 top-60 inset-0 flex flex-col items-center justify-start will-change-transform"
       >
         <p className="md:text-[34px] text-[24px] md:leading-9 text-white">The Blindfold</p>
         <h1 className="mont text-[#E6AF2E] md:text-[120px] text-[60px] font-bold font-heading tracking-tighter leading-[62px] md:leading-[122px] text-center">

@@ -20,3 +20,8 @@ export const pathScrollThresholds: Record<string, number> = {
 
 };
 
+export const TOTAL_FRAMES = {
+  MOBILE: 420,
+  WEB: 491
+};
+

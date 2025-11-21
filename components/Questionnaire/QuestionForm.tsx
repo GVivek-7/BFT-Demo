@@ -340,7 +340,7 @@ const QuestionForm = ({
           transition={{ delay: 0.5, duration: 0.4 }}
         >
           {!isFirstChapter ? (
-            <div className="bg-[#E1E1E1] p-3 rounded-full">
+            <div className="bg-[#E1E1E1] p-3 rounded-full ">
             <GoArrowLeft onClick={onPrevious} color="black" size={22} />
  
             </div>
@@ -349,7 +349,7 @@ const QuestionForm = ({
           )}
 
           <Button
-            label={isLastChapter ? "CONCLUDE THE CHAPTER" : "MOVE TO NXT CHAPTER"}
+            label={isLastChapter ? "CONCLUDE THE CHAPTER" : "MOVE TO NEXT CHAPTER"}
             bgColor="#FFA62B"
             textColor="#FFFFFF"
             logo={<IoAirplaneSharp  size={19} color="#000" />}

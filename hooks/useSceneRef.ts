@@ -1,6 +1,6 @@
 import { useRef } from "react";
-import gsap from "gsap";
 import { Group } from "three";
+import { TOTAL_FRAMES } from "@/constants";
 
 
 export const useSceneRefs = () => {
@@ -28,7 +28,7 @@ export const useSceneRefs = () => {
   const modelGroupRef = useRef<Group | null>(null);
 
   // Image sequence refs
-  const totalFrames = 425;
+  const totalFrames = TOTAL_FRAMES;
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const imgSeqRef = useRef({ frame: 0 });
   const cleanupRef = useRef<(() => void) | null>(null);

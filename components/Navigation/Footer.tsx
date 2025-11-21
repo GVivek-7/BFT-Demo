@@ -50,7 +50,7 @@ const Footer = () => {
         width={1000}
         height={1000}
       />
-      <div className="md:h-[490px] h-[362px] w-full flex flex-col items-center bg-white rounded-b-[40px] overflow-hidden px-4 py-8 md:py-20 xl:h-[490px] lg:h-[490px]">
+      <div className="md:h-[490px] h-[422px] w-full flex flex-col items-center bg-white rounded-b-[40px] overflow-hidden px-4 py-8 md:py-20 xl:h-[490px] lg:h-[490px]">
         <h1 className="mont text-[#141414] text-[28px] sm:text-[32px] md:text-[40px] font-semibold tracking-tighter leading-9 sm:leading-[42px] md:leading-[50px] mb-4 text-center uppercase">
           {footerContent.title}
         </h1>
@@ -69,7 +69,7 @@ const Footer = () => {
             TAKE THE LEAP
           </span>
         </button>
-        <div className="flex flex-row -space-x-20 mt-[6vh] z-100">
+        <div className="flex flex-row -space-x-20 md:mt-[6vh] mt-[2vh] z-100">
           {BeginYourUnknownImage.map((item, index) => {
             const parallaxOffset = scrollY * (0.05 + index * 0.02);
 
@@ -156,23 +156,24 @@ const Footer = () => {
           </div>
 
           {/* Main Title */}
-          <div className="w-full flex justify-center px-4 mt-8 md:mt-12">
+          <div className="w-full flex justify-center px-4 mt-8 md:mt-12 overflow-visible">
            <h1
   className="
     font-bold 
     text-center 
     select-none 
     wrap-break-word
-    text-[clamp(3.3rem,12vw,200px)]          /* increased max size */
-    leading-[clamp(3.8rem,13vw,260px)]    /* increased max line height */
-    lg:text-[clamp(3rem,13vw,260px)]      /* bigger on large screens */
-    lg:leading-[clamp(3.8rem,14vw,300px)]
-    xl:text-[clamp(2.6rem,13vw,330px)]      /* even bigger on XL screens */
-    xl:leading-[clamp(2.6rem,13vw,330px)]
+    text-[clamp(3.3rem,12vw,200px)]
+    leading-[clamp(3.8rem,13vw,260px)]
+    lg:text-[clamp(3rem,11vw,240px)]
+    lg:leading-[clamp(3.8rem,12vw,280px)]
+    xl:text-[clamp(2.9rem,12vw,260px)]
+    xl:leading-[clamp(3.2rem,11vw,300px)]
     bg-linear-to-b from-[#FFA62B] via-[#ff8900] to-black
     bg-clip-text text-transparent
-    tracking-tighter
+    tracking-tight
     mont
+    px-2
   "
 >
   BlindFoldTrips

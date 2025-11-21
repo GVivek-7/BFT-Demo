@@ -6,9 +6,10 @@ import { useRouter } from "next/navigation";
 
 interface TearImageProps {
   destinationUrl?: string;
+  sectionId?: string;
 }
 
-const TearImage: React.FC<TearImageProps> = ({ destinationUrl = "/questionnaire" }) => {
+const TearImage: React.FC<TearImageProps> = ({ destinationUrl = "/questionnaire", sectionId }) => {
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const leftRef = useRef<HTMLDivElement | null>(null);
@@ -122,6 +123,10 @@ const TearImage: React.FC<TearImageProps> = ({ destinationUrl = "/questionnaire"
 
     // Navigate after animation completes
     setTimeout(() => {
+      // Store the section ID in sessionStorage before navigating
+      if (sectionId) {
+        sessionStorage.setItem('returnSection', sectionId);
+      }
       router.push(destinationUrl);
     }, delay + 300);
   };
