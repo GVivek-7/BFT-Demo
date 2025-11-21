@@ -19,8 +19,8 @@ const Hero: React.FC = () => {
         />
       </div>
 
-      {/* Text Content - Fully responsive positioning */}
-      <div className="absolute left-0 right-0 flex flex-col items-center px-4 bottom-[55%] xs:bottom-[58%] sm:bottom-auto sm:top-[8%] md:top-[10%] lg:top-[12%] xl:top-[12%]">
+      {/* Text Content - Moved higher on tablets and desktops */}
+      <div className="absolute left-0 right-0 flex flex-col items-center px-4 bottom-[55%] xs:bottom-[58%] sm:bottom-auto sm:top-[5%] md:top-[6%] lg:top-[8%] xl:top-[10%]">
         <p className="text-white text-[18px] xs:text-[20px] sm:text-[24px] md:text-[32px] lg:text-[36px] xl:text-[40px] font-light tracking-wide mb-1 sm:mb-2 md:mb-3 relative z-50">
           The Blindfold
         </p>
@@ -29,17 +29,13 @@ const Hero: React.FC = () => {
         </h1>
       </div>
 
-      {/* Palace Monument at Bottom - Fills width while showing full image */}
-      <div className="absolute bottom-0 left-0 right-0 w-full h-[68%] xs:h-[70%] sm:h-[62%] md:h-[60%] lg:h-[58%] xl:h-[60%] 2xl:h-[62%] z-40 pointer-events-none overflow-hidden">
+      {/* Palace Monument at Bottom - Properly scaled to fill full width */}
+      <div className="absolute bottom-0 left-0 right-0 w-full h-[68%] xs:h-[70%] sm:h-[62%] md:h-[60%] lg:h-[58%] xl:h-[60%] 2xl:h-[62%] z-40 pointer-events-none">
         <img
           src={Mountain2}
           alt="Monument"
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 h-full w-auto min-w-full"
+          className="w-full h-full object-cover object-bottom"
           loading="eager"
-          style={{ 
-            objectFit: 'cover',
-            objectPosition: 'bottom center'
-          }}
         />
       </div>
     </div>
