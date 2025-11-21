@@ -217,7 +217,7 @@ const Scene: React.FC = () => {
               visibility: "hidden",
             }}
           >
-            URISM
+          URISM
           </h1>
 
           {/* Point Texts */}
