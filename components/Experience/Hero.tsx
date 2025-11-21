@@ -30,7 +30,7 @@ const Hero: React.FC = () => {
       </div>
 
       {/* Palace Monument at Bottom - Fully responsive without cropping */}
-      <div className="absolute bottom-0 left-0 right-0 w-full h-[65%] xs:h-[68%] sm:h-[60%] md:h-[58%] lg:h-[56%] xl:h-[58%] 2xl:h-[60%] z-40 pointer-events-none flex items-end justify-center">
+      <div className="absolute bottom-[-2%] left-0 right-0 w-full h-[68%] xs:h-[70%] sm:h-[62%] md:h-[60%] lg:h-[58%] xl:h-[60%] 2xl:h-[62%] z-40 pointer-events-none flex items-end justify-center">
         <img
           src={Mountain2}
           alt="Monument"
