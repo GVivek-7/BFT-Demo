@@ -1,67 +1,46 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect, useRef } from "react";
 import Experience from "@/components/Experience/Experience";
 import Hero from "@/components/Experience/Hero";
 import Flight from "@/components/Reusable/Flight";
 
 const Page = () => {
-  const [showFlight, setShowFlight] = useState(true);
   const hasScrolledRef = useRef(false);
 
   useEffect(() => {
-    // Check if we should skip the flight animation
+    // Check if we should scroll to a specific section
     const skipLoader = sessionStorage.getItem("skipLoader") === "true";
+    
     if (skipLoader) {
-      setShowFlight(false);
-      sessionStorage.removeItem("skipLoader"); // Clean up
+      sessionStorage.removeItem("skipLoader");
       
-      // Kill all ScrollTriggers to prevent scroll locking
-      setTimeout(() => {
-        ScrollTrigger.getAll().forEach(trigger => trigger.kill(true));
-        ScrollTrigger.refresh();
-      }, 100);
-    }
-  }, []);
-
-  useEffect(() => {
-    // Handle scrolling to hash after flight is hidden
-    if (!showFlight && !hasScrolledRef.current) {
       const hash = window.location.hash;
-      if (hash) {
+      if (hash && !hasScrolledRef.current) {
         hasScrolledRef.current = true;
-        // Use a longer timeout to ensure page is fully rendered
+        
+        // Wait for page to fully render, then scroll to section
         setTimeout(() => {
           const element = document.querySelector(hash);
           if (element) {
-            element.scrollIntoView({ 
-              behavior: "smooth", 
-              block: "start" 
+            const offset = 100;
+            const elementPosition = element.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - offset;
+            
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: "smooth",
             });
           }
-        }, 300);
+        }, 500);
       }
     }
-  }, [showFlight]);
-
-  // Reset scroll lock on mount
-  useEffect(() => {
-    // Ensure body is scrollable
-    document.body.style.overflow = 'auto';
-    document.documentElement.style.overflow = 'auto';
-    
-    return () => {
-      // Cleanup
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-    };
   }, []);
 
   return (
     <>
       <div>
-        {showFlight && <Flight />}
+        <Flight />
         <Hero />
         <Experience />
       </div>
